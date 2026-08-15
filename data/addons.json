@@ -1,0 +1,32 @@
+[
+  {
+    "id": "addon_1",
+    "name": "Photobook Album (12x15 Premium)",
+    "price": 8000,
+    "type": "one-time"
+  },
+  {
+    "id": "addon_2",
+    "name": "Cinematic Wedding Film 4K",
+    "price": 25000,
+    "type": "one-time"
+  },
+  {
+    "id": "addon_3",
+    "name": "Highlights Video 4K",
+    "price": 10000,
+    "type": "one-time"
+  },
+  {
+    "id": "addon_4",
+    "name": "Reels for Social Media (Set of 5)",
+    "price": 5000,
+    "type": "one-time"
+  },
+  {
+    "id": "addon_5",
+    "name": "Pendrive with Raw Data",
+    "price": 2000,
+    "type": "one-time"
+  }
+]

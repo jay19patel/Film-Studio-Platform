@@ -1,0 +1,30 @@
+[
+  {
+    "id": "res_1",
+    "name": "Traditional Photographer",
+    "pricePerDay": 10000,
+    "unit": "per day",
+    "icon": "Camera"
+  },
+  {
+    "id": "res_2",
+    "name": "Traditional Videographer / Cinematographer",
+    "pricePerDay": 10000,
+    "unit": "per day",
+    "icon": "Video"
+  },
+  {
+    "id": "res_3",
+    "name": "Candid Photographer",
+    "pricePerDay": 15000,
+    "unit": "per day",
+    "icon": "Aperture"
+  },
+  {
+    "id": "res_4",
+    "name": "Cinematographer",
+    "pricePerDay": 18000,
+    "unit": "per day",
+    "icon": "Film"
+  }
+]

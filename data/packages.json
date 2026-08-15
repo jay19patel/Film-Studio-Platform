@@ -1,0 +1,67 @@
+[
+  {
+    "id": "pkg_1",
+    "name": "Basic Wedding Package",
+    "days": [
+      {
+        "title": "Day 1 - Haldi & Mehendi",
+        "image": "/uploads/haldi.png",
+        "items": [
+          { "resourceId": "res_1", "qty": 1 },
+          { "resourceId": "res_2", "qty": 1 }
+        ]
+      },
+      {
+        "title": "Day 2 - Wedding & Reception",
+        "image": "/uploads/wedding.png",
+        "items": [
+          { "resourceId": "res_1", "qty": 1 },
+          { "resourceId": "res_2", "qty": 1 },
+          { "resourceId": "res_3", "qty": 1 }
+        ]
+      }
+    ],
+    "addons": ["addon_1", "addon_5"],
+    "autoPrice": 50000,
+    "finalPrice": 44999,
+    "status": "published"
+  },
+  {
+    "id": "pkg_2",
+    "name": "Standard Cinematic Package",
+    "days": [
+      {
+        "title": "Day 1 - Pre-Wedding Shoot",
+        "image": "/uploads/prewedding.png",
+        "items": [
+          { "resourceId": "res_3", "qty": 1 },
+          { "resourceId": "res_4", "qty": 1 }
+        ]
+      },
+      {
+        "title": "Day 2 - Sangeet & Ring Ceremony",
+        "image": "/uploads/sangeet.png",
+        "items": [
+          { "resourceId": "res_1", "qty": 1 },
+          { "resourceId": "res_2", "qty": 1 },
+          { "resourceId": "res_3", "qty": 1 },
+          { "resourceId": "res_4", "qty": 1 }
+        ]
+      },
+      {
+        "title": "Day 3 - The Wedding Day",
+        "image": "/uploads/wedding_main.png",
+        "items": [
+          { "resourceId": "res_1", "qty": 2 },
+          { "resourceId": "res_2", "qty": 2 },
+          { "resourceId": "res_3", "qty": 1 },
+          { "resourceId": "res_4", "qty": 1 }
+        ]
+      }
+    ],
+    "addons": ["addon_1", "addon_2", "addon_3", "addon_5"],
+    "autoPrice": 161000,
+    "finalPrice": 149999,
+    "status": "published"
+  }
+]
