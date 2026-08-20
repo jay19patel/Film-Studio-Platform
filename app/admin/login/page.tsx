@@ -58,35 +58,27 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Decorative gradient glowing spheres */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl -z-10" />
-      
-      <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-3xl p-8 md:p-10 shadow-2xl relative">
-        
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-500/10 to-transparent rounded-tr-3xl" />
+      <div className="w-full max-w-md bg-white border border-gray-200 rounded-3xl p-8 md:p-10 shadow-lg relative">
         
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex bg-amber-500 text-white p-3 rounded-2xl shadow-md mb-4 animate-spin-slow">
+          <div className="inline-flex bg-maroon/10 text-maroon p-3 rounded-2xl shadow-sm mb-4 animate-spin-slow border border-maroon/20">
             <Camera className="h-7 w-7" />
           </div>
-          <h2 className="font-serif text-2xl md:text-3xl font-black text-white flex items-center justify-center gap-1">
+          <h2 className="font-serif text-2xl md:text-3xl font-black text-neutral-900 uppercase tracking-widest flex items-center justify-center gap-1">
             CamBuddy Admin
-            <Sparkles className="h-4.5 w-4.5 text-amber-400" />
           </h2>
-          <p className="text-gray-400 text-xs mt-1.5 font-medium">
-            Manage packages, pricing, resources, and inquiries
+          <p className="text-neutral-500 text-xs mt-1.5 font-bold uppercase tracking-widest">
+            Studio Management Portal
           </p>
         </div>
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs p-3.5 rounded-xl flex items-start gap-2 font-medium">
+            <div className="bg-red-50 border border-red-200 text-red-600 text-xs p-3.5 rounded-xl flex items-start gap-2 font-bold">
               <AlertCircle className="h-4 w-4 flex-shrink-0" />
               <span>{error}</span>
             </div>
@@ -94,11 +86,11 @@ export default function AdminLoginPage() {
 
           {/* Email input */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
               Email Address
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500">
+              <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
                 <Mail className="h-4.5 w-4.5" />
               </span>
               <input
@@ -108,18 +100,18 @@ export default function AdminLoginPage() {
                 required
                 disabled={isLoading}
                 placeholder="admin@cambuddy.com"
-                className="w-full bg-gray-950 border border-gray-800 text-white placeholder-gray-600 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:border-amber-500 transition-all font-medium"
+                className="w-full bg-gray-50 border border-gray-300 text-neutral-900 placeholder-gray-400 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:border-maroon focus:ring-1 focus:ring-maroon transition-all font-bold"
               />
             </div>
           </div>
 
           {/* Password input */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
               Password
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500">
+              <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
                 <Lock className="h-4.5 w-4.5" />
               </span>
               <input
@@ -129,7 +121,7 @@ export default function AdminLoginPage() {
                 required
                 disabled={isLoading}
                 placeholder="••••••••"
-                className="w-full bg-gray-950 border border-gray-800 text-white placeholder-gray-600 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:border-amber-500 transition-all font-medium"
+                className="w-full bg-gray-50 border border-gray-300 text-neutral-900 placeholder-gray-400 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:border-maroon focus:ring-1 focus:ring-maroon transition-all font-bold"
               />
             </div>
           </div>
@@ -138,12 +130,12 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+            className="w-full bg-maroon hover:bg-maroon-dark text-white font-bold tracking-widest uppercase py-3.5 px-6 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-4 text-sm"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              'Sign In to Dashboard'
+              'Sign In'
             )}
           </button>
         </form>

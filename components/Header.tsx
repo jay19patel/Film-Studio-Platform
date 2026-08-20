@@ -23,46 +23,37 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-black/45 backdrop-blur-xl border-b border-white/[0.06] shadow-lg">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20">
+        <div className="flex justify-between items-center h-20">
           
-          {/* Logo with gold gradient */}
+          {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2.5 group">
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="bg-gold-gradient text-neutral-900 p-2.5 rounded-xl shadow-lg border border-amber-200/20"
-              >
-                <Camera className="h-5 w-5" />
-              </motion.div>
-              <span className="font-serif text-2xl font-black tracking-tight text-white flex items-center gap-1 group-hover:text-amber-200 transition-colors">
-                <span className="text-gold-gradient">CamBuddy</span>
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1], rotate: [0, 15, -15, 0] }}
-                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                >
-                  <Sparkles className="h-4.5 w-4.5 text-amber-300 fill-amber-300" />
-                </motion.div>
+              <Camera className="h-6 w-6 text-maroon group-hover:scale-110 transition-transform" />
+              <span className="font-serif text-2xl tracking-widest text-neutral-900 uppercase">
+                CamBuddy
               </span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 items-center">
+          <nav className="hidden md:flex space-x-10 items-center">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="relative text-sm font-semibold tracking-wide text-neutral-300 hover:text-white py-2 transition-colors duration-200"
+                  className={`relative text-xs font-bold tracking-[0.1em] uppercase transition-colors duration-200 ${
+                    isActive ? 'text-maroon' : 'text-neutral-500 hover:text-neutral-900'
+                  }`}
                 >
                   {link.name}
                   {isActive && (
                     <motion.div
                       layoutId="activeNavLine"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-gradient"
+                      className="absolute -bottom-2 left-0 right-0 h-[2px] bg-maroon"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -70,14 +61,14 @@ export default function Header() {
               );
             })}
             
-            <div className="h-4 w-[1px] bg-white/10" />
+            <div className="h-4 w-[1px] bg-gray-200" />
 
             <Link
               href="/admin/dashboard"
-              className="text-xs font-semibold text-neutral-400 hover:text-white flex items-center gap-1.5 border border-white/10 hover:border-amber-400/40 px-3.5 py-2 rounded-xl transition-all bg-white/[0.02]"
+              className="text-xs font-bold tracking-widest text-neutral-500 hover:text-neutral-900 flex items-center gap-1.5 uppercase transition-all"
             >
               <Settings className="h-3.5 w-3.5" />
-              Admin Portal
+              Admin
             </Link>
           </nav>
 
@@ -85,7 +76,7 @@ export default function Header() {
           <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-neutral-400 hover:text-white p-2 rounded-lg hover:bg-white/5 transition-all"
+              className="text-neutral-900 hover:text-maroon p-2 transition-all"
               aria-label="Toggle menu"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -94,7 +85,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu with AnimatePresence */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -102,9 +93,9 @@ export default function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden bg-neutral-950 border-b border-white/[0.08] overflow-hidden"
+            className="md:hidden bg-white border-b border-gray-100 overflow-hidden"
           >
-            <div className="px-3 pt-2 pb-5 space-y-1.5">
+            <div className="px-4 pt-2 pb-5 space-y-1">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -112,10 +103,10 @@ export default function Header() {
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all ${
+                    className={`block px-4 py-3 rounded-lg text-sm font-bold tracking-widest uppercase transition-all ${
                       isActive
-                        ? 'bg-amber-500/10 text-amber-200 border-l-2 border-amber-400'
-                        : 'text-neutral-400 hover:bg-white/[0.02] hover:text-white'
+                        ? 'bg-maroon/5 text-maroon border-l-2 border-maroon'
+                        : 'text-neutral-600 hover:bg-gray-50 hover:text-neutral-900'
                     }`}
                   >
                     {link.name}
@@ -123,12 +114,12 @@ export default function Header() {
                 );
               })}
               
-              <div className="h-[1px] bg-white/5 my-3" />
+              <div className="h-[1px] bg-gray-100 my-3" />
               
               <Link
                 href="/admin/dashboard"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-base text-neutral-400 hover:bg-white/[0.02] hover:text-white"
+                className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-sm font-bold tracking-widest uppercase text-neutral-600 hover:bg-gray-50 hover:text-neutral-900"
               >
                 <Settings className="h-4.5 w-4.5" />
                 Admin Portal
