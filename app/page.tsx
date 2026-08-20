@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { Camera, Sparkles, Sliders, ChevronRight } from 'lucide-react';
+import { Camera, Sparkles, Sliders, ChevronRight, Film, Heart, Star } from 'lucide-react';
 import { getPackages, getResources, getAddons } from '@/lib/db';
 import PackageCard from '@/components/PackageCard';
 
-// Force dynamic page rendering to ensure fresh reads of local JSON db files
+// Force dynamic page rendering to ensure fresh db reads
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
@@ -17,38 +17,51 @@ export default async function Home() {
   const publishedPackages = packages.filter((pkg) => pkg.status === 'published');
 
   return (
-    <div className="bg-gray-50/50 min-h-screen">
+    <div className="bg-white min-h-screen relative overflow-hidden text-neutral-900">
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-amber-500/10 via-white to-gray-50/50 py-20 md:py-28 border-b border-gray-100">
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
+      <section className="relative overflow-hidden pt-24 pb-20 md:pt-32 md:pb-28 border-b border-gray-100">
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] bg-[size:24px_24px]" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200/80 px-4 py-1.5 rounded-full text-xs font-bold text-amber-800 uppercase tracking-widest mb-6 animate-pulse">
-            <Sparkles className="h-3.5 w-3.5 text-amber-600" />
-            Voted Premium Wedding Photographer
+        {/* Floating decorative elements */}
+        <div className="absolute top-20 right-[15%] animate-float opacity-10">
+          <Camera className="h-8 w-8 text-maroon" />
+        </div>
+        <div className="absolute bottom-24 left-[10%] animate-float opacity-10" style={{ animationDelay: '1.5s' }}>
+          <Film className="h-6 w-6 text-maroon" />
+        </div>
+        <div className="absolute top-[40%] right-[8%] animate-float opacity-10" style={{ animationDelay: '2.5s' }}>
+          <Heart className="h-5 w-5 text-maroon" />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          
+          {/* Badge */}
+          <div className="inline-flex items-center gap-1.5 bg-maroon/5 border border-maroon/20 px-4 py-1.5 rounded-full text-[10px] font-bold text-maroon uppercase tracking-widest mb-8 animate-slideDown">
+            <Sparkles className="h-3.5 w-3.5" />
+            Luxury Wedding Photography & Films
           </div>
           
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 tracking-tight leading-none max-w-4xl mx-auto mb-6">
-            Capture the Magic of Your <span className="text-amber-500 underline decoration-amber-300 decoration-wavy underline-offset-8">Forever Story</span>
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-900 tracking-tight leading-tight max-w-5xl mx-auto mb-6 animate-slideUp">
+            Capturing the Pure Poetry of Your <br/><span className="font-caveat text-maroon text-6xl sm:text-7xl md:text-8xl lg:text-9xl -mt-4 block font-normal tracking-normal lowercase">forever story</span>
           </h1>
           
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-            Explore our handcrafted wedding packages, featuring professional cinematic teams and premium photobooks. Customize any details or design your own package.
+          <p className="text-sm sm:text-base md:text-lg text-neutral-600 max-w-2xl mx-auto mb-12 leading-relaxed font-light tracking-wide animate-slideUp stagger-2">
+            Handcrafted wedding proposal packages, combining high-end cinematic teams and premium photobooks. Customize any programs or build your own schedule.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4.5 justify-center items-center animate-slideUp stagger-3">
             <a
               href="#packages-list"
-              className="w-full sm:w-auto bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition-all duration-200 text-base"
+              className="w-full sm:w-auto btn-maroon"
             >
-              Browse Packages
+              Explore Proposals
             </a>
             <Link
               href="/build-your-own"
-              className="w-full sm:w-auto bg-white border-2 border-amber-500 hover:bg-amber-50 text-amber-600 font-bold py-3.5 px-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 text-base flex items-center justify-center gap-2 group"
+              className="w-full sm:w-auto btn-outline flex items-center justify-center gap-2"
             >
-              <Sliders className="h-4.5 w-4.5 text-amber-500 group-hover:rotate-180 transition-transform duration-500" />
+              <Sliders className="h-4 w-4" />
               Build Your Own Package
             </Link>
           </div>
@@ -56,25 +69,26 @@ export default async function Home() {
       </section>
 
       {/* Predefined Packages Grid Section */}
-      <section id="packages-list" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <section id="packages-list" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-amber-600 block mb-2">
-              Ready-Made Packages
+            <span className="text-[10px] font-bold uppercase tracking-widest text-maroon block mb-2.5">
+              Ready-Made Configs
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2">
-              Our Signature Packages
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight">
+              Our Signature Proposals
             </h2>
-            <p className="text-gray-500 text-sm mt-1.5 max-w-xl font-medium">
-              Carefully curated configurations designed to deliver full coverage for Indian and traditional wedding ceremonies.
+            <p className="text-neutral-500 text-xs md:text-sm mt-2 max-w-xl font-medium leading-relaxed">
+              Exquisite multi-day packages designed to deliver full coverage for traditional ceremonies and cinematic movie features.
             </p>
           </div>
           
           <Link
             href="/build-your-own"
-            className="hidden md:inline-flex items-center text-sm font-bold text-amber-600 hover:text-amber-700 gap-0.5 group mt-4 md:mt-0"
+            className="hidden md:inline-flex items-center text-xs font-bold text-maroon hover:text-maroon-dark tracking-widest uppercase gap-1 group mt-4 md:mt-0"
           >
-            Looking for something custom? Build your own
+            Design a custom proposal
             <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -88,65 +102,95 @@ export default async function Home() {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-3xl p-12 text-center border border-gray-150 shadow-sm max-w-md mx-auto">
-            <Camera className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-gray-800 mb-1">No Packages Published</h3>
-            <p className="text-gray-500 text-sm mb-6">
-              Our studio packages are being updated. Check back shortly or design a custom build!
+          <div className="bg-gray-50 border border-gray-200 rounded-3xl p-12 text-center max-w-md mx-auto">
+            <Camera className="h-10 w-10 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-serif font-bold text-gray-900 mb-1">No Packages Published</h3>
+            <p className="text-gray-500 text-xs mb-6">
+              Our collection is being updated. Create a custom quote config!
             </p>
             <Link
               href="/build-your-own"
-              className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-6 rounded-xl transition-all inline-block"
+              className="btn-maroon text-xs uppercase tracking-wider inline-flex"
             >
-              Build Custom Package
+              Build Custom Quote
             </Link>
           </div>
         )}
       </section>
 
-      {/* Why Choose CamBuddy Info */}
-      <section className="bg-gray-950 py-20 text-white">
+      {/* Why Choose CamBuddy (Advantage) */}
+      <section className="bg-gray-50 border-y border-gray-100 py-24 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-2">
-              CamBuddy Advantage
+          <div className="text-center mb-20">
+            <span className="text-[10px] font-bold text-maroon uppercase tracking-widest block mb-2.5">
+              The CamBuddy Craft
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-extrabold tracking-tight">
-              Why Wedding Couples Love CamBuddy
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900">
+              Why Couples Choose Our Lens
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl text-center">
-              <div className="bg-amber-500/10 text-amber-400 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Camera className="h-6 w-6" />
+            {/* Box 1 */}
+            <div className="bg-white border border-gray-100 p-8 rounded-3xl text-center card-elevated">
+              <div className="bg-maroon/10 text-maroon w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-maroon/20">
+                <Camera className="h-5.5 w-5.5" />
               </div>
-              <h3 className="text-lg font-bold text-white mb-3 font-serif">State-of-the-Art Gear</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                We use top-tier mirrorless cameras, 4K drones, and cinematic gimbal systems to capture stunning details.
+              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">State-of-the-Art Gear</h3>
+              <p className="text-neutral-500 text-xs md:text-sm leading-relaxed font-light">
+                We capture in premium 4K HDR, utilizing mirrorless camera rigs, drone cinematography, and professional lighting kits.
               </p>
             </div>
             
-            <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl text-center">
-              <div className="bg-amber-500/10 text-amber-400 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Sparkles className="h-6 w-6" />
+            {/* Box 2 */}
+            <div className="bg-white border border-gray-100 p-8 rounded-3xl text-center card-elevated">
+              <div className="bg-maroon/10 text-maroon w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-maroon/20">
+                <Sparkles className="h-5.5 w-5.5" />
               </div>
-              <h3 className="text-lg font-bold text-white mb-3 font-serif">Expert Color Grading</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Our post-production team color-grades every film with custom LUTs, creating a breathtaking, premium cinema aesthetic.
+              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">Fine Art Color Grading</h3>
+              <p className="text-neutral-500 text-xs md:text-sm leading-relaxed font-light">
+                Every photo and film frame undergoes extensive editorial color grading to manifest a classic, cinematic film texture.
               </p>
             </div>
 
-            <div className="bg-gray-900 border border-gray-800 p-8 rounded-3xl text-center">
-              <div className="bg-amber-500/10 text-amber-400 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Sliders className="h-6 w-6" />
+            {/* Box 3 */}
+            <div className="bg-white border border-gray-100 p-8 rounded-3xl text-center card-elevated">
+              <div className="bg-maroon/10 text-maroon w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-maroon/20">
+                <Sliders className="h-5.5 w-5.5" />
               </div>
-              <h3 className="text-lg font-bold text-white mb-3 font-serif">Flexible Package Customizer</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                We believe every love story is unique. Build your own package day-wise to perfectly match your budget and needs.
+              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">Custom Timelines</h3>
+              <p className="text-neutral-500 text-xs md:text-sm leading-relaxed font-light">
+                We appreciate individuality. Our interactive quote tools grant you absolute flexibility to coordinate crew sizes day-by-day.
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA Banner Before Footer */}
+      <section className="relative py-20 z-10">
+        <div className="absolute inset-0 bg-maroon/5 pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+          <div className="inline-flex items-center gap-1.5 mb-6">
+            <Star className="h-4 w-4 text-maroon fill-maroon" />
+            <Star className="h-4 w-4 text-maroon fill-maroon" />
+            <Star className="h-4 w-4 text-maroon fill-maroon" />
+            <Star className="h-4 w-4 text-maroon fill-maroon" />
+            <Star className="h-4 w-4 text-maroon fill-maroon" />
+          </div>
+          <h2 className="font-serif text-2xl md:text-4xl font-bold text-neutral-900 mb-4 tracking-tight">
+            Ready to Create Your <span className="text-maroon-gradient italic">Dream Wedding</span> Film?
+          </h2>
+          <p className="text-neutral-600 text-sm max-w-lg mx-auto mb-8 font-light leading-relaxed">
+            Build a custom package in minutes with our interactive quote tool. Get instant pricing, download a PDF proposal, and connect with our team.
+          </p>
+          <Link
+            href="/build-your-own"
+            className="btn-maroon text-base py-4 px-10"
+          >
+            <Sliders className="h-5 w-5" />
+            Start Building Your Package
+          </Link>
         </div>
       </section>
     </div>

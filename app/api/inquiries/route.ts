@@ -24,7 +24,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, address, packageId, packageName, type, customDetails } = body;
+    const { name, email, phone, address, eventDate, specialNotes, packageId, packageName, type, customDetails } = body;
 
     if (!name || !email || !phone) {
       return NextResponse.json({ error: 'Name, email, and phone are required fields' }, { status: 400 });
@@ -37,6 +37,8 @@ export async function POST(request: Request) {
       email,
       phone,
       address: address || '',
+      eventDate: eventDate || undefined,
+      specialNotes: specialNotes || undefined,
       packageId: packageId || undefined,
       packageName: packageName || 'Custom Built Package',
       type: type || 'predefined',
@@ -89,3 +91,35 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'Failed to update inquiry' }, { status: 500 });
   }
 }
+
+// DELETE: Remove an inquiry (Admin only)
+export async function DELETE(request: Request) {
+  try {
+    const session = await getAdminSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { id } = await request.json();
+
+    if (!id) {
+      return NextResponse.json({ error: 'Inquiry ID is required' }, { status: 400 });
+    }
+
+    const inquiries = await getInquiries();
+    const index = inquiries.findIndex((inq) => inq.id === id);
+
+    if (index === -1) {
+      return NextResponse.json({ error: 'Inquiry not found' }, { status: 404 });
+    }
+
+    inquiries.splice(index, 1);
+    await saveInquiries(inquiries);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting inquiry:', error);
+    return NextResponse.json({ error: 'Failed to delete inquiry' }, { status: 500 });
+  }
+}
+

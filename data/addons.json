@@ -28,5 +28,23 @@
     "name": "Pendrive with Raw Data",
     "price": 2000,
     "type": "one-time"
+  },
+  {
+    "id": "addon_6",
+    "name": "Pre-Wedding Photo Shoot",
+    "price": 15000,
+    "type": "one-time"
+  },
+  {
+    "id": "addon_7",
+    "name": "Photo Frame Set (5 Frames)",
+    "price": 6000,
+    "type": "one-time"
+  },
+  {
+    "id": "addon_8",
+    "name": "Thank You Cards (Set of 50)",
+    "price": 3000,
+    "type": "one-time"
   }
 ]

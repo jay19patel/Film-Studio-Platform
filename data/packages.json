@@ -63,5 +63,58 @@
     "autoPrice": 161000,
     "finalPrice": 149999,
     "status": "published"
+  },
+  {
+    "id": "pkg_3",
+    "name": "Royal Cinematic Experience",
+    "days": [
+      {
+        "title": "Day 1 - Pre-Wedding Shoot",
+        "image": "/uploads/prewedding.png",
+        "items": [
+          { "resourceId": "res_3", "qty": 2 },
+          { "resourceId": "res_4", "qty": 1 },
+          { "resourceId": "res_5", "qty": 1 }
+        ]
+      },
+      {
+        "title": "Day 2 - Haldi & Mehendi Ceremony",
+        "image": "/uploads/haldi.png",
+        "items": [
+          { "resourceId": "res_1", "qty": 2 },
+          { "resourceId": "res_2", "qty": 1 },
+          { "resourceId": "res_3", "qty": 1 },
+          { "resourceId": "res_4", "qty": 1 }
+        ]
+      },
+      {
+        "title": "Day 3 - Sangeet & Cocktail Night",
+        "image": "/uploads/sangeet.png",
+        "items": [
+          { "resourceId": "res_1", "qty": 2 },
+          { "resourceId": "res_2", "qty": 2 },
+          { "resourceId": "res_3", "qty": 2 },
+          { "resourceId": "res_4", "qty": 1 },
+          { "resourceId": "res_5", "qty": 1 },
+          { "resourceId": "res_6", "qty": 1 }
+        ]
+      },
+      {
+        "title": "Day 4 - The Grand Wedding & Reception",
+        "image": "/uploads/wedding_main.png",
+        "items": [
+          { "resourceId": "res_1", "qty": 3 },
+          { "resourceId": "res_2", "qty": 2 },
+          { "resourceId": "res_3", "qty": 2 },
+          { "resourceId": "res_4", "qty": 2 },
+          { "resourceId": "res_5", "qty": 1 },
+          { "resourceId": "res_6", "qty": 1 }
+        ]
+      }
+    ],
+    "addons": ["addon_1", "addon_2", "addon_3", "addon_4", "addon_5", "addon_6", "addon_7"],
+    "autoPrice": 285000,
+    "finalPrice": 249999,
+    "status": "published"
   }
 ]

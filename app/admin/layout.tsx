@@ -72,6 +72,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Wedding Packages', href: '/admin/packages', icon: Package },
     { name: 'Crew Resources', href: '/admin/resources', icon: CalendarDays },
     { name: 'Physical Add-ons', href: '/admin/addons', icon: Gem },
+    { name: 'Portfolio Showcase', href: '/admin/portfolio', icon: Camera },
+    { name: 'Equipment Gear', href: '/admin/equipment', icon: Camera },
     { name: 'Client Inquiries', href: '/admin/inquiries', icon: Inbox },
   ];
 

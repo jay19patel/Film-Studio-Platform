@@ -26,5 +26,19 @@
     "pricePerDay": 18000,
     "unit": "per day",
     "icon": "Film"
+  },
+  {
+    "id": "res_5",
+    "name": "Drone Cinematographer",
+    "pricePerDay": 12000,
+    "unit": "per day",
+    "icon": "Plane"
+  },
+  {
+    "id": "res_6",
+    "name": "LED Screen Setup",
+    "pricePerDay": 8000,
+    "unit": "per day",
+    "icon": "Monitor"
   }
 ]

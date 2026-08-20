@@ -3,16 +3,16 @@
 import { useState } from 'react';
 import {
   Inbox,
-  User,
   Mail,
   Phone,
   MapPin,
   Calendar,
   Sparkles,
-  Users,
   Eye,
   EyeOff,
   Trash2,
+  FileText,
+  Filter,
 } from 'lucide-react';
 import { Inquiry, Resource, Addon } from '@/lib/db';
 
@@ -21,6 +21,8 @@ interface InquiriesClientProps {
   resources: Resource[];
   addonsList: Addon[];
 }
+
+type StatusFilter = 'all' | 'new' | 'contacted' | 'completed';
 
 export default function InquiriesClient({
   initialInquiries,
@@ -31,6 +33,8 @@ export default function InquiriesClient({
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const showSuccess = (msg: string) => {
     setSuccessMsg(msg);
@@ -62,6 +66,38 @@ export default function InquiriesClient({
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this inquiry? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeletingId(id);
+    setError('');
+    try {
+      const res = await fetch('/api/inquiries', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Failed to delete inquiry');
+      }
+
+      showSuccess('Inquiry deleted successfully!');
+      setInquiries((prev) => prev.filter((inq) => inq.id !== id));
+      
+      if (expandedId === id) {
+        setExpandedId(null);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete inquiry.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   const toggleExpand = (id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
   };
@@ -80,8 +116,49 @@ export default function InquiriesClient({
     return addon ? addon.name : 'Deliverable';
   };
 
+  // Filter inquiries by status
+  const filteredInquiries = statusFilter === 'all'
+    ? inquiries
+    : inquiries.filter((inq) => inq.status === statusFilter);
+
+  // Count badges
+  const statusCounts = {
+    all: inquiries.length,
+    new: inquiries.filter((i) => i.status === 'new').length,
+    contacted: inquiries.filter((i) => i.status === 'contacted').length,
+    completed: inquiries.filter((i) => i.status === 'completed').length,
+  };
+
+  const filterTabs: { label: string; value: StatusFilter; color: string }[] = [
+    { label: 'All', value: 'all', color: 'bg-gray-100 text-gray-700 border-gray-200' },
+    { label: 'New Leads', value: 'new', color: 'bg-amber-50 text-amber-800 border-amber-200' },
+    { label: 'Contacted', value: 'contacted', color: 'bg-blue-50 text-blue-800 border-blue-200' },
+    { label: 'Completed', value: 'completed', color: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+  ];
+
   return (
     <div className="space-y-6">
+
+      {/* Status Filter Tabs */}
+      <div className="flex flex-wrap items-center gap-2">
+        <Filter className="h-4 w-4 text-gray-400 mr-1" />
+        {filterTabs.map((tab) => (
+          <button
+            key={tab.value}
+            onClick={() => setStatusFilter(tab.value)}
+            className={`text-xs font-bold px-3.5 py-2 rounded-xl border transition-all cursor-pointer ${
+              statusFilter === tab.value
+                ? `${tab.color} ring-2 ring-offset-1 ring-amber-300/30`
+                : 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-gray-100'
+            }`}
+          >
+            {tab.label}
+            <span className="ml-1.5 text-[10px] font-bold opacity-60">
+              ({statusCounts[tab.value]})
+            </span>
+          </button>
+        ))}
+      </div>
       
       {successMsg && (
         <div className="bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs p-4 rounded-2xl font-semibold">
@@ -95,16 +172,23 @@ export default function InquiriesClient({
         </div>
       )}
 
-      {inquiries.length === 0 ? (
+      {filteredInquiries.length === 0 ? (
         <div className="bg-white rounded-3xl p-16 text-center border border-gray-100 shadow-sm">
           <Inbox className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-gray-800 mb-1">No Inquiries Found</h3>
-          <p className="text-gray-500 text-sm">When clients browse predefined packages or design custom builds, leads will appear here.</p>
+          <h3 className="text-lg font-bold text-gray-800 mb-1">
+            {statusFilter === 'all' ? 'No Inquiries Found' : `No ${statusFilter} inquiries`}
+          </h3>
+          <p className="text-gray-500 text-sm">
+            {statusFilter === 'all'
+              ? 'When clients browse predefined packages or design custom builds, leads will appear here.'
+              : `There are no inquiries with "${statusFilter}" status right now.`}
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
-          {inquiries.map((inq) => {
+          {filteredInquiries.map((inq) => {
             const isExpanded = expandedId === inq.id;
+            const isDeleting = deletingId === inq.id;
             const formattedDate = new Date(inq.createdAt).toLocaleDateString('en-IN', {
               day: 'numeric',
               month: 'long',
@@ -120,7 +204,7 @@ export default function InquiriesClient({
                   inq.status === 'new'
                     ? 'border-amber-300 ring-2 ring-amber-100/50'
                     : 'border-gray-150'
-                }`}
+                } ${isDeleting ? 'opacity-50 pointer-events-none' : ''}`}
               >
                 {/* Header row */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -142,7 +226,7 @@ export default function InquiriesClient({
                     </p>
                   </div>
 
-                  {/* Status Dropdown and Timestamp */}
+                  {/* Status Dropdown, Delete, and Timestamp */}
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="text-xs text-gray-400 font-medium">{formattedDate}</span>
                     
@@ -161,11 +245,19 @@ export default function InquiriesClient({
                       <option value="contacted">Contacted</option>
                       <option value="completed">Completed</option>
                     </select>
+
+                    <button
+                      onClick={() => handleDelete(inq.id)}
+                      className="text-gray-400 hover:text-red-500 p-1.5 hover:bg-red-50 rounded-lg transition-all"
+                      title="Delete inquiry"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
 
                 {/* Contact grid info */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6 pt-5 border-t border-gray-50 text-xs md:text-sm text-gray-600">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-5 border-t border-gray-50 text-xs md:text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4.5 w-4.5 text-gray-400 flex-shrink-0" />
                     <a href={`mailto:${inq.email}`} className="hover:text-amber-500 font-semibold truncate">
@@ -178,13 +270,38 @@ export default function InquiriesClient({
                       {inq.phone}
                     </a>
                   </div>
+                  {inq.eventDate && (
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4.5 w-4.5 text-gray-400 flex-shrink-0" />
+                      <span className="font-semibold text-amber-700">
+                        {new Date(inq.eventDate).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  )}
                   {inq.address && (
-                    <div className="flex items-center gap-2 col-span-1 sm:col-span-2 md:col-span-1">
+                    <div className="flex items-center gap-2">
                       <MapPin className="h-4.5 w-4.5 text-gray-400 flex-shrink-0" />
                       <span className="font-medium truncate">{inq.address}</span>
                     </div>
                   )}
                 </div>
+
+                {/* Special Notes */}
+                {inq.specialNotes && (
+                  <div className="mt-4 bg-gray-50 border border-gray-100 rounded-xl p-4 flex items-start gap-2.5">
+                    <FileText className="h-4 w-4 text-gray-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">
+                        Special Notes
+                      </span>
+                      <p className="text-xs text-gray-700 font-medium leading-relaxed">{inq.specialNotes}</p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Collapsible Custom Package details */}
                 {inq.type === 'custom' && inq.customDetails && (

@@ -50,6 +50,8 @@ export interface Inquiry {
   email: string;
   phone: string;
   address: string;
+  eventDate?: string;
+  specialNotes?: string;
   packageId?: string;
   packageName: string;
   type: 'predefined' | 'custom';
@@ -61,6 +63,23 @@ export interface Inquiry {
 export interface Admin {
   email: string;
   passwordHash: string;
+}
+
+export interface Equipment {
+  id: string;
+  name: string;
+  category: 'camera' | 'lens' | 'drone' | 'lighting' | 'audio' | 'other';
+  description?: string;
+  image?: string;
+}
+
+export interface PortfolioItem {
+  id: string;
+  title: string;
+  type: 'video' | 'youtube' | 'photo';
+  url: string;
+  thumbnail?: string;
+  description?: string;
 }
 
 // Helper to get file paths
@@ -135,4 +154,20 @@ export async function getInquiries(): Promise<Inquiry[]> {
 
 export async function saveInquiries(inquiries: Inquiry[]): Promise<boolean> {
   return writeJsonFile<Inquiry[]>('inquiries.json', inquiries);
+}
+
+export async function getEquipment(): Promise<Equipment[]> {
+  return readJsonFile<Equipment[]>('equipment.json', []);
+}
+
+export async function saveEquipment(equipment: Equipment[]): Promise<boolean> {
+  return writeJsonFile<Equipment[]>('equipment.json', equipment);
+}
+
+export async function getPortfolio(): Promise<PortfolioItem[]> {
+  return readJsonFile<PortfolioItem[]>('portfolio.json', []);
+}
+
+export async function savePortfolio(portfolio: PortfolioItem[]): Promise<boolean> {
+  return writeJsonFile<PortfolioItem[]>('portfolio.json', portfolio);
 }

@@ -1,68 +1,245 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #fdfdfd;
-  --foreground: #1c1917;
+  --background: #ffffff;
+  --foreground: #111111;
+  --maroon: #8B1A2B;
+  --maroon-dark: #6B1420;
+  --maroon-light: #B22042;
+  --red: #DC2626;
 }
 
 body {
-  background-color: #f9fafb;
-  color: #1f2937;
-  font-family: 'Plus Jakarta Sans', var(--font-geist-sans), sans-serif;
+  background-color: #ffffff;
+  color: #111111;
+  font-family: var(--font-outfit), sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 .font-serif {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-bebas), sans-serif;
+  letter-spacing: 0.02em;
 }
 
-/* Custom premium keyframes and animations */
+.font-anton {
+  font-family: var(--font-anton), sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-caveat {
+  font-family: var(--font-caveat), cursive;
+}
+
+/* ───────────────────────────────────────────────
+   Maroon Accent Gradients
+   ─────────────────────────────────────────────── */
+.bg-maroon-gradient {
+  background: linear-gradient(135deg, #8B1A2B 0%, #B22042 50%, #8B1A2B 100%);
+}
+
+.text-maroon-gradient {
+  background: linear-gradient(135deg, #6B1420 0%, #B22042 50%, #8B1A2B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ───────────────────────────────────────────────
+   Card Styles (Light Theme)
+   ─────────────────────────────────────────────── */
+.card-elevated {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-elevated:hover {
+  border-color: rgba(139, 26, 43, 0.25);
+  box-shadow: 0 8px 30px rgba(139, 26, 43, 0.06);
+}
+
+/* ───────────────────────────────────────────────
+   Button Utilities
+   ─────────────────────────────────────────────── */
+.btn-maroon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #8B1A2B;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.875rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 26, 43, 0.2);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-maroon:hover {
+  background-color: #6B1420;
+  box-shadow: 0 8px 25px rgba(139, 26, 43, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-maroon:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px solid #1a1a1a;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-outline:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+/* ───────────────────────────────────────────────
+   Form Inputs (Light Theme)
+   ─────────────────────────────────────────────── */
+.input-light {
+  width: 100%;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  font-size: 0.875rem;
+  color: #111111;
+  outline: none;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+.input-light::placeholder {
+  color: #9ca3af;
+}
+
+.input-light:focus {
+  background: #ffffff;
+  border-color: #8B1A2B;
+  box-shadow: 0 0 0 3px rgba(139, 26, 43, 0.08);
+}
+
+.input-light:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ───────────────────────────────────────────────
+   Luxury Ribbon style cutout
+   ─────────────────────────────────────────────── */
+.clip-triangle {
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* ───────────────────────────────────────────────
+   Keyframe Animations
+   ─────────────────────────────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes zoomIn {
-  from { transform: scale(0.96); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideDown {
-  from { transform: translateY(-8px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideRight {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s ease-out forwards;
+  animation: fadeIn 0.5s ease-out both;
 }
 
-.animate-zoomIn {
-  animation: zoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-slideUp {
+  animation: slideUp 0.6s ease-out both;
 }
 
 .animate-slideDown {
-  animation: slideDown 0.2s ease-out forwards;
+  animation: slideDown 0.4s ease-out both;
 }
 
 .animate-slideRight {
-  animation: slideRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideRight 0.5s ease-out both;
 }
 
-.animate-spin-slow {
-  animation: spinSlow 12s linear infinite;
+.animate-zoomIn {
+  animation: zoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Triangle cutout utility for ribbon */
-.clip-triangle {
-  clip-path: polygon(0 0, 100% 0, 0 100%);
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Staggered animation delays */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+
+/* ───────────────────────────────────────────────
+   Scrollbar (Minimal)
+   ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8B1A2B;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 2px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #8B1A2B;
 }

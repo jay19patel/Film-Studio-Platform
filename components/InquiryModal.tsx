@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Send, CheckCircle2, Phone, Mail, User, MapPin } from 'lucide-react';
+import { X, Send, CheckCircle2, Phone, Mail, User, MapPin, Calendar, FileText } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 interface InquiryModalProps {
@@ -28,6 +29,8 @@ export default function InquiryModal({
     email: '',
     phone: '',
     address: '',
+    eventDate: '',
+    specialNotes: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -83,7 +86,7 @@ export default function InquiryModal({
       }
 
       // Clear form
-      setFormData({ name: '', email: '', phone: '', address: '' });
+      setFormData({ name: '', email: '', phone: '', address: '', eventDate: '', specialNotes: '' });
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -92,172 +95,235 @@ export default function InquiryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          onClick={onClose}
+        />
 
-      {/* Modal Container */}
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden animate-zoomIn border border-gray-100">
-        
-        {/* Header Ribbon / Gradient */}
-        <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4 text-white flex justify-between items-center">
-          <div>
-            <h3 className="font-serif text-lg font-bold tracking-tight">Request Investment Details</h3>
-            <p className="text-xs text-amber-100 truncate max-w-[320px]">
-              For: {packageName}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="text-white/80 hover:text-white hover:bg-white/10 p-1.5 rounded-full transition-all"
-            aria-label="Close modal"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        {/* Content Body */}
-        <div className="p-6 md:p-8">
-          {isSuccess ? (
-            <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full mb-4 border border-emerald-100 shadow-xs animate-bounce">
-                <CheckCircle2 className="h-10 w-10" />
-              </div>
-              <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">Inquiry Submitted!</h4>
-              <p className="text-sm text-gray-500 max-w-sm mx-auto mb-6">
-                Thank you for contacting CamBuddy! Our photography coordinator will reach out to you via phone/email shortly with the proposal details.
+        {/* Modal Container — Dark Theme */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.92, y: 20 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="bg-neutral-950 rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden border border-white/[0.08]"
+        >
+          {/* Header — Gold Gradient Ribbon */}
+          <div className="bg-gold-gradient px-6 py-4 flex justify-between items-center">
+            <div>
+              <h3 className="font-serif text-lg font-bold tracking-tight text-neutral-900">
+                Request Investment Details
+              </h3>
+              <p className="text-xs text-neutral-800/70 truncate max-w-[320px] font-medium">
+                For: {packageName}
               </p>
-              <button
-                onClick={() => {
-                  setIsSuccess(false);
-                  onClose();
-                }}
-                className="bg-gray-900 hover:bg-amber-500 text-white font-semibold text-sm py-2.5 px-6 rounded-xl transition-all"
-              >
-                Close Window
-              </button>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <p className="text-xs text-gray-500 mb-2">
-                Please enter your contact details to register this quote or book the dates. No payment is required.
-              </p>
+            <button
+              onClick={onClose}
+              className="text-neutral-800/60 hover:text-neutral-900 hover:bg-black/10 p-1.5 rounded-full transition-all"
+              aria-label="Close modal"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
 
-              {error && (
-                <div className="bg-red-50 border border-red-100 text-red-700 text-xs p-3.5 rounded-xl font-medium">
-                  {error}
-                </div>
-              )}
-
-              {/* Name Input */}
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-                  Full Name <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
-                    <User className="h-4.5 w-4.5" />
-                  </span>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    disabled={isLoading}
-                    placeholder="Enter your name"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:bg-white focus:border-amber-500 transition-all text-gray-800 font-medium"
-                  />
-                </div>
+          {/* Content Body */}
+          <div className="p-6 md:p-8 max-h-[70vh] overflow-y-auto scrollbar-thin">
+            {isSuccess ? (
+              <div className="text-center py-8">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full mb-4 border border-emerald-500/20 shadow-xs"
+                >
+                  <CheckCircle2 className="h-10 w-10" />
+                </motion.div>
+                <h4 className="font-serif text-xl font-bold text-white mb-2">Inquiry Submitted!</h4>
+                <p className="text-sm text-neutral-400 max-w-sm mx-auto mb-6 leading-relaxed">
+                  Thank you for contacting CamBuddy! Our photography coordinator will reach out to you via phone/email shortly with the proposal details.
+                </p>
+                <button
+                  onClick={() => {
+                    setIsSuccess(false);
+                    onClose();
+                  }}
+                  className="bg-white hover:bg-amber-400 text-neutral-900 font-bold text-sm py-2.5 px-6 rounded-xl transition-all cursor-pointer"
+                >
+                  Close Window
+                </button>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <p className="text-xs text-neutral-500 mb-2 font-medium">
+                  Please enter your contact details to register this quote or book the dates. No payment is required.
+                </p>
 
-              {/* Email Input */}
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-                  Email Address <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
-                    <Mail className="h-4.5 w-4.5" />
-                  </span>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    disabled={isLoading}
-                    placeholder="name@example.com"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:bg-white focus:border-amber-500 transition-all text-gray-800 font-medium"
-                  />
-                </div>
-              </div>
-
-              {/* Phone Input */}
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-                  Phone Number <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
-                    <Phone className="h-4.5 w-4.5" />
-                  </span>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    disabled={isLoading}
-                    placeholder="+91 XXXXX XXXXX"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:bg-white focus:border-amber-500 transition-all text-gray-800 font-medium"
-                  />
-                </div>
-              </div>
-
-              {/* Address Input */}
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-                  Event Venue / City
-                </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 pt-3.5 flex items-start text-gray-400">
-                    <MapPin className="h-4.5 w-4.5" />
-                  </span>
-                  <textarea
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    disabled={isLoading}
-                    rows={2}
-                    placeholder="Enter wedding location details"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:bg-white focus:border-amber-500 transition-all text-gray-800 font-medium resize-none"
-                  />
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm md:text-base py-3.5 px-6 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Send className="h-4.5 w-4.5" />
-                    Submit Lead Inquiry
-                  </>
+                {error && (
+                  <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs p-3.5 rounded-xl font-medium">
+                    {error}
+                  </div>
                 )}
-              </button>
-            </form>
-          )}
-        </div>
+
+                {/* Name Input */}
+                <div>
+                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    Full Name <span className="text-red-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                      <User className="h-4.5 w-4.5" />
+                    </span>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      disabled={isLoading}
+                      placeholder="Enter your name"
+                      className="glass-input"
+                    />
+                  </div>
+                </div>
+
+                {/* Email Input */}
+                <div>
+                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    Email Address <span className="text-red-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                      <Mail className="h-4.5 w-4.5" />
+                    </span>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      disabled={isLoading}
+                      placeholder="name@example.com"
+                      className="glass-input"
+                    />
+                  </div>
+                </div>
+
+                {/* Phone + Event Date row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Phone Input */}
+                  <div>
+                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                      Phone Number <span className="text-red-400">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                        <Phone className="h-4.5 w-4.5" />
+                      </span>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                        disabled={isLoading}
+                        placeholder="+91 XXXXX XXXXX"
+                        className="glass-input"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Event Date Input */}
+                  <div>
+                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                      Event Date
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                        <Calendar className="h-4.5 w-4.5" />
+                      </span>
+                      <input
+                        type="date"
+                        name="eventDate"
+                        value={formData.eventDate}
+                        onChange={handleChange}
+                        disabled={isLoading}
+                        className="glass-input [color-scheme:dark]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Address Input */}
+                <div>
+                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    Event Venue / City
+                  </label>
+                  <div className="relative">
+                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-neutral-500">
+                      <MapPin className="h-4.5 w-4.5" />
+                    </span>
+                    <textarea
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      disabled={isLoading}
+                      rows={2}
+                      placeholder="Enter wedding location details"
+                      className="glass-input !pl-11 resize-none"
+                      style={{ paddingLeft: '2.75rem' }}
+                    />
+                  </div>
+                </div>
+
+                {/* Special Notes */}
+                <div>
+                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    Special Notes / Requests
+                  </label>
+                  <div className="relative">
+                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-neutral-500">
+                      <FileText className="h-4.5 w-4.5" />
+                    </span>
+                    <textarea
+                      name="specialNotes"
+                      value={formData.specialNotes}
+                      onChange={handleChange}
+                      disabled={isLoading}
+                      rows={2}
+                      placeholder="Any specific preferences or requests..."
+                      className="glass-input !pl-11 resize-none"
+                      style={{ paddingLeft: '2.75rem' }}
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full btn-gold py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? (
+                    <div className="w-5 h-5 border-2 border-neutral-900 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="h-4.5 w-4.5" />
+                      Submit Lead Inquiry
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }

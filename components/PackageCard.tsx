@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
-import { Sparkles, Calendar, FileText, CheckCircle2 } from 'lucide-react';
+import { Sparkles, FileText, CheckCircle2, Sliders } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Package, Resource, Addon } from '@/lib/db';
 
 interface PackageCardProps {
@@ -21,79 +24,90 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
   };
 
   return (
-    <div className="relative bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col overflow-hidden h-full">
-      {/* Price Ribbon */}
-      <div className="absolute top-4 right-[-10px] z-10">
-        <div className="bg-gradient-to-r from-red-600 to-rose-500 text-white font-bold px-5 py-1.5 rounded-l-lg shadow-md text-sm tracking-wide flex items-center gap-1">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative card-elevated rounded-3xl flex flex-col overflow-hidden h-full transition-all duration-500"
+    >
+      {/* Luxury Red Price Ribbon */}
+      <div className="absolute top-5 right-[-10px] z-10">
+        <div className="bg-maroon-gradient text-white font-extrabold px-6 py-2 rounded-l-xl shadow-md text-sm tracking-widest flex items-center gap-1.5 border-l border-t border-maroon-light">
           <span>₹{formatPrice(pkg.finalPrice)}/-</span>
           {pkg.finalPrice < pkg.autoPrice && (
-            <span className="text-[10px] line-through text-red-200">
+            <span className="text-[10px] line-through text-red-200 font-medium">
               ₹{formatPrice(pkg.autoPrice)}
             </span>
           )}
         </div>
-        <div className="absolute right-0 bottom-[-6px] w-[10px] h-[6px] bg-red-800 rounded-br-lg clip-triangle" />
+        {/* Ribbon triangle fold */}
+        <div className="absolute right-0 bottom-[-6px] w-[10px] h-[6px] bg-maroon-dark clip-triangle" />
       </div>
 
-      {/* Package Header Image / Visual */}
-      <div className="h-48 bg-gradient-to-tr from-amber-500/10 to-gold-500/5 relative overflow-hidden flex items-center justify-center p-6 border-b border-gray-50">
+      {/* Package Header Image with zoom */}
+      <div className="h-52 relative overflow-hidden flex items-end p-6 border-b border-gray-100">
         {pkg.days[0]?.image ? (
           <img
             src={pkg.days[0].image}
             alt={pkg.name}
-            className="absolute inset-0 w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-500"
+            className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition-all duration-700 ease-out"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-100 to-amber-50" />
+          <div className="absolute inset-0 bg-gray-100" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         
-        <div className="absolute bottom-4 left-4 text-white z-10">
-          <span className="bg-amber-500/90 text-white text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full mb-1 inline-block">
+        <div className="relative z-10 space-y-1">
+          <span className="bg-white/90 text-neutral-900 text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-0.5 rounded-md inline-block shadow-sm">
             {daysCount} {daysCount === 1 ? 'Event Day' : 'Event Days'}
           </span>
-          <h3 className="font-serif text-xl font-bold tracking-tight text-white drop-shadow-md">
+          <h3 className="font-serif text-2xl font-bold tracking-tight text-white drop-shadow-md">
             {pkg.name}
           </h3>
         </div>
       </div>
 
       {/* Package Details */}
-      <div className="p-6 flex flex-col flex-grow">
-        {/* Days Highlights */}
-        <div className="space-y-2.5 mb-5 flex-grow">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-amber-600 block mb-1">
-            Event Schedule
+      <div className="p-6 md:p-7 flex flex-col flex-grow">
+        
+        {/* Days Highlights Timeline */}
+        <div className="space-y-3.5 mb-6 flex-grow relative pl-4 border-l border-gray-200">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-maroon block mb-1">
+            Program Timeline
           </span>
           {pkg.days.map((day, i) => (
-            <div key={i} className="flex items-start gap-2 text-sm text-gray-600">
-              <Calendar className="h-4 w-4 mt-0.5 text-amber-500 flex-shrink-0" />
-              <div>
-                <span className="font-semibold text-gray-800">{day.title}</span>
-                <span className="text-gray-400 text-xs ml-1">
-                  ({day.items.reduce((sum, item) => sum + item.qty, 0)} crew)
-                </span>
+            <div key={i} className="relative group/item">
+              {/* Timeline Node Dot */}
+              <div className="absolute left-[-21px] top-1.5 w-2 h-2 rounded-full bg-white border-2 border-gray-300 group-hover:border-maroon transition-colors" />
+              <div className="flex items-start gap-1 text-xs md:text-sm text-neutral-600">
+                <div>
+                  <span className="font-bold text-neutral-900">{day.title}</span>
+                  <span className="text-neutral-500 text-[10px] ml-1.5">
+                    ({day.items.reduce((sum, item) => sum + item.qty, 0)} crew)
+                  </span>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Deliverables Included (Yellow Box) */}
+        {/* Deliverables Included */}
         {includedAddons.length > 0 && (
-          <div className="bg-amber-50/60 border border-amber-100 rounded-2xl p-4 mb-6">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1.5 mb-2">
-              <Sparkles className="h-3.5 w-3.5 text-amber-600 animate-pulse" />
-              Deliverables Included
+          <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4.5 mb-6">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-maroon flex items-center gap-1.5 mb-2.5">
+              <Sparkles className="h-3.5 w-3.5" />
+              Physical Deliverables
             </span>
-            <ul className="space-y-1.5">
+            <ul className="space-y-2">
               {includedAddons.slice(0, 3).map((addon) => (
-                <li key={addon.id} className="text-xs text-gray-700 flex items-start gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                <li key={addon.id} className="text-xs text-neutral-700 flex items-start gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-maroon mt-0.5 flex-shrink-0" />
                   <span className="truncate">{addon.name}</span>
                 </li>
               ))}
               {includedAddons.length > 3 && (
-                <li className="text-[11px] text-amber-700 font-semibold pl-5">
+                <li className="text-[11px] text-maroon font-bold pl-5.5">
                   + {includedAddons.length - 3} more items included
                 </li>
               )}
@@ -101,15 +115,24 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
           </div>
         )}
 
-        {/* View Details Button */}
-        <Link
-          href={`/package/${pkg.id}`}
-          className="w-full bg-gray-900 hover:bg-amber-600 text-white font-semibold text-center text-sm py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-1.5 shadow-sm group hover:shadow-md"
-        >
-          <FileText className="h-4 w-4 text-gray-300 group-hover:text-white transition-colors" />
-          View Full Details
-        </Link>
+        {/* Action Buttons */}
+        <div className="space-y-2.5">
+          <Link
+            href={`/package/${pkg.id}`}
+            className="w-full btn-maroon flex items-center justify-center gap-1.5 shadow-md group"
+          >
+            <FileText className="h-4 w-4" />
+            View Full Proposal
+          </Link>
+          <Link
+            href="/build-your-own"
+            className="w-full btn-outline flex items-center justify-center gap-1.5"
+          >
+            <Sliders className="h-3.5 w-3.5" />
+            Customize This Package
+          </Link>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
