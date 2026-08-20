@@ -121,16 +121,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <span className="font-serif text-xl tracking-widest uppercase font-bold text-neutral-900">CamBuddy</span>
         </div>
 
-        {/* User profile capsule */}
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2.5">
-          <div className="bg-gray-50 p-2 rounded-full text-maroon border border-gray-200">
-            <User className="h-4.5 w-4.5" />
-          </div>
-          <div className="truncate">
-            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Logged In As</p>
-            <p className="text-sm text-neutral-900 font-bold truncate max-w-[150px]">{adminEmail}</p>
-          </div>
-        </div>
 
         {/* Sidebar Nav links */}
         <nav className="flex-grow p-4 space-y-1">

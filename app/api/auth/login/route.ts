@@ -1,42 +1,30 @@
 import { NextResponse } from 'next/server';
-import { getAdmin } from '@/lib/db';
-import { verifyPassword, signToken, setAdminSession } from '@/lib/auth';
+import { signToken, setAdminSession } from '@/lib/auth';
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { pin } = await request.json();
 
-    if (!email || !password) {
+    if (!pin) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: 'PIN is required' },
         { status: 400 }
       );
     }
 
-    const admin = await getAdmin();
-    if (!admin) {
+    // Hardcoded PIN for now as requested
+    if (pin !== '00000') {
       return NextResponse.json(
-        { error: 'No admin user configured' },
-        { status: 500 }
-      );
-    }
-
-    // Verify email and password
-    const isEmailMatch = admin.email.toLowerCase() === email.toLowerCase();
-    const isPasswordMatch = await verifyPassword(password, admin.passwordHash);
-
-    if (!isEmailMatch || !isPasswordMatch) {
-      return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'Invalid PIN' },
         { status: 401 }
       );
     }
 
-    // Create session
-    const token = signToken({ email: admin.email });
+    // Create session (dummy email for admin context)
+    const token = signToken({ email: 'admin@cambuddy.com' });
     await setAdminSession(token);
 
-    return NextResponse.json({ success: true, user: { email: admin.email } });
+    return NextResponse.json({ success: true, user: { email: 'admin@cambuddy.com' } });
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(

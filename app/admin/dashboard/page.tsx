@@ -61,7 +61,7 @@ export default function AdminDashboard() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'new':
-        return <span className="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-md text-[10px] uppercase">New Lead</span>;
+        return <span className="bg-maroon-100 text-maroon-800 font-bold px-2 py-0.5 rounded-md text-[10px] uppercase">New Lead</span>;
       case 'contacted':
         return <span className="bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-md text-[10px] uppercase">Contacted</span>;
       case 'completed':
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="w-8 h-8 border-4 border-maroon-500 border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-gray-400 text-xs font-semibold">Loading dashboard metrics...</p>
       </div>
     );

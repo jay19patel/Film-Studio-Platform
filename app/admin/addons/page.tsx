@@ -135,7 +135,7 @@ export default function AdminAddonsPage() {
       {/* Title */}
       <div>
         <h2 className="font-serif text-2xl font-black text-gray-900 flex items-center gap-2">
-          <Gem className="h-6 w-6 text-amber-500" />
+          <Gem className="h-6 w-6 text-maroon-500" />
           Physical Add-ons Deliverables Management
         </h2>
         <p className="text-gray-500 text-xs mt-1 max-w-xl">
@@ -159,7 +159,7 @@ export default function AdminAddonsPage() {
         {/* Form Column */}
         <div className="lg:col-span-4 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
           <h3 className="font-serif text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            {isEditing ? <Edit2 className="h-4.5 w-4.5 text-amber-500" /> : <Plus className="h-5 w-5 text-amber-500" />}
+            {isEditing ? <Edit2 className="h-4.5 w-4.5 text-maroon-500" /> : <Plus className="h-5 w-5 text-maroon-500" />}
             {isEditing ? 'Edit Add-on' : 'Add New Add-on'}
           </h3>
 
@@ -176,7 +176,7 @@ export default function AdminAddonsPage() {
                 onChange={handleInputChange}
                 required
                 placeholder="e.g. Cinematic Wedding Film 4K"
-                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
+                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
               />
             </div>
 
@@ -192,7 +192,7 @@ export default function AdminAddonsPage() {
                 onChange={handleInputChange}
                 required
                 placeholder="e.g. 15000"
-                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
+                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
               />
             </div>
 
@@ -207,7 +207,7 @@ export default function AdminAddonsPage() {
                 value={formData.type}
                 onChange={handleInputChange}
                 required
-                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
+                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
               />
             </div>
 
@@ -215,7 +215,7 @@ export default function AdminAddonsPage() {
             <div className="flex gap-2 pt-2">
               <button
                 type="submit"
-                className="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="flex-grow bg-maroon-500 hover:bg-maroon-600 text-white font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Save className="h-4 w-4" />
                 {isEditing ? 'Update Item' : 'Add Item'}
@@ -240,7 +240,7 @@ export default function AdminAddonsPage() {
 
           {isLoading ? (
             <div className="flex items-center justify-center py-10">
-              <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mr-2" />
+              <div className="w-6 h-6 border-2 border-maroon-500 border-t-transparent rounded-full animate-spin mr-2" />
               <span className="text-gray-400 text-xs">Loading add-ons...</span>
             </div>
           ) : addons.length === 0 ? (
@@ -271,7 +271,7 @@ export default function AdminAddonsPage() {
                       <td className="py-3.5 text-right space-x-1.5">
                         <button
                           onClick={() => handleEditClick(addon)}
-                          className="text-gray-400 hover:text-amber-500 p-1.5 hover:bg-amber-50 rounded-lg transition-all"
+                          className="text-gray-400 hover:text-maroon-500 p-1.5 hover:bg-maroon-50 rounded-lg transition-all"
                           title="Edit deliverable"
                         >
                           <Edit2 className="h-4 w-4" />

@@ -322,7 +322,7 @@ export default function PackagesClient({
             <h3 className="font-serif text-lg font-bold text-gray-900">Current Predefined Packages</h3>
             <button
               onClick={handleOpenCreate}
-              className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1 cursor-pointer"
+              className="bg-maroon-500 hover:bg-maroon-600 text-white font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1 cursor-pointer"
             >
               <Plus className="h-4.5 w-4.5" />
               Build Predefined Package
@@ -336,7 +336,7 @@ export default function PackagesClient({
               <p className="text-gray-500 text-sm mb-6">Create predefined packages so clients can view them on the website.</p>
               <button
                 onClick={handleOpenCreate}
-                className="bg-amber-500 text-white font-semibold py-2 px-6 rounded-xl text-sm"
+                className="bg-maroon-500 text-white font-semibold py-2 px-6 rounded-xl text-sm"
               >
                 Create First Package
               </button>
@@ -366,7 +366,7 @@ export default function PackagesClient({
                     {pkg.days[0]?.image ? (
                       <img src={pkg.days[0].image} alt={pkg.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-tr from-amber-100 to-amber-50" />
+                      <div className="w-full h-full bg-gradient-to-tr from-maroon-100 to-maroon-50" />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <h4 className="absolute bottom-4 left-4 font-serif text-lg font-bold text-white drop-shadow-sm">
@@ -400,7 +400,7 @@ export default function PackagesClient({
                       </button>
                       <button
                         onClick={() => handleOpenEdit(pkg)}
-                        className="bg-amber-50 hover:bg-amber-100 text-amber-600 font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-amber-200 cursor-pointer"
+                        className="bg-maroon-50 hover:bg-maroon-100 text-maroon-600 font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-maroon-200 cursor-pointer"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
                         Edit
@@ -424,7 +424,7 @@ export default function PackagesClient({
         <div className="bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-sm">
           <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-6">
             <h3 className="font-serif text-lg md:text-xl font-bold text-gray-900 flex items-center gap-2">
-              <Package className="h-5 w-5 text-amber-500" />
+              <Package className="h-5 w-5 text-maroon-500" />
               {isEditingId ? 'Edit Wedding Package' : 'Create Custom Wedding Package'}
             </h3>
             <button
@@ -451,7 +451,7 @@ export default function PackagesClient({
                   onChange={(e) => setName(e.target.value)}
                   required
                   placeholder="e.g. Wedding Package (Basic)"
-                  className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-4 py-3 text-sm md:text-base font-bold outline-none transition-all text-gray-800"
+                  className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-4 py-3 text-sm md:text-base font-bold outline-none transition-all text-gray-800"
                 />
               </div>
 
@@ -459,13 +459,13 @@ export default function PackagesClient({
               <div className="space-y-6">
                 <div className="flex items-center justify-between border-b border-gray-100 pb-2">
                   <h4 className="font-serif text-base font-bold text-gray-800 flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-amber-500" />
+                    <Calendar className="h-5 w-5 text-maroon-500" />
                     Day Schedule Builder ({days.length})
                   </h4>
                   <button
                     type="button"
                     onClick={handleAddDay}
-                    className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-0.5"
+                    className="text-xs font-bold text-maroon-600 hover:text-maroon-700 flex items-center gap-0.5"
                   >
                     <Plus className="h-4 w-4" /> Add Event Day
                   </button>
@@ -490,7 +490,7 @@ export default function PackagesClient({
                     {/* Day Title and Image Upload row */}
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 items-end">
                       <div className="md:col-span-8">
-                        <label className="block text-[9px] font-bold text-amber-600 uppercase tracking-widest mb-1">
+                        <label className="block text-[9px] font-bold text-maroon-600 uppercase tracking-widest mb-1">
                           Day {dayIdx + 1} Event Title
                         </label>
                         <input
@@ -498,7 +498,7 @@ export default function PackagesClient({
                           value={day.title}
                           onChange={(e) => handleDayTitleChange(dayIdx, e.target.value)}
                           placeholder="e.g. Day 1 - Haldi Ceremony"
-                          className="w-full bg-white border border-gray-200 focus:border-amber-500 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-gray-800"
+                          className="w-full bg-white border border-gray-200 focus:border-maroon-500 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-gray-800"
                         />
                       </div>
 
@@ -520,10 +520,10 @@ export default function PackagesClient({
                             />
                             <label
                               htmlFor={`file-day-${dayIdx}`}
-                              className="w-full bg-white border border-gray-200 hover:border-amber-500 rounded-xl px-3 py-2 text-xs font-semibold text-gray-500 flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                              className="w-full bg-white border border-gray-200 hover:border-maroon-500 rounded-xl px-3 py-2 text-xs font-semibold text-gray-500 flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
                             >
                               {uploadingIdx === dayIdx ? (
-                                <div className="w-3.5 h-3.5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                                <div className="w-3.5 h-3.5 border-2 border-maroon-500 border-t-transparent rounded-full animate-spin" />
                               ) : (
                                 <Upload className="h-3.5 w-3.5" />
                               )}
@@ -550,7 +550,7 @@ export default function PackagesClient({
                         <button
                           type="button"
                           onClick={() => handleAddResourceToDay(dayIdx)}
-                          className="text-[10px] text-amber-600 hover:text-amber-700 flex items-center gap-0.5"
+                          className="text-[10px] text-maroon-600 hover:text-maroon-700 flex items-center gap-0.5"
                         >
                           <Plus className="h-3 w-3" /> Add Crew
                         </button>
@@ -626,10 +626,10 @@ export default function PackagesClient({
                         key={addon.id}
                         onClick={() => handleToggleAddon(addon.id)}
                         className={`flex items-start gap-2 p-2.5 rounded-xl border text-xs cursor-pointer select-none ${
-                          isChecked ? 'border-amber-300 bg-amber-50/10 text-amber-950' : 'border-gray-100 hover:border-gray-200'
+                          isChecked ? 'border-maroon-300 bg-maroon-50/10 text-maroon-950' : 'border-gray-100 hover:border-gray-200'
                         }`}
                       >
-                        <input type="checkbox" checked={isChecked} readOnly className="mt-0.5 accent-amber-500" />
+                        <input type="checkbox" checked={isChecked} readOnly className="mt-0.5 accent-maroon-500" />
                         <div className="flex-grow">
                           <p className="font-bold">{addon.name}</p>
                           <p className="text-[10px] text-gray-400 mt-0.5">+ ₹{formatPrice(addon.price)}</p>
@@ -658,7 +658,7 @@ export default function PackagesClient({
                     value={finalPrice}
                     onChange={(e) => setFinalPrice(e.target.value)}
                     placeholder={`e.g. ${autoPrice - 5000}`}
-                    className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-gray-700"
+                    className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-gray-700"
                   />
                   <span className="text-[9px] text-gray-400 font-medium mt-1 block leading-relaxed">
                     Leave blank to use the auto-calculated sum.
@@ -673,7 +673,7 @@ export default function PackagesClient({
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value as any)}
-                    className="w-full bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-700 rounded-xl px-3 py-2 outline-none focus:border-amber-500"
+                    className="w-full bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-700 rounded-xl px-3 py-2 outline-none focus:border-maroon-500"
                   >
                     <option value="draft">Draft (Hidden from public)</option>
                     <option value="published">Published (Visible on site)</option>
@@ -684,7 +684,7 @@ export default function PackagesClient({
                 <div className="pt-2 border-t border-gray-100 flex gap-2">
                   <button
                     type="submit"
-                    className="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="flex-grow bg-maroon-500 hover:bg-maroon-600 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Save className="h-4 w-4" />
                     Save Package

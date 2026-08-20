@@ -82,7 +82,7 @@ export default function AdminEquipmentPage() {
             setCurrentEq({ name: '', category: 'camera', description: '', image: '' });
             setIsEditing(true);
           }}
-          className="bg-amber-500 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-amber-600 transition-colors shadow-sm"
+          className="bg-maroon-500 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-maroon-600 transition-colors shadow-sm"
         >
           <Plus className="h-4 w-4" /> Add Gear
         </button>
@@ -99,7 +99,7 @@ export default function AdminEquipmentPage() {
                 type="text"
                 value={currentEq.name || ''}
                 onChange={(e) => setCurrentEq({ ...currentEq, name: e.target.value })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
                 placeholder="e.g. Sony A7S III"
               />
             </div>
@@ -108,7 +108,7 @@ export default function AdminEquipmentPage() {
               <select
                 value={currentEq.category || 'camera'}
                 onChange={(e) => setCurrentEq({ ...currentEq, category: e.target.value as any })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
               >
                 <option value="camera">Camera</option>
                 <option value="lens">Lens</option>
@@ -123,7 +123,7 @@ export default function AdminEquipmentPage() {
               <textarea
                 value={currentEq.description || ''}
                 onChange={(e) => setCurrentEq({ ...currentEq, description: e.target.value })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
                 rows={2}
                 placeholder="Brief description of the gear and its use."
               />
@@ -134,7 +134,7 @@ export default function AdminEquipmentPage() {
                 type="url"
                 value={currentEq.image || ''}
                 onChange={(e) => setCurrentEq({ ...currentEq, image: e.target.value })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -159,7 +159,7 @@ export default function AdminEquipmentPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <RefreshCw className="h-8 w-8 text-amber-500 animate-spin" />
+          <RefreshCw className="h-8 w-8 text-maroon-500 animate-spin" />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -171,7 +171,7 @@ export default function AdminEquipmentPage() {
                 ) : (
                   <Camera className="h-10 w-10 text-gray-300" />
                 )}
-                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-1 text-[10px] font-bold uppercase rounded-md text-amber-600 shadow-sm border border-gray-200">
+                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-1 text-[10px] font-bold uppercase rounded-md text-maroon-600 shadow-sm border border-gray-200">
                   {eq.category}
                 </span>
               </div>

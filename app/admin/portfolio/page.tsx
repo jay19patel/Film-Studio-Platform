@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Video, Plus, Trash, Edit, RefreshCw, Youtube, Image as ImageIcon } from 'lucide-react';
+import { Video, Plus, Trash, Edit, RefreshCw, Play, Image as ImageIcon } from 'lucide-react';
 import { PortfolioItem } from '@/lib/db';
 
 export default function AdminPortfolioPage() {
@@ -83,7 +83,7 @@ export default function AdminPortfolioPage() {
             setCurrentItem({ title: '', type: 'video', url: '', thumbnail: '', description: '' });
             setIsEditing(true);
           }}
-          className="bg-amber-500 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-amber-600 transition-colors shadow-sm"
+          className="bg-maroon-500 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-maroon-600 transition-colors shadow-sm"
         >
           <Plus className="h-4 w-4" /> Add Item
         </button>
@@ -100,7 +100,7 @@ export default function AdminPortfolioPage() {
                 type="text"
                 value={currentItem.title || ''}
                 onChange={(e) => setCurrentItem({ ...currentItem, title: e.target.value })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
                 placeholder="e.g. Royal Udaipur Wedding Trailer"
               />
             </div>
@@ -109,7 +109,7 @@ export default function AdminPortfolioPage() {
               <select
                 value={currentItem.type || 'video'}
                 onChange={(e) => setCurrentItem({ ...currentItem, type: e.target.value as any })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
               >
                 <option value="youtube">YouTube Video</option>
                 <option value="video">Direct Video URL</option>
@@ -123,7 +123,7 @@ export default function AdminPortfolioPage() {
                 type="url"
                 value={currentItem.url || ''}
                 onChange={(e) => setCurrentItem({ ...currentItem, url: e.target.value })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
                 placeholder="https://..."
               />
             </div>
@@ -133,7 +133,7 @@ export default function AdminPortfolioPage() {
                 type="url"
                 value={currentItem.thumbnail || ''}
                 onChange={(e) => setCurrentItem({ ...currentItem, thumbnail: e.target.value })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
                 placeholder="Cover image URL"
               />
             </div>
@@ -142,7 +142,7 @@ export default function AdminPortfolioPage() {
               <textarea
                 value={currentItem.description || ''}
                 onChange={(e) => setCurrentItem({ ...currentItem, description: e.target.value })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-amber-500 text-sm"
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 outline-none focus:border-maroon-500 text-sm"
                 rows={2}
               />
             </div>
@@ -167,7 +167,7 @@ export default function AdminPortfolioPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <RefreshCw className="h-8 w-8 text-amber-500 animate-spin" />
+          <RefreshCw className="h-8 w-8 text-maroon-500 animate-spin" />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -178,7 +178,7 @@ export default function AdminPortfolioPage() {
                   <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    {item.type === 'youtube' && <Youtube className="h-10 w-10 text-gray-400" />}
+                    {item.type === 'youtube' && <Play className="h-10 w-10 text-gray-400" />}
                     {item.type === 'video' && <Video className="h-10 w-10 text-gray-400" />}
                     {item.type === 'photo' && <ImageIcon className="h-10 w-10 text-gray-400" />}
                   </div>
@@ -186,7 +186,7 @@ export default function AdminPortfolioPage() {
                 
                 {/* Type Badge */}
                 <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md p-1.5 rounded-lg shadow-sm border border-gray-200">
-                  {item.type === 'youtube' && <Youtube className="h-4 w-4 text-red-500" />}
+                  {item.type === 'youtube' && <Play className="h-4 w-4 text-red-500" />}
                   {item.type === 'video' && <Video className="h-4 w-4 text-blue-500" />}
                   {item.type === 'photo' && <ImageIcon className="h-4 w-4 text-emerald-500" />}
                 </div>

@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Camera, Lock, Mail, AlertCircle, Sparkles } from 'lucide-react';
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -31,8 +30,8 @@ export default function AdminLoginPage() {
     setIsLoading(true);
     setError('');
 
-    if (!email || !password) {
-      setError('Please fill in all fields.');
+    if (!pin || pin.length !== 5) {
+      setError('Please enter a valid 5-digit PIN.');
       setIsLoading(false);
       return;
     }
@@ -41,17 +40,17 @@ export default function AdminLoginPage() {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ pin }),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Invalid credentials');
+        throw new Error(data.error || 'Invalid PIN');
       }
 
       router.replace('/admin/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please check your credentials.');
+      setError(err.message || 'Something went wrong. Please check your PIN.');
     } finally {
       setIsLoading(false);
     }
@@ -84,31 +83,10 @@ export default function AdminLoginPage() {
             </div>
           )}
 
-          {/* Email input */}
+          {/* PIN input */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-              Email Address
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
-                <Mail className="h-4.5 w-4.5" />
-              </span>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={isLoading}
-                placeholder="admin@cambuddy.com"
-                className="w-full bg-gray-50 border border-gray-300 text-neutral-900 placeholder-gray-400 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:border-maroon focus:ring-1 focus:ring-maroon transition-all font-bold"
-              />
-            </div>
-          </div>
-
-          {/* Password input */}
-          <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-              Password
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 text-center">
+              Enter 5-Digit PIN
             </label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
@@ -116,12 +94,14 @@ export default function AdminLoginPage() {
               </span>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={pin}
+                onChange={(e) => setPin(e.target.value.replace(/\\D/g, '').slice(0, 5))}
                 required
                 disabled={isLoading}
-                placeholder="••••••••"
-                className="w-full bg-gray-50 border border-gray-300 text-neutral-900 placeholder-gray-400 rounded-xl py-3 pl-11 pr-4 text-sm outline-none focus:border-maroon focus:ring-1 focus:ring-maroon transition-all font-bold"
+                placeholder="•••••"
+                className="w-full bg-gray-50 border border-gray-300 text-neutral-900 placeholder-gray-400 rounded-xl py-4 pl-11 pr-4 text-center tracking-[1em] text-xl outline-none focus:border-maroon focus:ring-1 focus:ring-maroon transition-all font-bold"
+                maxLength={5}
+                autoFocus
               />
             </div>
           </div>
@@ -129,13 +109,13 @@ export default function AdminLoginPage() {
           {/* Submit */}
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || pin.length !== 5}
             className="w-full bg-maroon hover:bg-maroon-dark text-white font-bold tracking-widest uppercase py-3.5 px-6 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-4 text-sm"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              'Sign In'
+              'Access Dashboard'
             )}
           </button>
         </form>

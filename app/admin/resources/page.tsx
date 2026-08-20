@@ -133,7 +133,7 @@ export default function AdminResourcesPage() {
 
   const renderResourceIcon = (iconName: string) => {
     const IconComp = (Icons as any)[iconName] || Icons.Camera;
-    return <IconComp className="h-5 w-5 text-amber-500" />;
+    return <IconComp className="h-5 w-5 text-maroon-500" />;
   };
 
   const formatPrice = (price: number) => {
@@ -145,7 +145,7 @@ export default function AdminResourcesPage() {
       {/* Title */}
       <div>
         <h2 className="font-serif text-2xl font-black text-gray-900 flex items-center gap-2">
-          <CalendarDays className="h-6 w-6 text-amber-500" />
+          <CalendarDays className="h-6 w-6 text-maroon-500" />
           Crew Resources Rates Management
         </h2>
         <p className="text-gray-500 text-xs mt-1 max-w-xl">
@@ -169,7 +169,7 @@ export default function AdminResourcesPage() {
         {/* Form Column */}
         <div className="lg:col-span-4 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
           <h3 className="font-serif text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            {isEditing ? <Edit2 className="h-4.5 w-4.5 text-amber-500" /> : <Plus className="h-5 w-5 text-amber-500" />}
+            {isEditing ? <Edit2 className="h-4.5 w-4.5 text-maroon-500" /> : <Plus className="h-5 w-5 text-maroon-500" />}
             {isEditing ? 'Edit Resource' : 'Add New Resource'}
           </h3>
 
@@ -186,7 +186,7 @@ export default function AdminResourcesPage() {
                 onChange={handleInputChange}
                 required
                 placeholder="e.g. Traditional Videographer"
-                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
+                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
               />
             </div>
 
@@ -202,7 +202,7 @@ export default function AdminResourcesPage() {
                 onChange={handleInputChange}
                 required
                 placeholder="e.g. 10000"
-                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
+                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
               />
             </div>
 
@@ -217,7 +217,7 @@ export default function AdminResourcesPage() {
                 value={formData.unit}
                 onChange={handleInputChange}
                 required
-                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
+                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-sm outline-none transition-all font-semibold text-gray-700"
               />
             </div>
 
@@ -230,7 +230,7 @@ export default function AdminResourcesPage() {
                 name="icon"
                 value={formData.icon}
                 onChange={handleInputChange}
-                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-amber-500 rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-700 outline-none"
+                className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-700 outline-none"
               >
                 {availableIcons.map((ic) => (
                   <option key={ic} value={ic}>
@@ -244,7 +244,7 @@ export default function AdminResourcesPage() {
             <div className="flex gap-2 pt-2">
               <button
                 type="submit"
-                className="flex-grow bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="flex-grow bg-maroon-500 hover:bg-maroon-600 text-white font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Save className="h-4 w-4" />
                 {isEditing ? 'Update Role' : 'Add Role'}
@@ -269,7 +269,7 @@ export default function AdminResourcesPage() {
           
           {isLoading ? (
             <div className="flex items-center justify-center py-10">
-              <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mr-2" />
+              <div className="w-6 h-6 border-2 border-maroon-500 border-t-transparent rounded-full animate-spin mr-2" />
               <span className="text-gray-400 text-xs">Loading resources...</span>
             </div>
           ) : resources.length === 0 ? (
@@ -291,7 +291,7 @@ export default function AdminResourcesPage() {
                   {resources.map((res) => (
                     <tr key={res.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="py-3.5 pr-2">
-                        <div className="bg-amber-50 p-2 rounded-xl border border-amber-100 inline-block">
+                        <div className="bg-maroon-50 p-2 rounded-xl border border-maroon-100 inline-block">
                           {renderResourceIcon(res.icon)}
                         </div>
                       </td>
@@ -302,7 +302,7 @@ export default function AdminResourcesPage() {
                       <td className="py-3.5 text-right space-x-1.5">
                         <button
                           onClick={() => handleEditClick(res)}
-                          className="text-gray-400 hover:text-amber-500 p-1.5 hover:bg-amber-50 rounded-lg transition-all"
+                          className="text-gray-400 hover:text-maroon-500 p-1.5 hover:bg-maroon-50 rounded-lg transition-all"
                           title="Edit role"
                         >
                           <Edit2 className="h-4 w-4" />

@@ -49,10 +49,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-xs font-bold tracking-widest uppercase text-neutral-400">
-          <p>&copy; {new Date().getFullYear()} CamBuddy. All rights reserved.</p>
-          <p className="flex items-center gap-2 mt-4 sm:mt-0">
-            MADE BY <span className="text-maroon font-black text-sm">NJTECHSTUDIO</span>
+        <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-center items-center text-sm font-medium text-neutral-500">
+          <p>
+            &copy; {new Date().getFullYear()} <span className="text-maroon font-bold">NJTechStudio</span>. All rights reserved. | <span className="font-bold">Developed by</span> <span className="text-maroon font-bold">Jay Patel</span>
           </p>
         </div>
       </div>

@@ -131,7 +131,7 @@ export default function InquiriesClient({
 
   const filterTabs: { label: string; value: StatusFilter; color: string }[] = [
     { label: 'All', value: 'all', color: 'bg-gray-100 text-gray-700 border-gray-200' },
-    { label: 'New Leads', value: 'new', color: 'bg-amber-50 text-amber-800 border-amber-200' },
+    { label: 'New Leads', value: 'new', color: 'bg-maroon-50 text-maroon-800 border-maroon-200' },
     { label: 'Contacted', value: 'contacted', color: 'bg-blue-50 text-blue-800 border-blue-200' },
     { label: 'Completed', value: 'completed', color: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
   ];
@@ -148,7 +148,7 @@ export default function InquiriesClient({
             onClick={() => setStatusFilter(tab.value)}
             className={`text-xs font-bold px-3.5 py-2 rounded-xl border transition-all cursor-pointer ${
               statusFilter === tab.value
-                ? `${tab.color} ring-2 ring-offset-1 ring-amber-300/30`
+                ? `${tab.color} ring-2 ring-offset-1 ring-maroon-300/30`
                 : 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-gray-100'
             }`}
           >
@@ -202,7 +202,7 @@ export default function InquiriesClient({
                 key={inq.id}
                 className={`bg-white border rounded-3xl p-6 transition-all duration-200 shadow-xs ${
                   inq.status === 'new'
-                    ? 'border-amber-300 ring-2 ring-amber-100/50'
+                    ? 'border-maroon-300 ring-2 ring-maroon-100/50'
                     : 'border-gray-150'
                 } ${isDeleting ? 'opacity-50 pointer-events-none' : ''}`}
               >
@@ -214,7 +214,7 @@ export default function InquiriesClient({
                       <h4 className="font-serif text-lg font-bold text-gray-900">{inq.name}</h4>
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg border uppercase ${
                         inq.type === 'custom'
-                          ? 'bg-amber-50 text-amber-800 border-amber-200'
+                          ? 'bg-maroon-50 text-maroon-800 border-maroon-200'
                           : 'bg-gray-100 text-gray-700 border-gray-200'
                       }`}>
                         {inq.type === 'custom' ? 'Custom Build' : 'Predefined'}
@@ -222,7 +222,7 @@ export default function InquiriesClient({
                     </div>
                     <p className="text-xs text-gray-400 font-semibold tracking-wider uppercase">
                       Inquired For:{' '}
-                      <span className="text-amber-600 font-bold">{inq.packageName}</span>
+                      <span className="text-maroon-600 font-bold">{inq.packageName}</span>
                     </p>
                   </div>
 
@@ -235,7 +235,7 @@ export default function InquiriesClient({
                       onChange={(e) => handleStatusChange(inq.id, e.target.value)}
                       className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer ${
                         inq.status === 'new'
-                          ? 'bg-amber-50 text-amber-800 border-amber-200 focus:border-amber-400'
+                          ? 'bg-maroon-50 text-maroon-800 border-maroon-200 focus:border-maroon-400'
                           : inq.status === 'contacted'
                           ? 'bg-blue-50 text-blue-800 border-blue-200 focus:border-blue-400'
                           : 'bg-emerald-50 text-emerald-800 border-emerald-200 focus:border-emerald-400'
@@ -260,20 +260,20 @@ export default function InquiriesClient({
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-5 border-t border-gray-50 text-xs md:text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4.5 w-4.5 text-gray-400 flex-shrink-0" />
-                    <a href={`mailto:${inq.email}`} className="hover:text-amber-500 font-semibold truncate">
+                    <a href={`mailto:${inq.email}`} className="hover:text-maroon-500 font-semibold truncate">
                       {inq.email}
                     </a>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone className="h-4.5 w-4.5 text-gray-400 flex-shrink-0" />
-                    <a href={`tel:${inq.phone}`} className="hover:text-amber-500 font-semibold">
+                    <a href={`tel:${inq.phone}`} className="hover:text-maroon-500 font-semibold">
                       {inq.phone}
                     </a>
                   </div>
                   {inq.eventDate && (
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4.5 w-4.5 text-gray-400 flex-shrink-0" />
-                      <span className="font-semibold text-amber-700">
+                      <span className="font-semibold text-maroon-700">
                         {new Date(inq.eventDate).toLocaleDateString('en-IN', {
                           day: 'numeric',
                           month: 'long',
@@ -308,7 +308,7 @@ export default function InquiriesClient({
                   <div className="mt-5">
                     <button
                       onClick={() => toggleExpand(inq.id)}
-                      className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 transition-colors"
+                      className="text-xs font-bold text-maroon-600 hover:text-maroon-700 flex items-center gap-1 transition-colors"
                     >
                       {isExpanded ? (
                         <>
@@ -339,7 +339,7 @@ export default function InquiriesClient({
                                 key={idx}
                                 className="bg-white border border-gray-200 p-4 rounded-xl space-y-2.5"
                               >
-                                <span className="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-[10px] uppercase font-bold px-2 py-0.5 rounded-md">
+                                <span className="inline-block bg-maroon-50 border border-maroon-200 text-maroon-800 text-[10px] uppercase font-bold px-2 py-0.5 rounded-md">
                                   {day.title}
                                 </span>
                                 <ul className="space-y-1">
