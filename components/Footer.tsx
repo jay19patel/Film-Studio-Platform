@@ -40,6 +40,9 @@ export default function Footer() {
             <Link href="/build-your-own" className="hover:text-maroon transition-colors duration-200">
               Builder
             </Link>
+            <Link href="/about" className="hover:text-maroon transition-colors duration-200">
+              About Us
+            </Link>
             <Link href="/terms" className="hover:text-maroon transition-colors duration-200">
               Terms & Conditions
             </Link>

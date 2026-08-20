@@ -8,9 +8,9 @@ import confetti from 'canvas-confetti';
 interface InquiryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  packageName: string;
+  packageName?: string;
   packageId?: string;
-  type: 'predefined' | 'custom';
+  type?: 'predefined' | 'custom' | 'general';
   customDetails?: any;
   onSuccess?: () => void;
 }
@@ -20,7 +20,7 @@ export default function InquiryModal({
   onClose,
   packageName,
   packageId,
-  type,
+  type = 'general',
   customDetails,
   onSuccess,
 }: InquiryModalProps) {
@@ -61,7 +61,7 @@ export default function InquiryModal({
         body: JSON.stringify({
           ...formData,
           packageId,
-          packageName,
+          packageName: packageName || 'General Inquiry',
           type,
           customDetails: type === 'custom' ? customDetails : null,
         }),
@@ -106,27 +106,29 @@ export default function InquiryModal({
           onClick={onClose}
         />
 
-        {/* Modal Container — Dark Theme */}
+        {/* Modal Container — Light Theme */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.92, y: 20 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-neutral-950 rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden border border-white/[0.08]"
+          className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden border border-gray-200"
         >
-          {/* Header — Gold Gradient Ribbon */}
-          <div className="bg-gold-gradient px-6 py-4 flex justify-between items-center">
+          {/* Header */}
+          <div className="bg-maroon-gradient px-6 py-4 flex justify-between items-center text-white">
             <div>
-              <h3 className="font-serif text-lg font-bold tracking-tight text-neutral-900">
-                Request Investment Details
+              <h3 className="font-serif text-lg font-bold tracking-tight text-white">
+                {type === 'general' ? 'Contact CamBuddy' : 'Request Investment Details'}
               </h3>
-              <p className="text-xs text-neutral-800/70 truncate max-w-[320px] font-medium">
-                For: {packageName}
-              </p>
+              {packageName && (
+                <p className="text-xs text-white/80 truncate max-w-[320px] font-medium">
+                  For: {packageName}
+                </p>
+              )}
             </div>
             <button
               onClick={onClose}
-              className="text-neutral-800/60 hover:text-neutral-900 hover:bg-black/10 p-1.5 rounded-full transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/10 p-1.5 rounded-full transition-all"
               aria-label="Close modal"
             >
               <X className="h-5 w-5" />
@@ -145,8 +147,8 @@ export default function InquiryModal({
                 >
                   <CheckCircle2 className="h-10 w-10" />
                 </motion.div>
-                <h4 className="font-serif text-xl font-bold text-white mb-2">Inquiry Submitted!</h4>
-                <p className="text-sm text-neutral-400 max-w-sm mx-auto mb-6 leading-relaxed">
+                <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">Inquiry Submitted!</h4>
+                <p className="text-sm text-gray-500 max-w-sm mx-auto mb-6 leading-relaxed">
                   Thank you for contacting CamBuddy! Our photography coordinator will reach out to you via phone/email shortly with the proposal details.
                 </p>
                 <button
@@ -154,14 +156,14 @@ export default function InquiryModal({
                     setIsSuccess(false);
                     onClose();
                   }}
-                  className="bg-white hover:bg-amber-400 text-neutral-900 font-bold text-sm py-2.5 px-6 rounded-xl transition-all cursor-pointer"
+                  className="bg-maroon hover:bg-maroon-dark text-white font-bold text-sm py-2.5 px-6 rounded-xl transition-all cursor-pointer"
                 >
                   Close Window
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <p className="text-xs text-neutral-500 mb-2 font-medium">
+                <p className="text-xs text-gray-500 mb-2 font-medium">
                   Please enter your contact details to register this quote or book the dates. No payment is required.
                 </p>
 
@@ -173,11 +175,11 @@ export default function InquiryModal({
 
                 {/* Name Input */}
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
-                    Full Name <span className="text-red-400">*</span>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                    Full Name <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
                       <User className="h-4.5 w-4.5" />
                     </span>
                     <input
@@ -188,18 +190,18 @@ export default function InquiryModal({
                       required
                       disabled={isLoading}
                       placeholder="Enter your name"
-                      className="glass-input"
+                      className="input-light"
                     />
                   </div>
                 </div>
 
                 {/* Email Input */}
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
-                    Email Address <span className="text-red-400">*</span>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                    Email Address <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
                       <Mail className="h-4.5 w-4.5" />
                     </span>
                     <input
@@ -210,7 +212,7 @@ export default function InquiryModal({
                       required
                       disabled={isLoading}
                       placeholder="name@example.com"
-                      className="glass-input"
+                      className="input-light"
                     />
                   </div>
                 </div>
@@ -219,11 +221,11 @@ export default function InquiryModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Phone Input */}
                   <div>
-                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
-                      Phone Number <span className="text-red-400">*</span>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                      Phone Number <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
                         <Phone className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -234,18 +236,18 @@ export default function InquiryModal({
                         required
                         disabled={isLoading}
                         placeholder="+91 XXXXX XXXXX"
-                        className="glass-input"
+                        className="input-light"
                       />
                     </div>
                   </div>
 
                   {/* Event Date Input */}
                   <div>
-                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                       Event Date
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-neutral-500">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
                         <Calendar className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -254,7 +256,7 @@ export default function InquiryModal({
                         value={formData.eventDate}
                         onChange={handleChange}
                         disabled={isLoading}
-                        className="glass-input [color-scheme:dark]"
+                        className="input-light [color-scheme:light]"
                       />
                     </div>
                   </div>
@@ -262,11 +264,11 @@ export default function InquiryModal({
 
                 {/* Address Input */}
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                     Event Venue / City
                   </label>
                   <div className="relative">
-                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-neutral-500">
+                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-gray-400">
                       <MapPin className="h-4.5 w-4.5" />
                     </span>
                     <textarea
@@ -276,19 +278,18 @@ export default function InquiryModal({
                       disabled={isLoading}
                       rows={2}
                       placeholder="Enter wedding location details"
-                      className="glass-input !pl-11 resize-none"
-                      style={{ paddingLeft: '2.75rem' }}
+                      className="input-light resize-none"
                     />
                   </div>
                 </div>
 
                 {/* Special Notes */}
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
                     Special Notes / Requests
                   </label>
                   <div className="relative">
-                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-neutral-500">
+                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-gray-400">
                       <FileText className="h-4.5 w-4.5" />
                     </span>
                     <textarea
@@ -298,8 +299,7 @@ export default function InquiryModal({
                       disabled={isLoading}
                       rows={2}
                       placeholder="Any specific preferences or requests..."
-                      className="glass-input !pl-11 resize-none"
-                      style={{ paddingLeft: '2.75rem' }}
+                      className="input-light resize-none"
                     />
                   </div>
                 </div>
@@ -308,10 +308,10 @@ export default function InquiryModal({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full btn-gold py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full btn-maroon py-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-neutral-900 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
                       <Send className="h-4.5 w-4.5" />

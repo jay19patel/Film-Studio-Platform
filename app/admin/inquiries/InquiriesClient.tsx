@@ -13,8 +13,11 @@ import {
   Trash2,
   FileText,
   Filter,
+  UserPlus,
+  CheckCircle,
 } from 'lucide-react';
 import { Inquiry, Resource, Addon } from '@/lib/db';
+import toast from 'react-hot-toast';
 
 interface InquiriesClientProps {
   initialInquiries: Inquiry[];
@@ -32,14 +35,12 @@ export default function InquiriesClient({
   const [inquiries, setInquiries] = useState<Inquiry[]>(initialInquiries);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [error, setError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
-
-  const showSuccess = (msg: string) => {
-    setSuccessMsg(msg);
-    setTimeout(() => setSuccessMsg(''), 3000);
-  };
+  
+  // Custom Modal States
+  const [inquiryToDelete, setInquiryToDelete] = useState<string | null>(null);
+  const [inquiryToConvert, setInquiryToConvert] = useState<Inquiry | null>(null);
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     setError('');
@@ -55,24 +56,19 @@ export default function InquiriesClient({
         throw new Error(errData.error || 'Failed to update status');
       }
 
-      showSuccess('Inquiry status updated successfully!');
+      toast.success('Inquiry status updated successfully!');
       
       // Update local state
       setInquiries((prev) =>
         prev.map((inq) => (inq.id === id ? { ...inq, status: newStatus as any } : inq))
       );
     } catch (err: any) {
-      setError(err.message || 'Failed to update status.');
+      toast.error(err.message || 'Failed to update status.');
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this inquiry? This action cannot be undone.')) {
-      return;
-    }
-
     setDeletingId(id);
-    setError('');
     try {
       const res = await fetch('/api/inquiries', {
         method: 'DELETE',
@@ -85,16 +81,45 @@ export default function InquiriesClient({
         throw new Error(errData.error || 'Failed to delete inquiry');
       }
 
-      showSuccess('Inquiry deleted successfully!');
+      toast.success('Inquiry deleted successfully!');
       setInquiries((prev) => prev.filter((inq) => inq.id !== id));
       
-      if (expandedId === id) {
-        setExpandedId(null);
-      }
+      if (expandedId === id) setExpandedId(null);
     } catch (err: any) {
-      setError(err.message || 'Failed to delete inquiry.');
+      toast.error(err.message || 'Failed to delete inquiry.');
     } finally {
       setDeletingId(null);
+      setInquiryToDelete(null);
+    }
+  };
+
+  const handlePromoteToClient = async (inq: Inquiry) => {
+    try {
+      const clientRes = await fetch('/api/clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: inq.name,
+          email: inq.email,
+          phone: inq.phone,
+          address: inq.address,
+          packageName: inq.packageName,
+          status: 'onboarding',
+          notes: inq.specialNotes || '',
+          totalAmount: 0,
+          amountPaid: 0,
+        })
+      });
+
+      if (!clientRes.ok) throw new Error('Failed to create client record');
+
+      await handleStatusChange(inq.id, 'completed');
+      
+      toast.success(`${inq.name} has been converted to a Client!`);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to convert to client.');
+    } finally {
+      setInquiryToConvert(null);
     }
   };
 
@@ -159,18 +184,6 @@ export default function InquiriesClient({
           </button>
         ))}
       </div>
-      
-      {successMsg && (
-        <div className="bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs p-4 rounded-2xl font-semibold">
-          {successMsg}
-        </div>
-      )}
-
-      {error && (
-        <div className="bg-red-50 border border-red-100 text-red-800 text-xs p-4 rounded-2xl font-semibold">
-          {error}
-        </div>
-      )}
 
       {filteredInquiries.length === 0 ? (
         <div className="bg-white rounded-3xl p-16 text-center border border-gray-100 shadow-sm">
@@ -230,24 +243,37 @@ export default function InquiriesClient({
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="text-xs text-gray-400 font-medium">{formattedDate}</span>
                     
-                    <select
-                      value={inq.status}
-                      onChange={(e) => handleStatusChange(inq.id, e.target.value)}
-                      className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer ${
-                        inq.status === 'new'
-                          ? 'bg-maroon-50 text-maroon-800 border-maroon-200 focus:border-maroon-400'
-                          : inq.status === 'contacted'
-                          ? 'bg-blue-50 text-blue-800 border-blue-200 focus:border-blue-400'
-                          : 'bg-emerald-50 text-emerald-800 border-emerald-200 focus:border-emerald-400'
-                      }`}
-                    >
-                      <option value="new">New Lead</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="completed">Completed</option>
-                    </select>
+                    {inq.status === 'completed' ? (
+                      <span className="text-xs font-bold px-3 py-1.5 rounded-xl border bg-emerald-50 text-emerald-800 border-emerald-200 flex items-center gap-1.5">
+                        <CheckCircle className="h-4 w-4" /> Converted
+                      </span>
+                    ) : (
+                      <>
+                        <select
+                          value={inq.status}
+                          onChange={(e) => handleStatusChange(inq.id, e.target.value)}
+                          className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer ${
+                            inq.status === 'new'
+                              ? 'bg-maroon-50 text-maroon-800 border-maroon-200 focus:border-maroon-400'
+                              : 'bg-blue-50 text-blue-800 border-blue-200 focus:border-blue-400'
+                          }`}
+                        >
+                          <option value="new">New Lead</option>
+                          <option value="contacted">Contacted</option>
+                        </select>
+
+                        <button
+                          onClick={() => setInquiryToConvert(inq)}
+                          className="text-gray-400 hover:text-emerald-600 p-1.5 hover:bg-emerald-50 rounded-lg transition-all"
+                          title="Convert to Client"
+                        >
+                          <UserPlus className="h-4 w-4" />
+                        </button>
+                      </>
+                    )}
 
                     <button
-                      onClick={() => handleDelete(inq.id)}
+                      onClick={() => setInquiryToDelete(inq.id)}
                       className="text-gray-400 hover:text-red-500 p-1.5 hover:bg-red-50 rounded-lg transition-all"
                       title="Delete inquiry"
                     >
@@ -381,6 +407,41 @@ export default function InquiriesClient({
           })}
         </div>
       )}
+
+      {/* Custom Delete Modal */}
+      {inquiryToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl border border-gray-100 text-center">
+            <div className="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Trash2 className="h-6 w-6" />
+            </div>
+            <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">Delete Inquiry?</h3>
+            <p className="text-xs font-medium text-gray-500 mb-6">Are you sure you want to permanently delete this inquiry? This action cannot be undone.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setInquiryToDelete(null)} className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-3 rounded-xl transition-colors">Cancel</button>
+              <button onClick={() => handleDelete(inquiryToDelete)} className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold text-xs py-3 rounded-xl transition-colors shadow-sm">Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Convert Modal */}
+      {inquiryToConvert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl border border-gray-100 text-center">
+            <div className="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <UserPlus className="h-6 w-6" />
+            </div>
+            <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">Convert to Client?</h3>
+            <p className="text-xs font-medium text-gray-500 mb-6">Are you ready to move <strong>{inquiryToConvert.name}</strong> from new leads to your permanent Client Hub?</p>
+            <div className="flex gap-3">
+              <button onClick={() => setInquiryToConvert(null)} className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-3 rounded-xl transition-colors">Cancel</button>
+              <button onClick={() => handlePromoteToClient(inquiryToConvert)} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-3 rounded-xl transition-colors shadow-sm">Confirm</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

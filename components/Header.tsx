@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Camera, Sparkles, Menu, X, Settings } from 'lucide-react';
+import { Camera, Sparkles, Menu, X, Settings, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import InquiryModal from '@/components/InquiryModal';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const pathname = usePathname();
 
   // Don't show public header on admin pages
@@ -20,6 +22,7 @@ export default function Header() {
     { name: 'Build Your Own', href: '/build-your-own' },
     { name: 'Portfolio', href: '/portfolio' },
     { name: 'Equipment', href: '/equipment' },
+    { name: 'About Us', href: '/about' },
   ];
 
   return (
@@ -60,17 +63,18 @@ export default function Header() {
                 </Link>
               );
             })}
-            
-            <div className="h-4 w-[1px] bg-gray-200" />
-
-            <Link
-              href="/admin/dashboard"
-              className="text-xs font-bold tracking-widest text-neutral-500 hover:text-neutral-900 flex items-center gap-1.5 uppercase transition-all"
-            >
-              <Settings className="h-3.5 w-3.5" />
-              Admin
-            </Link>
           </nav>
+
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center">
+            <button 
+              onClick={() => setIsInquiryOpen(true)}
+              className="bg-maroon hover:bg-maroon-600 text-white font-bold text-[10px] tracking-widest uppercase py-3 px-6 rounded-xl transition-all flex items-center gap-2"
+            >
+              <Send className="h-3.5 w-3.5" />
+              Contact Us
+            </button>
+          </div>
 
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
@@ -113,21 +117,23 @@ export default function Header() {
                   </Link>
                 );
               })}
-              
-              <div className="h-[1px] bg-gray-100 my-3" />
-              
-              <Link
-                href="/admin/dashboard"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2.5 px-4 py-3 rounded-lg text-sm font-bold tracking-widest uppercase text-neutral-600 hover:bg-gray-50 hover:text-neutral-900"
+              <button 
+                onClick={() => { setIsOpen(false); setIsInquiryOpen(true); }}
+                className="w-full text-left px-4 py-3 rounded-lg text-sm font-bold tracking-widest uppercase bg-maroon text-white hover:bg-maroon-600 transition-all flex items-center gap-2 mt-2"
               >
-                <Settings className="h-4.5 w-4.5" />
-                Admin Portal
-              </Link>
+                <Send className="h-4 w-4" />
+                Contact Us
+              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <InquiryModal
+        isOpen={isInquiryOpen}
+        onClose={() => setIsInquiryOpen(false)}
+        type="general"
+      />
     </header>
   );
 }

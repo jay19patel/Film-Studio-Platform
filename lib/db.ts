@@ -1,7 +1,35 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-// Types
+export interface ClientEvent {
+  id: string;
+  title: string;
+  date: string;
+  notes?: string;
+}
+
+export interface PaymentTransaction {
+  id: string;
+  amount: number;
+  date: string;
+  notes?: string;
+}
+
+export interface Client {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  packageName: string;
+  status: 'onboarding' | 'shooting' | 'photo-editing' | 'video-editing' | 'delivered';
+  events: ClientEvent[];
+  notes?: string;
+  totalAmount?: number;
+  amountPaid?: number;
+  paymentHistory?: PaymentTransaction[];
+}
+
 export interface Resource {
   id: string;
   name: string;
@@ -49,15 +77,22 @@ export interface Inquiry {
   name: string;
   email: string;
   phone: string;
-  address: string;
+  address?: string;
   eventDate?: string;
-  specialNotes?: string;
+  packageName?: string;
   packageId?: string;
-  packageName: string;
-  type: 'predefined' | 'custom';
-  customDetails?: CustomPackageDetails | null;
-  createdAt: string;
+  type: 'predefined' | 'custom' | 'general';
+  customDetails?: {
+    days: {
+      title: string;
+      items: { resourceId: string; qty: number }[];
+    }[];
+    addons: string[];
+    totalPrice: number;
+  };
+  specialNotes?: string;
   status: 'new' | 'contacted' | 'completed';
+  createdAt: string;
 }
 
 export interface Admin {
@@ -170,4 +205,32 @@ export async function getPortfolio(): Promise<PortfolioItem[]> {
 
 export async function savePortfolio(portfolio: PortfolioItem[]): Promise<boolean> {
   return writeJsonFile<PortfolioItem[]>('portfolio.json', portfolio);
+}
+
+export async function getClients(): Promise<Client[]> {
+  return readJsonFile<Client[]>('clients.json', []);
+}
+
+export async function saveClients(clients: Client[]): Promise<boolean> {
+  return writeJsonFile<Client[]>('clients.json', clients);
+}
+
+// Extract and flatten events from all clients for the calendar view
+export async function getEvents(): Promise<(ClientEvent & { clientName: string, clientId: string })[]> {
+  const clients = await getClients();
+  const allEvents: (ClientEvent & { clientName: string, clientId: string })[] = [];
+  
+  clients.forEach(client => {
+    if (client.events) {
+      client.events.forEach(evt => {
+        allEvents.push({
+          ...evt,
+          clientName: client.name,
+          clientId: client.id
+        });
+      });
+    }
+  });
+  
+  return allEvents;
 }

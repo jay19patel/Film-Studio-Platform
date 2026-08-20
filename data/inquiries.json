@@ -66,5 +66,19 @@
     },
     "createdAt": "2026-08-20T16:36:44.914Z",
     "status": "completed"
+  },
+  {
+    "id": "inq_1787251401209",
+    "name": "Career & Founder's Path",
+    "email": "JUSTJAYY19@GMAIL.COM",
+    "phone": "+917069668308",
+    "address": "740 PARSI FALIYA",
+    "eventDate": "2026-08-30",
+    "specialNotes": "lagan se bhai na",
+    "packageName": "General Inquiry",
+    "type": "general",
+    "customDetails": null,
+    "createdAt": "2026-08-20T18:43:21.209Z",
+    "status": "new"
   }
 ]

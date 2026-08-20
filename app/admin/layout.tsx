@@ -15,6 +15,7 @@ import {
   X,
   User,
 } from 'lucide-react';
+import { Toaster } from 'react-hot-toast';
 
 interface SidebarLink {
   name: string;
@@ -69,12 +70,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navLinks: SidebarLink[] = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Calendar', href: '/admin/calendar', icon: CalendarDays },
+    { name: 'Client Inquiries', href: '/admin/inquiries', icon: Inbox },
+    { name: 'Clients', href: '/admin/clients', icon: User },
     { name: 'Wedding Packages', href: '/admin/packages', icon: Package },
     { name: 'Crew Resources', href: '/admin/resources', icon: CalendarDays },
     { name: 'Physical Add-ons', href: '/admin/addons', icon: Gem },
     { name: 'Portfolio Showcase', href: '/admin/portfolio', icon: Camera },
     { name: 'Equipment Gear', href: '/admin/equipment', icon: Camera },
-    { name: 'Client Inquiries', href: '/admin/inquiries', icon: Inbox },
   ];
 
   // While checking auth, show a beautiful screen loading spinner
@@ -94,6 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+      <Toaster position="top-right" toastOptions={{ style: { fontSize: '12px', fontWeight: 'bold' } }} />
       
       {/* Mobile Header Bar */}
       <header className="md:hidden bg-white text-neutral-900 px-4 py-4 flex items-center justify-between border-b border-gray-200 sticky top-0 z-40">
