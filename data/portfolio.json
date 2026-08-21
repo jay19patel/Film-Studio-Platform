@@ -11,14 +11,16 @@
     "id": "port-2",
     "title": "Minimalist Beach Pre-Wedding",
     "type": "photo",
-    "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1200",
+    "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200",
+    "thumbnail": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200",
     "description": "Sunrise pre-wedding session capturing raw, candid emotions by the ocean."
   },
   {
     "id": "port-3",
     "title": "Classic Heritage Pheras",
     "type": "photo",
-    "url": "https://images.unsplash.com/photo-1583939000340-9b6348c5e662?auto=format&fit=crop&q=80&w=1200",
+    "url": "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=1200",
+    "thumbnail": "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=1200",
     "description": "The sacred vows captured with editorial precision."
   }
 ]

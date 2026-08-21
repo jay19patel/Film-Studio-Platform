@@ -80,16 +80,15 @@ export default function ContactClient({ dict }: ContactClientProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
-      {/* Hero Header */}
+      {/* Hero Header matching Portfolio / Equipment pages */}
       <div className="text-center mb-16 animate-slideUp">
-        <div className="inline-flex items-center gap-1.5 bg-maroon/5 border border-maroon/20 px-4 py-1.5 rounded-full text-[10px] font-bold text-maroon uppercase tracking-widest mb-6">
-          <Sparkles className="h-3.5 w-3.5" />
-          {d.badge}
-        </div>
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-extrabold text-neutral-900 tracking-tight mb-4">
-          {d.title} <span className="text-maroon-gradient">{d.titleAccent}</span>
+        <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">
+          {d.title}{' '}
+          <span className="font-caveat text-maroon font-normal lowercase tracking-normal">
+            {d.titleAccent}
+          </span>
         </h1>
-        <p className="text-neutral-500 text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed">
+        <p className="text-neutral-600 max-w-2xl mx-auto text-lg">
           {d.subtitle}
         </p>
       </div>

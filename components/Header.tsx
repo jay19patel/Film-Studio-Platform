@@ -87,14 +87,14 @@ export default function Header() {
   const getHeaderClass = () => {
     if (isHome) {
       if (isScrolled) {
-        return 'fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-neutral-800/50 text-white shadow-xl transition-all duration-300';
+        return 'fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 text-neutral-900 shadow-sm transition-all duration-300';
       }
-      return 'absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/80 via-black/30 to-transparent text-white transition-all duration-300';
+      return 'absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 via-black/20 to-transparent text-white transition-all duration-300';
     }
-    return 'sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-xs text-neutral-900 transition-all duration-300';
+    return 'sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xs text-neutral-900 transition-all duration-300';
   };
 
-  const isDarkHeader = isHome;
+  const isDarkHeader = isHome && !isScrolled;
 
   return (
     <header className={getHeaderClass()}>
@@ -103,10 +103,18 @@ export default function Header() {
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center space-x-2.5 group">
-              <Camera className={`h-6 w-6 group-hover:scale-110 transition-transform ${isDarkHeader ? 'text-rose-400' : 'text-maroon'}`} />
-              <span className={`font-serif text-2xl tracking-widest uppercase ${isDarkHeader ? 'text-white' : 'text-neutral-900'}`}>
-                CamBuddy
+            <Link href="/" className="flex items-center space-x-3.5 group">
+              <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-maroon shadow-md flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+                <img
+                  src="/logo.png"
+                  alt="Minesh_P"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <span className="font-serif text-2xl sm:text-3xl tracking-wide font-extrabold flex items-center">
+                <span className="text-maroon font-black">M</span>
+                <span className={isDarkHeader ? 'text-white' : 'text-neutral-900'}>inesh_</span>
+                <span className="text-maroon font-black">P</span>
               </span>
             </Link>
           </div>

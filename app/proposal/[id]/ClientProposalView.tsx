@@ -296,11 +296,11 @@ export default function ClientProposalView({
               className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl py-3 px-4 font-bold text-xs outline-none focus:border-maroon transition-colors mb-4"
             />
 
-            <div className="flex items-center justify-end gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setShowRejectModal(false)}
-                className="px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer text-center"
               >
                 Cancel
               </button>
@@ -308,7 +308,7 @@ export default function ClientProposalView({
                 type="button"
                 disabled={isSubmitting || !rejectReason.trim()}
                 onClick={() => handleRespond('reject', rejectReason)}
-                className="px-6 py-3 bg-maroon hover:bg-maroon-dark text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 bg-maroon hover:bg-maroon-dark text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 <Send className="h-4 w-4" />
                 <span>{isSubmitting ? 'Sending...' : 'Send Revision Request'}</span>

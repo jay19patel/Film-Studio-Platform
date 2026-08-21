@@ -11,25 +11,12 @@ export const metadata = {
 
 const crew = [
   {
-    name: 'Jay Patel',
-    role: 'Lead Cinematographer',
-    image: 'https://images.unsplash.com/photo-1554046920-90c99f98246a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    instagram: '@jaypatel_films',
-    mobile: '+91 98765 43211',
-  },
-  {
-    name: 'Aisha Sharma',
-    role: 'Candid Specialist',
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    instagram: '@aisha_captures',
-    mobile: '+91 98765 43212',
-  },
-  {
-    name: 'Rahul Desai',
-    role: 'Drone Pilot & Video Editor',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    instagram: '@rahul_drones',
-    mobile: '+91 98765 43213',
+    name: 'Minesh Patel',
+    role: 'Lead Photographer & Cinematographer',
+    image: '/uploads/minesh_patel.jpg',
+    instagram: '@_minesh_p',
+    instagramUrl: 'https://www.instagram.com/_minesh_p/',
+    mobile: '+91 98765 43210',
   },
 ];
 
@@ -38,54 +25,51 @@ export default async function AboutPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 bg-gray-50 border-b border-gray-100 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-maroon/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm mb-6 border border-gray-200">
-            <Camera className="h-6 w-6 text-maroon" />
-          </div>
-          <h1 className="font-serif text-5xl md:text-7xl font-black text-neutral-900 uppercase tracking-tight mb-6">
-            {dict.aboutPage.title} <span className="text-maroon">{dict.aboutPage.titleAccent}</span>
+      {/* Hero Header Section matching Portfolio / Equipment header */}
+      <section className="bg-gray-50 pt-24 pb-16 border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 text-center animate-slideUp">
+          <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">
+            {dict.aboutPage.title}{' '}
+            <span className="font-caveat text-maroon font-normal lowercase tracking-normal">
+              {dict.aboutPage.titleAccent}
+            </span>
           </h1>
-          <p className="text-neutral-500 text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-neutral-600 max-w-2xl mx-auto text-lg">
             {dict.aboutPage.subtitle}
           </p>
         </div>
       </section>
 
       {/* The Crew Grid */}
-      <section className="py-24 bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            {crew.map((member, idx) => (
-              <div key={idx} className="group relative">
-                <div className="relative h-[400px] md:h-[500px] w-full rounded-[2rem] overflow-hidden mb-6 shadow-sm border border-gray-100 group-hover:shadow-xl transition-all duration-500">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-60 group-hover:opacity-80 transition-opacity" />
-                </div>
-                <div className="text-center mt-6">
-                  <h3 className="font-serif text-2xl font-bold text-neutral-900 uppercase tracking-wide">{member.name}</h3>
-                  <p className="text-maroon font-bold text-xs uppercase tracking-widest mt-1 mb-4">{member.role}</p>
-                  <div className="flex items-center justify-center gap-4">
-                    <a href={`https://instagram.com/${member.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-pink-600 transition-colors">
-                      <Heart className="h-4 w-4" />
-                      {member.instagram}
-                    </a>
-                    <a href={`tel:${member.mobile.replace(/\s+/g, '')}`} className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-maroon transition-colors">
-                      <Phone className="h-4 w-4" />
-                      {member.mobile}
-                    </a>
-                  </div>
+      <section className="py-20 bg-white relative">
+        <div className="max-w-md mx-auto px-4 sm:px-6">
+          {crew.map((member, idx) => (
+            <div key={idx} className="group relative">
+              <div className="relative h-[450px] md:h-[520px] w-full rounded-[2.5rem] overflow-hidden mb-6 shadow-md border border-gray-100 group-hover:shadow-2xl transition-all duration-500">
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+              </div>
+              <div className="text-center mt-6">
+                <h3 className="font-serif text-3xl font-bold text-neutral-900 uppercase tracking-wide">{member.name}</h3>
+                <p className="text-maroon font-bold text-xs uppercase tracking-widest mt-1.5 mb-4">{member.role}</p>
+                <div className="flex items-center justify-center gap-3">
+                  <a href={member.instagramUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-pink-600 transition-colors bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl shadow-xs">
+                    <Heart className="h-4 w-4 text-pink-500 fill-pink-500" />
+                    <span>{member.instagram}</span>
+                  </a>
+                  <a href={`tel:${member.mobile.replace(/\s+/g, '')}`} className="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-maroon transition-colors bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl shadow-xs">
+                    <Phone className="h-4 w-4 text-maroon" />
+                    <span>{member.mobile}</span>
+                  </a>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 

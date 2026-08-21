@@ -42,8 +42,13 @@ const rasa = Rasa({
 });
 
 export const metadata: Metadata = {
-  title: "CamBuddy — Premium Wedding Photography & Cinematic Films Studio",
-  description: "Discover luxury wedding photography packages, cinematic 4K films, and custom quote tools. Build your dream wedding coverage with CamBuddy's interactive proposal builder.",
+  title: "Minesh_P — Premium Wedding Photography & Cinematic Films Studio",
+  description: "Discover luxury wedding photography packages, cinematic 4K films, and custom quote tools. Build your dream wedding coverage with Minesh_P's interactive proposal builder.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

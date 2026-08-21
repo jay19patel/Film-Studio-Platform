@@ -13,16 +13,18 @@ export default async function BuildYourOwnPage() {
   ]);
 
   return (
-    <div className="bg-white min-h-screen relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
-        <div className="mb-10">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-maroon block mb-2.5">
-            {dict.buildYourOwnPage.badge}
-          </span>
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-900 tracking-tight">
-            {dict.buildYourOwnPage.title} <span className="text-maroon-gradient">{dict.buildYourOwnPage.titleAccent}</span>
+    <div className="bg-white min-h-screen pt-24 pb-20 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Top Hero Section matching Portfolio / Equipment header */}
+        <div className="text-center mb-16 animate-slideUp">
+          <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">
+            {dict.buildYourOwnPage.title}{' '}
+            <span className="font-caveat text-maroon font-normal lowercase tracking-normal">
+              {dict.buildYourOwnPage.titleAccent}
+            </span>
           </h1>
-          <p className="text-neutral-500 text-xs md:text-sm mt-2 max-w-xl font-medium leading-relaxed">
+          <p className="text-neutral-600 max-w-2xl mx-auto text-lg">
             {dict.buildYourOwnPage.subtitle}
           </p>
         </div>

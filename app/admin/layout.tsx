@@ -112,11 +112,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       
       {/* Mobile Header Bar */}
       <header className="md:hidden bg-white text-neutral-900 px-4 py-4 flex items-center justify-between border-b border-gray-200 sticky top-0 z-40">
-        <Link href="/admin/dashboard" className="flex items-center gap-2">
-          <div className="bg-maroon text-white p-1.5 rounded-lg">
-            <Camera className="h-5 w-5" />
+        <Link href="/admin/dashboard" className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-maroon shadow-xs flex-shrink-0">
+            <img src="/logo.png" alt="Minesh_P" className="w-full h-full object-cover object-center" />
           </div>
-          <span className="font-serif text-lg font-bold tracking-widest uppercase text-neutral-900">CamBuddy Panel</span>
+          <span className="font-serif text-xl tracking-wide font-extrabold flex items-center">
+            <span className="text-maroon font-black">M</span>
+            <span className="text-neutral-900">inesh_</span>
+            <span className="text-maroon font-black">P</span>
+          </span>
         </Link>
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -129,11 +133,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Desktop Sidebar Panel */}
       <aside className="hidden md:flex md:w-64 bg-white text-neutral-600 flex-col flex-shrink-0 border-r border-gray-200 sticky top-0 h-screen shadow-sm overflow-y-auto">
         {/* Brand */}
-        <div className="p-6 border-b border-gray-100 flex items-center gap-2">
-          <div className="bg-maroon text-white p-2 rounded-xl">
-            <Camera className="h-5 w-5" />
+        <div className="p-6 border-b border-gray-100 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-maroon shadow-xs flex-shrink-0">
+            <img src="/logo.png" alt="Minesh_P" className="w-full h-full object-cover object-center" />
           </div>
-          <span className="font-serif text-xl tracking-widest uppercase font-bold text-neutral-900">CamBuddy</span>
+          <span className="font-serif text-xl tracking-wide font-extrabold flex items-center">
+            <span className="text-maroon font-black">M</span>
+            <span className="text-neutral-900">inesh_</span>
+            <span className="text-maroon font-black">P</span>
+          </span>
         </div>
 
         {/* Sidebar Nav links */}
@@ -212,7 +220,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Drawer card */}
           <div className="relative flex flex-col w-64 max-w-xs bg-white text-neutral-600 h-full z-10 animate-slideRight overflow-y-auto">
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <span className="font-serif text-lg tracking-widest uppercase font-bold text-neutral-900">CamBuddy</span>
+              <span className="font-serif text-lg tracking-wide font-extrabold flex items-center">
+                <span className="text-maroon font-black">M</span>
+                <span className="text-neutral-900">inesh_</span>
+                <span className="text-maroon font-black">P</span>
+              </span>
               <button onClick={() => setIsMobileOpen(false)} className="text-neutral-400 hover:text-maroon">
                 <X className="h-5 w-5" />
               </button>
