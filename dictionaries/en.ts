@@ -10,8 +10,8 @@ export const en = {
   home: {
     hero: {
       badge: "Luxury Wedding Photography & Films",
-      title1: "Capturing the Pure Poetry of Your",
-      title2: "forever story",
+      title1: "Capturing the Pure Poetry of",
+      title2: "your forever story",
       subtitle: "Handcrafted wedding proposal packages, combining high-end cinematic teams and premium photobooks. Customize any programs or build your own schedule.",
       cta: "Explore Proposals",
       buildOwn: "Build Your Own Package"

@@ -37,6 +37,10 @@ body {
   font-family: var(--font-caveat), cursive;
 }
 
+.font-shrikhand {
+  font-family: var(--font-shrikhand), cursive;
+}
+
 /* ───────────────────────────────────────────────
    Locale Overrides (Gujarati Typography)
    ─────────────────────────────────────────────── */
