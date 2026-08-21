@@ -8,8 +8,8 @@ import { motion } from 'framer-motion';
 export default function Footer() {
   const pathname = usePathname();
 
-  // Don't show public footer on admin pages
-  if (pathname.startsWith('/admin')) {
+  // Don't show public footer on admin pages or proposal review pages
+  if (pathname.startsWith('/admin') || pathname.startsWith('/proposal')) {
     return null;
   }
 

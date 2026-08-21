@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Send, CheckCircle2, Phone, Mail, User, MapPin, Calendar, FileText } from 'lucide-react';
+import { X, Send, CheckCircle2, Phone, Mail, User, MapPin, Calendar, FileText, FileDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { en } from '@/dictionaries/en';
@@ -14,6 +14,7 @@ interface InquiryModalProps {
   type?: 'predefined' | 'custom' | 'general';
   customDetails?: any;
   onSuccess?: () => void;
+  onDownloadPdf?: () => void;
   dict?: typeof en.inquiryModal;
 }
 
@@ -25,6 +26,7 @@ export default function InquiryModal({
   type = 'general',
   customDetails,
   onSuccess,
+  onDownloadPdf,
   dict = en.inquiryModal,
 }: InquiryModalProps) {
   const getTodayDate = () => new Date().toISOString().split('T')[0];
@@ -40,6 +42,7 @@ export default function InquiryModal({
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [downloadPdfChecked, setDownloadPdfChecked] = useState(true);
 
   if (!isOpen) return null;
 
@@ -88,6 +91,10 @@ export default function InquiryModal({
 
       if (onSuccess) {
         onSuccess();
+      }
+
+      if (onDownloadPdf) {
+        onDownloadPdf();
       }
 
       // Clear form
@@ -308,6 +315,8 @@ export default function InquiryModal({
                     />
                   </div>
                 </div>
+
+
 
                 {/* Submit Button */}
                 <button

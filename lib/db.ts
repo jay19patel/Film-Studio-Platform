@@ -43,11 +43,17 @@ export interface Client {
   totalAmount?: number;
   amountPaid?: number;
   paymentHistory?: PaymentTransaction[];
+  customDetails?: {
+    days: PackageDay[];
+    addons: string[];
+    autoPrice: number;
+    totalPrice: number;
+  };
   quotations?: QuotationVersion[];
   activeQuotationId?: string;
   proposalToken?: string;
   proposalTokenExpiresAt?: number;
-  proposalStatus?: 'pending' | 'confirmed' | 'rejected';
+  proposalStatus?: 'draft' | 'pending' | 'sent' | 'confirmed' | 'rejected';
   proposalConfirmedAt?: string;
   proposalClientNotes?: string;
 }
@@ -105,11 +111,9 @@ export interface Inquiry {
   packageId?: string;
   type: 'predefined' | 'custom' | 'general';
   customDetails?: {
-    days: {
-      title: string;
-      items: { resourceId: string; qty: number }[];
-    }[];
+    days: PackageDay[];
     addons: string[];
+    autoPrice?: number;
     totalPrice: number;
   };
   specialNotes?: string;

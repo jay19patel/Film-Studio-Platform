@@ -15,14 +15,17 @@ export async function POST(request: Request) {
     const idx = clients.findIndex((c) => c.id === clientId);
     if (idx === -1) return NextResponse.json({ error: 'Client not found' }, { status: 404 });
 
-    // Generate secure 24-hour token
+    if (!clients[idx].totalAmount || clients[idx].totalAmount === 0) {
+      return NextResponse.json({ error: 'Quotation amount is ₹0. Please edit and configure quotation price & terms before generating proposal link.' }, { status: 400 });
+    }
+
+    // Generate secure permanent token
     const token = crypto.randomBytes(32).toString('hex');
-    const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 Hours in ms
 
     clients[idx].proposalToken = token;
-    clients[idx].proposalTokenExpiresAt = expiresAt;
+    delete clients[idx].proposalTokenExpiresAt;
     if (clients[idx].proposalStatus !== 'confirmed') {
-      clients[idx].proposalStatus = 'pending';
+      clients[idx].proposalStatus = 'sent';
     }
 
     await saveClients(clients);
@@ -34,7 +37,6 @@ export async function POST(request: Request) {
       success: true,
       shareUrl,
       token,
-      expiresAt,
     });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to generate proposal link' }, { status: 500 });

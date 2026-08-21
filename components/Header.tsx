@@ -53,8 +53,8 @@ export default function Header() {
     router.refresh();
   };
 
-  // Don't show public header on admin pages
-  if (pathname.startsWith('/admin')) {
+  // Don't show public header on admin pages or proposal review pages
+  if (pathname.startsWith('/admin') || pathname.startsWith('/proposal')) {
     return null;
   }
 

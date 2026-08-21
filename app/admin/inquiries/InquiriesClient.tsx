@@ -110,6 +110,7 @@ export default function InquiriesClient({
           notes: inq.specialNotes || '',
           totalAmount: calculatedAmount,
           amountPaid: 0,
+          customDetails: inq.customDetails || null,
         })
       });
 

@@ -1,7 +1,7 @@
 [
   {
-    "id": "1787333954523",
-    "name": "Jay Patel",
+    "id": "1787337354348",
+    "name": "YouTube",
     "email": "JUSTJAYY19@GMAIL.COM",
     "phone": "+917069668308",
     "address": "740 PARSI FALIYA",
@@ -9,11 +9,31 @@
     "status": "onboarding",
     "events": [],
     "notes": "Test By Jay",
-    "totalAmount": 60000,
+    "totalAmount": 38000,
     "amountPaid": 0,
     "paymentHistory": [],
-    "proposalToken": "1e267088fb3cd5189d5172bc762d6f52fb4c47215d87d2fc93ca1e5f833d445c",
-    "proposalTokenExpiresAt": 1787421237603,
-    "proposalStatus": "pending"
+    "customDetails": {
+      "days": [
+        {
+          "title": "Day 1 - Main Wedding Ceremony",
+          "image": "",
+          "items": [
+            {
+              "resourceId": "res_1",
+              "qty": 3
+            }
+          ]
+        }
+      ],
+      "addons": [
+        "addon_1"
+      ],
+      "autoPrice": 38000,
+      "totalPrice": 38000
+    },
+    "proposalToken": "7d793c54853f1366198002389f36a5bcf6ca287c0997d69d14d0a810ddecf140",
+    "proposalStatus": "confirmed",
+    "proposalClientNotes": "Confirmed & Accepted by client.",
+    "proposalConfirmedAt": "Saturday, 22 August 2026 at 12:19 am"
   }
 ]

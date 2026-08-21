@@ -38,6 +38,7 @@ export default function BuildYourOwnClient({
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const [shouldDownloadPdf, setShouldDownloadPdf] = useState(true);
   const [hasSubmittedInquiry, setHasSubmittedInquiry] = useState(false);
   const [downloadPending, setDownloadPending] = useState(false);
   const pdfTemplateRef = useRef<HTMLDivElement>(null);
@@ -448,20 +449,33 @@ export default function BuildYourOwnClient({
           </div>
 
           <div className="space-y-3">
-            {/* Direct Download PDF Button */}
+            {/* Checkbox for PDF Proposal Estimate Download */}
+            <div className="bg-gray-50 border border-gray-200 p-3.5 rounded-2xl flex items-center justify-between gap-3">
+              <label className="flex items-center gap-2.5 text-xs font-bold text-gray-700 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={shouldDownloadPdf}
+                  onChange={(e) => setShouldDownloadPdf(e.target.checked)}
+                  className="w-4 h-4 rounded text-maroon focus:ring-maroon accent-maroon cursor-pointer"
+                />
+                <span>Download PDF Proposal Estimate</span>
+              </label>
+              <FileDown className="h-4 w-4 text-maroon flex-shrink-0" />
+            </div>
+
+            {/* Submit Inquiry Button */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={handleDownloadPdf}
-              disabled={isPdfGenerating}
-              className="w-full btn-maroon py-4 text-sm font-bold tracking-wide shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              onClick={() => setIsModalOpen(true)}
+              className="w-full btn-maroon py-4 text-sm font-bold tracking-wide shadow-lg flex items-center justify-center gap-2 cursor-pointer"
             >
-              <FileDown className="h-5 w-5" />
-              {isPdfGenerating ? d.downloadingPdf : d.downloadPdf}
+              <Send className="h-5 w-5" />
+              Submit Custom Proposal Inquiry
             </motion.button>
 
             <p className="text-[10px] text-neutral-500 text-center font-medium leading-relaxed">
-              * Instantly download your clean PDF proposal quote.
+              * Send your custom event coverage inquiry directly to CamBuddy Studios.
             </p>
           </div>
         </div>
@@ -478,6 +492,7 @@ export default function BuildYourOwnClient({
           addons: selectedAddons,
           totalPrice,
         }}
+        onDownloadPdf={shouldDownloadPdf ? handleDownloadPdf : undefined}
         dict={dict.inquiryModal}
       />
 

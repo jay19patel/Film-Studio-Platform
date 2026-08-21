@@ -29,6 +29,7 @@ export async function POST(request: Request) {
       totalAmount: data.totalAmount ? Number(data.totalAmount) : 0,
       amountPaid: data.amountPaid ? Number(data.amountPaid) : 0,
       paymentHistory: data.paymentHistory || [],
+      customDetails: data.customDetails || undefined,
     };
 
     const clients = await getClients();

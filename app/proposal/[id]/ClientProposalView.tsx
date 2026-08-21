@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Client, Inquiry, Resource, Addon } from '@/lib/db';
-import { CheckCircle, AlertTriangle, Clock, XCircle, Send, FileText, Camera, ShieldCheck } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Clock, XCircle, Send, FileText, Camera, ShieldCheck, FileDown } from 'lucide-react';
 import toast from 'react-hot-toast';
+import jsPDF from 'jspdf';
+import { captureHtml2Canvas } from '@/lib/pdfHelper';
 import PdfProposalTemplate from '@/components/PdfProposalTemplate';
 
 interface ClientProposalViewProps {
@@ -21,7 +23,7 @@ export default function ClientProposalView({
   addonsList,
   currentToken,
 }: ClientProposalViewProps) {
-  const [proposalStatus, setProposalStatus] = useState<'pending' | 'confirmed' | 'rejected'>(
+  const [proposalStatus, setProposalStatus] = useState<'draft' | 'pending' | 'sent' | 'confirmed' | 'rejected'>(
     client.proposalStatus || 'pending'
   );
   const [confirmedAt, setConfirmedAt] = useState<string>(client.proposalConfirmedAt || '');
@@ -32,13 +34,42 @@ export default function ClientProposalView({
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const pdfTemplateRef = useRef<HTMLDivElement>(null);
 
-  // Validate token & 24-hour expiration
-  const isTokenValid =
-    currentToken &&
-    client.proposalToken === currentToken &&
-    client.proposalTokenExpiresAt &&
-    Date.now() <= client.proposalTokenExpiresAt;
+  // Validate token (permanent, no expiration)
+  const isTokenValid = currentToken && client.proposalToken === currentToken;
+
+  const handleDownloadPdf = async () => {
+    if (!pdfTemplateRef.current) return;
+    setIsPdfGenerating(true);
+    try {
+      const canvas = await captureHtml2Canvas(pdfTemplateRef.current);
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: 'a4',
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 20;
+
+      pdf.addImage(imgData, 'JPEG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save(`CamBuddy_${client.name.replace(/\s+/g, '_')}_Official_Invoice.pdf`);
+      toast.success('Official PDF Invoice downloaded!');
+    } catch (err) {
+      toast.error('Failed to generate PDF invoice');
+    } finally {
+      setIsPdfGenerating(false);
+    }
+  };
 
   const handleRespond = async (action: 'accept' | 'reject', notes?: string) => {
     setIsSubmitting(true);
@@ -116,26 +147,37 @@ export default function ClientProposalView({
 
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-bold bg-maroon/5 text-maroon border border-maroon/20 px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" /> 24h Secure Link
+              <ShieldCheck className="h-3.5 w-3.5" /> Official Proposal Link
             </span>
           </div>
         </header>
 
         {/* Status Alert Banner */}
         {proposalStatus === 'confirmed' && (
-          <div className="bg-emerald-600 text-white rounded-3xl p-6 shadow-md border border-emerald-700 flex items-start gap-4 animate-fadeIn">
-            <div className="bg-white/20 p-2 rounded-2xl flex-shrink-0">
-              <ShieldCheck className="h-7 w-7 text-white" />
+          <div className="bg-emerald-600 text-white rounded-3xl p-6 shadow-md border border-emerald-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fadeIn">
+            <div className="flex items-start gap-4">
+              <div className="bg-white/20 p-2.5 rounded-2xl flex-shrink-0">
+                <ShieldCheck className="h-7 w-7 text-white" />
+              </div>
+              <div>
+                <h3 className="font-serif text-lg font-black uppercase tracking-widest">QUOTATION CONFIRMED & ACCEPTED</h3>
+                <p className="text-xs font-bold text-emerald-100 mt-1">
+                  Confirmed on: <span className="underline">{confirmedAt || 'Verified Official Timestamp'}</span>
+                </p>
+                <p className="text-xs font-medium text-emerald-100 mt-0.5">
+                  This proposal is officially locked and approved. Your dates & crew allocation are reserved.
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-serif text-lg font-black uppercase tracking-widest">QUOTATION CONFIRMED & ACCEPTED</h3>
-              <p className="text-xs font-bold text-emerald-100 mt-1">
-                Confirmed on: <span className="underline">{confirmedAt || 'Verified Official Timestamp'}</span>
-              </p>
-              <p className="text-xs font-medium text-emerald-100 mt-0.5">
-                This proposal is now officially locked and approved. Your dates and crew allocation are reserved.
-              </p>
-            </div>
+
+            <button
+              onClick={handleDownloadPdf}
+              disabled={isPdfGenerating}
+              className="bg-white hover:bg-emerald-50 text-emerald-800 font-bold text-xs uppercase tracking-widest px-5 py-3 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer flex-shrink-0"
+            >
+              <FileDown className="h-4 w-4 text-emerald-700" />
+              <span>{isPdfGenerating ? 'Generating...' : 'Download Invoice PDF'}</span>
+            </button>
           </div>
         )}
 
@@ -154,8 +196,8 @@ export default function ClientProposalView({
           </div>
         )}
 
-        {/* Action Controls for Pending Proposals */}
-        {proposalStatus === 'pending' && (
+        {/* Action Controls for Active Proposals */}
+        {(proposalStatus === 'pending' || proposalStatus === 'sent' || proposalStatus === 'draft') && (
           <div className="bg-white rounded-3xl p-6 border border-maroon/20 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <h3 className="font-serif text-lg font-bold text-gray-900 uppercase tracking-widest">Review Official Proposal Quote</h3>
@@ -183,36 +225,17 @@ export default function ClientProposalView({
 
         {/* Main Proposal Invoice HTML Display */}
         <div className="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden flex justify-center p-4 sm:p-8">
-          <PdfProposalTemplate
-            name={client.packageName || 'Custom Wedding Package'}
-            days={
-              (inquiry?.customDetails?.days || []).map((d) => ({
-                title: d.title,
-                image: (d as any).image || '',
-                items: d.items,
-              })).length > 0
-                ? (inquiry?.customDetails?.days || []).map((d) => ({
-                    title: d.title,
-                    image: (d as any).image || '',
-                    items: d.items,
-                  }))
-                : [
-                    {
-                      title: 'Wedding Ceremony & Celebrations',
-                      image: '',
-                      items: [
-                        { resourceId: resources[0]?.id || '', qty: 1 },
-                        { resourceId: resources[1]?.id || '', qty: 1 },
-                      ],
-                    },
-                  ]
-            }
-            addons={inquiry?.customDetails?.addons || []}
-            autoPrice={client.totalAmount || inquiry?.customDetails?.totalPrice || 0}
-            finalPrice={client.totalAmount || inquiry?.customDetails?.totalPrice || 0}
-            resources={resources}
-            addonsList={addonsList}
-          />
+          <div ref={pdfTemplateRef} className="bg-white select-none">
+            <PdfProposalTemplate
+              name={client.packageName || 'Custom Wedding Package'}
+              days={((client.customDetails || inquiry?.customDetails)?.days || []).map((d) => ({ ...d, image: d.image || '' }))}
+              addons={(client.customDetails || inquiry?.customDetails)?.addons || []}
+              autoPrice={client.totalAmount || (client.customDetails || inquiry?.customDetails)?.totalPrice || 0}
+              finalPrice={client.totalAmount || (client.customDetails || inquiry?.customDetails)?.totalPrice || 0}
+              resources={resources}
+              addonsList={addonsList}
+            />
+          </div>
         </div>
 
         {/* Footer */}
@@ -233,19 +256,20 @@ export default function ClientProposalView({
               By confirming, you accept the quote of <strong className="text-maroon">₹{formatPrice(client.totalAmount)}/-</strong> for {client.packageName}.
               Your confirmation timestamp will be officially recorded.
             </p>
-            <div className="flex gap-3">
+            <div className="flex items-center justify-center gap-3 pt-2">
               <button
                 onClick={() => setShowAcceptModal(false)}
-                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs uppercase tracking-widest py-3.5 rounded-xl transition-colors cursor-pointer"
+                className="px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleRespond('accept')}
                 disabled={isSubmitting}
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded-xl transition-colors shadow-sm cursor-pointer disabled:opacity-50"
+                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer disabled:opacity-50 flex items-center gap-2"
               >
-                {isSubmitting ? 'Confirming...' : 'Yes, Accept & Confirm'}
+                <CheckCircle className="h-4 w-4" />
+                <span>{isSubmitting ? 'Confirming...' : 'Yes, Accept & Confirm'}</span>
               </button>
             </div>
           </div>
@@ -272,11 +296,11 @@ export default function ClientProposalView({
               className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl py-3 px-4 font-bold text-xs outline-none focus:border-maroon transition-colors mb-4"
             />
 
-            <div className="flex gap-3">
+            <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setShowRejectModal(false)}
-                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs uppercase tracking-widest py-3.5 rounded-xl transition-colors cursor-pointer"
+                className="px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -284,9 +308,10 @@ export default function ClientProposalView({
                 type="button"
                 disabled={isSubmitting || !rejectReason.trim()}
                 onClick={() => handleRespond('reject', rejectReason)}
-                className="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded-xl transition-colors shadow-sm cursor-pointer disabled:opacity-50"
+                className="px-6 py-3 bg-maroon hover:bg-maroon-dark text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
               >
-                {isSubmitting ? 'Sending...' : 'Send Revision Request'}
+                <Send className="h-4 w-4" />
+                <span>{isSubmitting ? 'Sending...' : 'Send Revision Request'}</span>
               </button>
             </div>
           </div>

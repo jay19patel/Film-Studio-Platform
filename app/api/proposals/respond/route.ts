@@ -18,13 +18,9 @@ export async function POST(request: Request) {
 
     const client = clients[idx];
 
-    // Validate token and 24-hour expiration
+    // Validate token
     if (!client.proposalToken || client.proposalToken !== token) {
-      return NextResponse.json({ error: 'Invalid or expired proposal token' }, { status: 403 });
-    }
-
-    if (client.proposalTokenExpiresAt && Date.now() > client.proposalTokenExpiresAt) {
-      return NextResponse.json({ error: 'This proposal link has expired after 24 hours. Please request a fresh link.' }, { status: 410 });
+      return NextResponse.json({ error: 'Invalid proposal token' }, { status: 403 });
     }
 
     // Process client response

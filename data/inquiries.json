@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "inq_1787337338918",
+    "name": "YouTube",
+    "email": "JUSTJAYY19@GMAIL.COM",
+    "phone": "+917069668308",
+    "address": "740 PARSI FALIYA",
+    "eventDate": "2026-08-21",
+    "specialNotes": "Test By Jay",
+    "packageName": "My Custom Wedding Package",
+    "type": "custom",
+    "customDetails": {
+      "days": [
+        {
+          "title": "Day 1 - Main Wedding Ceremony",
+          "image": "",
+          "items": [
+            {
+              "resourceId": "res_1",
+              "qty": 1
+            }
+          ]
+        }
+      ],
+      "addons": [
+        "addon_1"
+      ],
+      "totalPrice": 18000
+    },
+    "createdAt": "2026-08-21T18:35:38.918Z",
+    "status": "completed"
+  },
+  {
+    "id": "inq_1787338300660",
+    "name": "1212",
+    "email": "JUSTJAYY19@GMAIL.COM",
+    "phone": "+917069668308",
+    "address": "740 PARSI FALIYA",
+    "eventDate": "2026-08-21",
+    "specialNotes": "12",
+    "packageName": "My Custom Wedding Package",
+    "type": "custom",
+    "customDetails": {
+      "days": [
+        {
+          "title": "Day 1 - Main Wedding Ceremony",
+          "image": "",
+          "items": [
+            {
+              "resourceId": "res_1",
+              "qty": 1
+            }
+          ]
+        }
+      ],
+      "addons": [],
+      "totalPrice": 10000
+    },
+    "createdAt": "2026-08-21T18:51:40.660Z",
+    "status": "new"
+  },
+  {
+    "id": "inq_1787338312374",
+    "name": "YouTube",
+    "email": "JUSTJAYY19@GMAIL.COM",
+    "phone": "+917069668308",
+    "address": "740 PARSI FALIYA",
+    "eventDate": "2026-08-21",
+    "specialNotes": "h",
+    "packageName": "My Custom Wedding Package",
+    "type": "custom",
+    "customDetails": {
+      "days": [
+        {
+          "title": "Day 1 - Main Wedding Ceremony",
+          "image": "",
+          "items": [
+            {
+              "resourceId": "res_1",
+              "qty": 1
+            }
+          ]
+        }
+      ],
+      "addons": [],
+      "totalPrice": 10000
+    },
+    "createdAt": "2026-08-21T18:51:52.374Z",
+    "status": "new"
+  },
+  {
+    "id": "inq_1787338937966",
+    "name": "Jay Patel",
+    "email": "JUSTJAYY19@GMAIL.COM",
+    "phone": "+917069668308",
+    "address": "740 PARSI FALIYA",
+    "eventDate": "2026-08-21",
+    "specialNotes": "34567",
+    "packageName": "My Custom Wedding Package",
+    "type": "custom",
+    "customDetails": {
+      "days": [
+        {
+          "title": "Day 1 - Main Wedding Ceremony",
+          "image": "",
+          "items": [
+            {
+              "resourceId": "res_1",
+              "qty": 1
+            }
+          ]
+        }
+      ],
+      "addons": [
+        "addon_2"
+      ],
+      "totalPrice": 35000
+    },
+    "createdAt": "2026-08-21T19:02:17.966Z",
+    "status": "new"
+  }
+]
