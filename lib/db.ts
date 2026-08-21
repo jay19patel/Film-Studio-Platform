@@ -15,6 +15,21 @@ export interface PaymentTransaction {
   notes?: string;
 }
 
+export interface QuotationVersion {
+  id: string;
+  versionNumber: number;
+  packageName: string;
+  days: PackageDay[];
+  addons: string[];
+  totalPrice: number;
+  status: 'pending' | 'confirmed' | 'rejected';
+  clientNotes?: string;
+  createdAt: string;
+  confirmedAt?: string;
+  token?: string;
+  tokenExpiresAt?: number; // timestamp in ms (24h validity)
+}
+
 export interface Client {
   id: string;
   name: string;
@@ -28,6 +43,13 @@ export interface Client {
   totalAmount?: number;
   amountPaid?: number;
   paymentHistory?: PaymentTransaction[];
+  quotations?: QuotationVersion[];
+  activeQuotationId?: string;
+  proposalToken?: string;
+  proposalTokenExpiresAt?: number;
+  proposalStatus?: 'pending' | 'confirmed' | 'rejected';
+  proposalConfirmedAt?: string;
+  proposalClientNotes?: string;
 }
 
 export interface Resource {

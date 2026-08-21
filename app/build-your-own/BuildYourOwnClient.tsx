@@ -2,22 +2,28 @@
 
 import { useState, useRef } from 'react';
 import { Plus, Trash, Calendar, Users, FileDown, Sparkles, Award, Send } from 'lucide-react';
-import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Resource, Addon, PackageDay } from '@/lib/db';
 import PackageView from '@/components/PackageView';
+import PdfProposalTemplate from '@/components/PdfProposalTemplate';
 import InquiryModal from '@/components/InquiryModal';
+import { en } from '@/dictionaries/en';
+import { captureHtml2Canvas } from '@/lib/pdfHelper';
 
 interface BuildYourOwnClientProps {
   resources: Resource[];
   addonsList: Addon[];
+  dict?: typeof en;
 }
 
 export default function BuildYourOwnClient({
   resources,
   addonsList,
+  dict = en,
 }: BuildYourOwnClientProps) {
+  const d = dict.buildYourOwnPage;
+
   // Initialize with one default event day
   const [packageName, setPackageName] = useState('My Custom Wedding Package');
   const [days, setDays] = useState<PackageDay[]>([
@@ -32,6 +38,8 @@ export default function BuildYourOwnClient({
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const [hasSubmittedInquiry, setHasSubmittedInquiry] = useState(false);
+  const [downloadPending, setDownloadPending] = useState(false);
   const pdfTemplateRef = useRef<HTMLDivElement>(null);
 
   // Helper to dynamically match event images based on user's title
@@ -100,51 +108,65 @@ export default function BuildYourOwnClient({
     setDays((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const handleDayTitleChange = (idx: number, title: string) => {
-    setDays((prev) => {
-      const updated = [...prev];
-      updated[idx].title = title;
-      return updated;
-    });
+  const handleDayTitleChange = (idx: number, newTitle: string) => {
+    setDays((prev) =>
+      prev.map((day, i) => (i === idx ? { ...day, title: newTitle } : day))
+    );
   };
 
   const handleAddResourceToDay = (dayIdx: number) => {
-    setDays((prev) => {
-      const updated = [...prev];
-      const dayItems = updated[dayIdx].items;
-      
-      // Find the first resource that is NOT already in this day's items
-      const usedResourceIds = dayItems.map(item => item.resourceId);
-      const availableResource = resources.find(r => !usedResourceIds.includes(r.id))?.id || resources[0]?.id || '';
-      
-      updated[dayIdx].items = [...dayItems, { resourceId: availableResource, qty: 1 }];
-      return updated;
-    });
+    const defaultResId = resources[0]?.id || '';
+    setDays((prev) =>
+      prev.map((day, i) => {
+        if (i !== dayIdx) return day;
+        return {
+          ...day,
+          items: [...day.items, { resourceId: defaultResId, qty: 1 }],
+        };
+      })
+    );
   };
 
   const handleRemoveResourceFromDay = (dayIdx: number, itemIdx: number) => {
-    setDays((prev) => {
-      const updated = [...prev];
-      updated[dayIdx].items = updated[dayIdx].items.filter((_, i) => i !== itemIdx);
-      return updated;
-    });
+    setDays((prev) =>
+      prev.map((day, i) => {
+        if (i !== dayIdx) return day;
+        return {
+          ...day,
+          items: day.items.filter((_, j) => j !== itemIdx),
+        };
+      })
+    );
   };
 
   const handleResourceChange = (dayIdx: number, itemIdx: number, resourceId: string) => {
-    setDays((prev) => {
-      const updated = [...prev];
-      updated[dayIdx].items[itemIdx].resourceId = resourceId;
-      return updated;
-    });
+    setDays((prev) =>
+      prev.map((day, i) => {
+        if (i !== dayIdx) return day;
+        return {
+          ...day,
+          items: day.items.map((item, j) =>
+            j === itemIdx ? { ...item, resourceId } : item
+          ),
+        };
+      })
+    );
   };
 
   const handleQtyChange = (dayIdx: number, itemIdx: number, change: number) => {
-    setDays((prev) => {
-      const updated = [...prev];
-      const newQty = Math.max(1, updated[dayIdx].items[itemIdx].qty + change);
-      updated[dayIdx].items[itemIdx].qty = newQty;
-      return updated;
-    });
+    setDays((prev) =>
+      prev.map((day, i) => {
+        if (i !== dayIdx) return day;
+        return {
+          ...day,
+          items: day.items.map((item, j) => {
+            if (j !== itemIdx) return item;
+            const newQty = Math.max(1, item.qty + change);
+            return { ...item, qty: newQty };
+          }),
+        };
+      })
+    );
   };
 
   const handleToggleAddon = (addonId: string) => {
@@ -153,22 +175,16 @@ export default function BuildYourOwnClient({
     );
   };
 
-  // Standalone PDF generation — no inquiry required
+  // PDF Generation function using safe captureHtml2Canvas
   const handleDownloadPdf = async () => {
     setIsPdfGenerating(true);
     try {
-      // Wait for render
       await new Promise((resolve) => setTimeout(resolve, 500));
       
       const element = pdfTemplateRef.current;
       if (!element) return;
 
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      });
+      const canvas = await captureHtml2Canvas(element);
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
@@ -196,6 +212,26 @@ export default function BuildYourOwnClient({
     }
   };
 
+  // Trigger PDF download after filling out inquiry form if required
+  const handlePdfButtonClick = () => {
+    if (hasSubmittedInquiry) {
+      handleDownloadPdf();
+    } else {
+      setDownloadPending(true);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleInquirySuccess = () => {
+    setHasSubmittedInquiry(true);
+    if (downloadPending) {
+      setDownloadPending(false);
+      setTimeout(() => {
+        handleDownloadPdf();
+      }, 500);
+    }
+  };
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN').format(price);
   };
@@ -209,7 +245,7 @@ export default function BuildYourOwnClient({
         {/* Name Title card */}
         <div className="card-elevated rounded-3xl p-6 md:p-8">
           <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-2.5">
-            Wedding Package Title
+            {d.packageNameLabel}
           </label>
           <input
             type="text"
@@ -225,7 +261,7 @@ export default function BuildYourOwnClient({
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-serif font-bold text-neutral-900 flex items-center gap-2">
               <Calendar className="h-5 w-5 text-maroon" />
-              Ceremony Schedule ({days.length})
+              {d.eventDaysSection} ({days.length})
             </h2>
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -233,7 +269,7 @@ export default function BuildYourOwnClient({
               onClick={handleAddDay}
               className="bg-maroon/5 text-maroon hover:bg-maroon/10 font-bold text-xs md:text-sm px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 border border-maroon/20 cursor-pointer"
             >
-              <Plus className="h-4 w-4" /> Add Event Day
+              <Plus className="h-4 w-4" /> {d.addDayBtn}
             </motion.button>
           </div>
 
@@ -361,7 +397,7 @@ export default function BuildYourOwnClient({
         <div className="card-elevated rounded-3xl p-6 md:p-8">
           <h2 className="text-base font-serif font-bold text-neutral-900 flex items-center gap-2 mb-4">
             <Sparkles className="h-5 w-5 text-maroon" />
-            Add Deliverables
+            {d.deliverablesSection}
           </h2>
           
           <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
@@ -403,7 +439,7 @@ export default function BuildYourOwnClient({
         <div className="card-elevated rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden">
           
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-500 block mb-2">
-            Quote Investment
+            {d.totalEstimate}
           </span>
 
           {/* Pricing ribbon */}
@@ -412,31 +448,20 @@ export default function BuildYourOwnClient({
           </div>
 
           <div className="space-y-3">
-            {/* Download PDF Button — Standalone, no inquiry required */}
+            {/* Direct Download PDF Button */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleDownloadPdf}
               disabled={isPdfGenerating}
-              className="w-full btn-maroon py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-maroon py-4 text-sm font-bold tracking-wide shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <FileDown className="h-5 w-5" />
-              {isPdfGenerating ? 'Generating...' : 'Download PDF Quote'}
-            </motion.button>
-
-            {/* Submit Inquiry Button */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setIsModalOpen(true)}
-              className="w-full btn-outline py-4"
-            >
-              <Send className="h-4.5 w-4.5 text-maroon" />
-              Submit Inquiry to Studio
+              {isPdfGenerating ? d.downloadingPdf : d.downloadPdf}
             </motion.button>
 
             <p className="text-[10px] text-neutral-500 text-center font-medium leading-relaxed">
-              * Download a free PDF quote or submit an inquiry for our team to follow up.
+              * Instantly download your clean PDF proposal quote.
             </p>
           </div>
         </div>
@@ -453,20 +478,20 @@ export default function BuildYourOwnClient({
           addons: selectedAddons,
           totalPrice,
         }}
+        dict={dict.inquiryModal}
       />
 
-      {/* Hidden container specifically formatted for A4 PDF Quote capture in Light Theme */}
-      <div className="absolute left-[-9999px] top-0 w-[800px] bg-white">
-        <div ref={pdfTemplateRef} className="bg-white p-10 select-none">
-          <PackageView
+      {/* Hidden container specifically formatted for Invoice-style A4 PDF Quote capture */}
+      <div className="absolute left-[-9999px] top-0 bg-white">
+        <div ref={pdfTemplateRef} className="bg-white select-none">
+          <PdfProposalTemplate
             name={packageName}
-            days={daysWithImages}
+            days={days}
             addons={selectedAddons}
             autoPrice={totalPrice}
             finalPrice={totalPrice}
             resources={resources}
             addonsList={addonsList}
-            isPdfView={true}
           />
         </div>
       </div>
@@ -476,10 +501,7 @@ export default function BuildYourOwnClient({
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white border border-gray-200 p-8 rounded-3xl shadow-2xl flex flex-col items-center justify-center text-center max-w-xs">
             <div className="w-10 h-10 border-4 border-maroon border-t-transparent rounded-full animate-spin mb-4" />
-            <h3 className="font-serif font-bold text-neutral-900 mb-1">Generating PDF Quote...</h3>
-            <p className="text-xs text-neutral-500 font-medium">
-              Please wait while we render your custom proposal.
-            </p>
+            <h3 className="font-serif font-bold text-neutral-900 mb-1">{d.downloadingPdf}</h3>
           </div>
         </div>
       )}

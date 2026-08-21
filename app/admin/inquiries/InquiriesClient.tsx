@@ -95,6 +95,8 @@ export default function InquiriesClient({
 
   const handlePromoteToClient = async (inq: Inquiry) => {
     try {
+      const calculatedAmount = inq.customDetails?.totalPrice || 0;
+
       const clientRes = await fetch('/api/clients', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -102,11 +104,11 @@ export default function InquiriesClient({
           name: inq.name,
           email: inq.email,
           phone: inq.phone,
-          address: inq.address,
+          address: inq.address || '',
           packageName: inq.packageName,
           status: 'onboarding',
           notes: inq.specialNotes || '',
-          totalAmount: 0,
+          totalAmount: calculatedAmount,
           amountPaid: 0,
         })
       });

@@ -30,6 +30,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const pathname = usePathname();
 
+  // Force English locale data attribute on HTML element when inside /admin
+  useEffect(() => {
+    document.documentElement.setAttribute('data-locale', 'en');
+    document.documentElement.lang = 'en';
+  }, [pathname]);
+
   // Guard routing - check if authenticated
   useEffect(() => {
     // If the path is /admin/login, we don't apply the sidebar/auth check wrapper
@@ -68,17 +74,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   };
 
-  const navLinks: SidebarLink[] = [
+  const crmNavLinks: SidebarLink[] = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Calendar', href: '/admin/calendar', icon: CalendarDays },
     { name: 'Client Inquiries', href: '/admin/inquiries', icon: Inbox },
-    { name: 'Clients', href: '/admin/clients', icon: User },
+    { name: 'Active Clients', href: '/admin/clients', icon: User },
+  ];
+
+  const catalogNavLinks: SidebarLink[] = [
     { name: 'Wedding Packages', href: '/admin/packages', icon: Package },
     { name: 'Crew Resources', href: '/admin/resources', icon: CalendarDays },
     { name: 'Physical Add-ons', href: '/admin/addons', icon: Gem },
     { name: 'Portfolio Showcase', href: '/admin/portfolio', icon: Camera },
     { name: 'Equipment Gear', href: '/admin/equipment', icon: Camera },
   ];
+
+  const allNavLinks = [...crmNavLinks, ...catalogNavLinks];
 
   // While checking auth, show a beautiful screen loading spinner
   if (isAuthenticated === null) {
@@ -109,14 +120,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </Link>
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="text-neutral-500 hover:text-maroon p-1"
+          className="text-neutral-500 hover:text-maroon p-1 cursor-pointer"
         >
           {isMobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </header>
 
       {/* Desktop Sidebar Panel */}
-      <aside className="hidden md:flex md:w-64 bg-white text-neutral-600 flex-col flex-shrink-0 border-r border-gray-200 sticky top-0 h-screen shadow-sm">
+      <aside className="hidden md:flex md:w-64 bg-white text-neutral-600 flex-col flex-shrink-0 border-r border-gray-200 sticky top-0 h-screen shadow-sm overflow-y-auto">
         {/* Brand */}
         <div className="p-6 border-b border-gray-100 flex items-center gap-2">
           <div className="bg-maroon text-white p-2 rounded-xl">
@@ -125,36 +136,68 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <span className="font-serif text-xl tracking-widest uppercase font-bold text-neutral-900">CamBuddy</span>
         </div>
 
-
         {/* Sidebar Nav links */}
-        <nav className="flex-grow p-4 space-y-1">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                  isActive
-                    ? 'bg-maroon/5 text-maroon border-l-2 border-maroon'
-                    : 'text-neutral-500 hover:bg-gray-50 hover:text-neutral-900'
-                }`}
-              >
-                <Icon className="h-4.5 w-4.5" />
-                {link.name}
-              </Link>
-            );
-          })}
+        <nav className="flex-grow p-4 space-y-6">
+          <div>
+            <div className="px-3 pb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">
+              CRM & Leads
+            </div>
+            <div className="space-y-1">
+              {crmNavLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                      isActive
+                        ? 'bg-maroon/5 text-maroon border-l-2 border-maroon'
+                        : 'text-neutral-500 hover:bg-gray-50 hover:text-neutral-900'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <div className="px-3 pb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">
+              Studio Operations
+            </div>
+            <div className="space-y-1">
+              {catalogNavLinks.map((link) => {
+                const Icon = link.icon;
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                      isActive
+                        ? 'bg-maroon/5 text-maroon border-l-2 border-maroon'
+                        : 'text-neutral-500 hover:bg-gray-50 hover:text-neutral-900'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </nav>
 
         {/* Logout button */}
         <div className="p-4 border-t border-gray-100">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-neutral-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-neutral-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
           >
-            <LogOut className="h-4.5 w-4.5" />
+            <LogOut className="h-4 w-4" />
             Sign Out
           </button>
         </div>
@@ -167,7 +210,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileOpen(false)} />
           
           {/* Drawer card */}
-          <div className="relative flex flex-col w-64 max-w-xs bg-white text-neutral-600 h-full z-10 animate-slideRight">
+          <div className="relative flex flex-col w-64 max-w-xs bg-white text-neutral-600 h-full z-10 animate-slideRight overflow-y-auto">
             <div className="p-6 border-b border-gray-100 flex items-center justify-between">
               <span className="font-serif text-lg tracking-widest uppercase font-bold text-neutral-900">CamBuddy</span>
               <button onClick={() => setIsMobileOpen(false)} className="text-neutral-400 hover:text-maroon">
@@ -175,26 +218,60 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </button>
             </div>
             
-            <nav className="flex-grow p-4 space-y-1">
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMobileOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                      isActive
-                        ? 'bg-maroon/5 text-maroon border-l-2 border-maroon'
-                        : 'text-neutral-500 hover:bg-gray-50 hover:text-neutral-900'
-                    }`}
-                  >
-                    <Icon className="h-4.5 w-4.5" />
-                    {link.name}
-                  </Link>
-                );
-              })}
+            <nav className="flex-grow p-4 space-y-6">
+              <div>
+                <div className="px-3 pb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">
+                  CRM & Leads
+                </div>
+                <div className="space-y-1">
+                  {crmNavLinks.map((link) => {
+                    const Icon = link.icon;
+                    const isActive = pathname === link.href;
+                    return (
+                      <Link
+                        key={link.name}
+                        href={link.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                          isActive
+                            ? 'bg-maroon/5 text-maroon border-l-2 border-maroon'
+                            : 'text-neutral-500 hover:bg-gray-50 hover:text-neutral-900'
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {link.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <div className="px-3 pb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">
+                  Studio Operations
+                </div>
+                <div className="space-y-1">
+                  {catalogNavLinks.map((link) => {
+                    const Icon = link.icon;
+                    const isActive = pathname === link.href;
+                    return (
+                      <Link
+                        key={link.name}
+                        href={link.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                          isActive
+                            ? 'bg-maroon/5 text-maroon border-l-2 border-maroon'
+                            : 'text-neutral-500 hover:bg-gray-50 hover:text-neutral-900'
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {link.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
             </nav>
             
             <div className="p-4 border-t border-gray-100">
@@ -203,9 +280,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   setIsMobileOpen(false);
                   handleLogout();
                 }}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-neutral-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-neutral-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
               >
-                <LogOut className="h-4.5 w-4.5" />
+                <LogOut className="h-4 w-4" />
                 Sign Out
               </button>
             </div>
@@ -218,7 +295,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Top Header bar for Desktop */}
         <header className="hidden md:flex bg-white border-b border-gray-100 h-16 items-center justify-between px-8 sticky top-0 z-30 shadow-sm">
           <h2 className="font-serif text-lg tracking-widest uppercase font-bold text-neutral-900">
-            {navLinks.find((l) => pathname === l.href)?.name || 'Admin Panel'}
+            {allNavLinks.find((l: SidebarLink) => pathname === l.href)?.name || 'Admin Panel'}
           </h2>
           <div className="flex items-center gap-4">
             <span className="text-[10px] bg-maroon/5 text-maroon font-bold border border-maroon/20 px-3 py-1 rounded-md uppercase tracking-widest">

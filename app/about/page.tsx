@@ -1,5 +1,8 @@
 import { Mail, Phone, MapPin, Camera, Video, Users, Sparkles, Heart, Film } from 'lucide-react';
 import Image from 'next/image';
+import { getDictionary } from '@/lib/dictionaries';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'About Us | CamBuddy',
@@ -30,7 +33,9 @@ const crew = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const dict = await getDictionary();
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -41,10 +46,10 @@ export default function AboutPage() {
             <Camera className="h-6 w-6 text-maroon" />
           </div>
           <h1 className="font-serif text-5xl md:text-7xl font-black text-neutral-900 uppercase tracking-tight mb-6">
-            Meet The <span className="text-maroon">Crew</span>
+            {dict.aboutPage.title} <span className="text-maroon">{dict.aboutPage.titleAccent}</span>
           </h1>
           <p className="text-neutral-500 text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed">
-            We are a passionate team of storytellers, visual artists, and memory preservers. Our goal is to craft breathtaking cinematic films and candid photography that you'll cherish forever.
+            {dict.aboutPage.subtitle}
           </p>
         </div>
       </section>
@@ -89,23 +94,23 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <h2 className="font-serif text-3xl md:text-5xl font-black uppercase tracking-widest mb-16">
-            What We <span className="text-maroon-300">Do Best</span>
+            {dict.aboutPage.whatWeDoTitle} <span className="text-maroon-300">{dict.aboutPage.whatWeDoAccent}</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-16">
             <div className="flex flex-col items-center">
               <Camera className="h-10 w-10 mb-5 text-maroon-200" />
-              <h4 className="font-bold text-sm tracking-widest uppercase mb-2">Candid Photography</h4>
-              <p className="text-maroon-100 text-xs leading-relaxed max-w-xs text-center font-medium opacity-80">Capturing unscripted, natural moments and raw emotions flawlessly.</p>
+              <h4 className="font-bold text-sm tracking-widest uppercase mb-2">{dict.aboutPage.candidTitle}</h4>
+              <p className="text-maroon-100 text-xs leading-relaxed max-w-xs text-center font-medium opacity-80">{dict.aboutPage.candidDesc}</p>
             </div>
             <div className="flex flex-col items-center">
               <Video className="h-10 w-10 mb-5 text-maroon-200" />
-              <h4 className="font-bold text-sm tracking-widest uppercase mb-2">Cinematic Films</h4>
-              <p className="text-maroon-100 text-xs leading-relaxed max-w-xs text-center font-medium opacity-80">Creating movie-like wedding trailers with premium color grading.</p>
+              <h4 className="font-bold text-sm tracking-widest uppercase mb-2">{dict.aboutPage.filmsTitle}</h4>
+              <p className="text-maroon-100 text-xs leading-relaxed max-w-xs text-center font-medium opacity-80">{dict.aboutPage.filmsDesc}</p>
             </div>
             <div className="flex flex-col items-center">
               <Users className="h-10 w-10 mb-5 text-maroon-200" />
-              <h4 className="font-bold text-sm tracking-widest uppercase mb-2">Pre-Wedding Shoots</h4>
-              <p className="text-maroon-100 text-xs leading-relaxed max-w-xs text-center font-medium opacity-80">Stylized, romantic, and breathtaking conceptual couple shoots.</p>
+              <h4 className="font-bold text-sm tracking-widest uppercase mb-2">{dict.aboutPage.prewedTitle}</h4>
+              <p className="text-maroon-100 text-xs leading-relaxed max-w-xs text-center font-medium opacity-80">{dict.aboutPage.prewedDesc}</p>
             </div>
           </div>
         </div>
@@ -120,9 +125,9 @@ export default function AboutPage() {
             <div className="text-center mb-12 relative z-10">
               <Sparkles className="h-8 w-8 text-maroon mx-auto mb-4" />
               <h2 className="font-serif text-3xl md:text-5xl font-black text-neutral-900 uppercase tracking-widest mb-4">
-                Let's <span className="text-maroon">Connect</span>
+                {dict.aboutPage.connectTitle} <span className="text-maroon">{dict.aboutPage.connectAccent}</span>
               </h2>
-              <p className="text-neutral-500 text-sm font-medium">Have a project in mind? We'd love to hear from you.</p>
+              <p className="text-neutral-500 text-sm font-medium">{dict.aboutPage.connectSubtitle}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
@@ -134,7 +139,7 @@ export default function AboutPage() {
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
-                    <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-1">Studio Location</h5>
+                    <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-1">{dict.aboutPage.locationTitle}</h5>
                     <p className="text-sm font-semibold text-neutral-800">
                       123 Photography Lane, Creative District<br />
                       Ahmedabad, Gujarat 380001
@@ -147,7 +152,7 @@ export default function AboutPage() {
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
-                    <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-1">Phone & WhatsApp</h5>
+                    <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-1">{dict.aboutPage.phoneTitle}</h5>
                     <a href="tel:+919876543210" className="text-sm font-semibold text-neutral-800 hover:text-maroon transition-colors">
                       +91 98765 43210
                     </a>
@@ -159,7 +164,7 @@ export default function AboutPage() {
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
-                    <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-1">Email Address</h5>
+                    <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-1">{dict.aboutPage.emailTitle}</h5>
                     <a href="mailto:hello@cambuddy.com" className="text-sm font-semibold text-neutral-800 hover:text-maroon transition-colors">
                       hello@cambuddy.com
                     </a>
@@ -169,7 +174,7 @@ export default function AboutPage() {
 
               {/* Social Media */}
               <div className="space-y-6 md:pl-12 md:border-l border-gray-100">
-                <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-6">Follow Our Journey</h5>
+                <h5 className="font-bold text-xs uppercase tracking-widest text-gray-400 mb-6">{dict.aboutPage.followTitle}</h5>
                 
                 <a href="#" className="flex items-center gap-4 group">
                   <div className="p-3 bg-pink-50 rounded-xl border border-pink-100 text-pink-600 group-hover:scale-110 transition-transform">

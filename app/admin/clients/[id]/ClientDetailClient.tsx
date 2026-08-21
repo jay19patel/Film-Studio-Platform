@@ -1,10 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Client, ClientEvent, Inquiry, Resource, Addon } from '@/lib/db';
-import { Mail, Phone, MapPin, Calendar, Clock, Edit, Trash2, Plus, X, Briefcase, ArrowLeft, IndianRupee, CreditCard, Sparkles, FileText, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Calendar, Clock, Edit, Trash2, Plus, X, Briefcase, ArrowLeft, IndianRupee, CreditCard, Sparkles, FileText, CheckCircle, FileDown, Share2, Link2, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import jsPDF from 'jspdf';
+import { captureHtml2Canvas } from '@/lib/pdfHelper';
+import PdfProposalTemplate from '@/components/PdfProposalTemplate';
 
 interface ClientDetailClientProps {
   initialClient: Client;
@@ -15,6 +18,8 @@ interface ClientDetailClientProps {
 
 export default function ClientDetailClient({ initialClient, inquiry, resources, addons }: ClientDetailClientProps) {
   const [client, setClient] = useState<Client>(initialClient);
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const pdfTemplateRef = useRef<HTMLDivElement>(null);
   
   // Forms
   const [editingDetails, setEditingDetails] = useState(false);
@@ -38,7 +43,73 @@ export default function ClientDetailClient({ initialClient, inquiry, resources, 
 
   // Formatting helpers
   const formatMoney = (amount: number = 0) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+
+  const handleDownloadPdf = async () => {
+    setIsPdfGenerating(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const element = pdfTemplateRef.current;
+      if (!element) return;
+
+      const canvas = await captureHtml2Canvas(element);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`CamBuddy_${client.name.replace(/\s+/g, '_')}_Quotation.pdf`);
+      toast.success('Official PDF Quotation downloaded!');
+    } catch (err) {
+      toast.error('Failed to generate PDF quotation');
+    } finally {
+      setIsPdfGenerating(false);
+    }
+  };
   
+  const [isGeneratingLink, setIsGeneratingLink] = useState(false);
+
+  const handleGenerateShareLink = async () => {
+    setIsGeneratingLink(true);
+    try {
+      const res = await fetch('/api/proposals/generate-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId: client.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to generate link');
+
+      await navigator.clipboard.writeText(data.shareUrl);
+      setClient((prev) => ({
+        ...prev,
+        proposalToken: data.token,
+        proposalTokenExpiresAt: data.expiresAt,
+        proposalStatus: prev.proposalStatus === 'confirmed' ? 'confirmed' : 'pending',
+      }));
+      toast.success('24-Hour Proposal Link copied to clipboard!');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to generate proposal link');
+    } finally {
+      setIsGeneratingLink(false);
+    }
+  };
+
+  const currentProposalStatus = client.proposalStatus || 'pending';
+  const isConfirmed = currentProposalStatus === 'confirmed';
+
   // Computed values
   const computedAmountPaid = (client.paymentHistory || []).reduce((sum, tx) => sum + tx.amount, 0);
   const balance = (client.totalAmount || 0) - computedAmountPaid;
@@ -344,11 +415,175 @@ export default function ClientDetailClient({ initialClient, inquiry, resources, 
               </div>
             )}
           </div>
+
+          {/* Approved Proposal Quotation Card (Placed under Contact Details) */}
+          <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 space-y-5">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+              <h3 className="font-serif text-lg font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                <FileText className="h-5 w-5 text-maroon" /> Proposal Quotation
+              </h3>
+
+              {isConfirmed ? (
+                <span className="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-md text-[10px] uppercase flex items-center gap-1">
+                  <Lock className="h-3 w-3" /> Confirmed & Locked
+                </span>
+              ) : currentProposalStatus === 'rejected' ? (
+                <span className="bg-rose-100 text-rose-800 font-bold px-2.5 py-1 rounded-md text-[10px] uppercase">
+                  Revision Requested
+                </span>
+              ) : (
+                <span className="bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-md text-[10px] uppercase">
+                  Pending Client Review
+                </span>
+              )}
+            </div>
+
+            {/* Confirmation & Status Notice */}
+            {isConfirmed && client.proposalConfirmedAt && (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 p-4 rounded-2xl text-xs font-bold space-y-1">
+                <div className="flex items-center gap-1.5 text-emerald-700 uppercase text-[10px] tracking-widest font-extrabold">
+                  <CheckCircle className="h-4 w-4 text-emerald-600" /> Quotation Confirmed
+                </div>
+                <p className="text-gray-700 font-medium">Accepted on: <strong className="text-gray-900">{client.proposalConfirmedAt}</strong></p>
+                <p className="text-[11px] text-emerald-800 font-medium">This quotation is now permanently locked and cannot be edited.</p>
+              </div>
+            )}
+
+            {currentProposalStatus === 'rejected' && client.proposalClientNotes && (
+              <div className="bg-rose-50 border border-rose-200 text-rose-900 p-4 rounded-2xl text-xs font-medium space-y-1">
+                <div className="flex items-center gap-1 text-rose-700 uppercase text-[10px] tracking-widest font-bold">
+                  Client Revision Remarks:
+                </div>
+                <p className="text-rose-900 font-semibold italic">&ldquo;{client.proposalClientNotes}&rdquo;</p>
+              </div>
+            )}
+
+            {/* Quick Actions Bar */}
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={handleGenerateShareLink}
+                disabled={isGeneratingLink}
+                className="w-full bg-maroon/5 hover:bg-maroon hover:text-white text-maroon font-bold text-xs uppercase tracking-widest py-3 px-3 rounded-xl transition-all border border-maroon/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                title="Generate & Copy 24-Hour Secure Share Link"
+              >
+                <Share2 className="h-4 w-4" />
+                <span>{isGeneratingLink ? 'Generating...' : 'Copy 24h Link'}</span>
+              </button>
+
+              <button
+                onClick={handleDownloadPdf}
+                disabled={isPdfGenerating}
+                className="w-full bg-gray-100 hover:bg-gray-800 hover:text-white text-gray-700 font-bold text-xs uppercase tracking-widest py-3 px-3 rounded-xl transition-all border border-gray-200 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                title="Download Official PDF Quotation"
+              >
+                <FileDown className="h-4 w-4" />
+                <span>{isPdfGenerating ? 'Generating...' : 'Download PDF'}</span>
+              </button>
+            </div>
+
+            <div className="space-y-4 pt-2">
+              <div className="flex items-center justify-between bg-gray-50 p-3.5 rounded-2xl border border-gray-100">
+                <div className="flex items-center gap-2.5">
+                  <span className={`text-[10px] font-bold px-2 py-1 rounded-lg border uppercase ${
+                    inquiry?.type === 'custom'
+                      ? 'bg-maroon-50 text-maroon-800 border-maroon-200'
+                      : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                  }`}>
+                    {inquiry?.type === 'custom' ? 'Custom Package' : 'Standard Package'}
+                  </span>
+                  <span className="text-sm font-bold text-gray-900">{client.packageName}</span>
+                </div>
+                <span className="text-sm font-black text-maroon">{formatMoney(client.totalAmount)}</span>
+              </div>
+
+              {inquiry?.customDetails && (
+                <div className="bg-gray-50 border border-gray-150 rounded-2xl p-4 space-y-4">
+                  <h5 className="font-serif text-xs font-bold text-gray-900 border-b border-gray-200 pb-2">
+                    Quotation Coverage Breakdown
+                  </h5>
+
+                  <div className="space-y-3">
+                    {inquiry.customDetails.days.map((day, idx) => (
+                      <div key={idx} className="bg-white border border-gray-200 p-3 rounded-xl">
+                        <span className="inline-block bg-maroon-50 border border-maroon-200 text-maroon-800 text-[10px] uppercase font-bold px-2 py-0.5 rounded-md mb-1.5">
+                          {day.title}
+                        </span>
+                        <ul className="space-y-1 text-xs text-gray-600 font-medium">
+                          {day.items.map((item, itemIdx) => (
+                            <li key={itemIdx} className="flex justify-between">
+                              <span>{getResourceName(item.resourceId)}</span>
+                              <span className="font-bold text-gray-900">Qty: {item.qty}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                  {inquiry.customDetails.addons.length > 0 && (
+                    <div className="pt-3 border-t border-gray-200 space-y-1.5">
+                      <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                        <Sparkles className="h-3.5 w-3.5 text-maroon" /> Included Deliverables
+                      </h6>
+                      <ul className="grid grid-cols-1 gap-1 pl-4 list-disc text-xs text-gray-700 font-semibold">
+                        {inquiry.customDetails.addons.map((addonId) => (
+                          <li key={addonId}>{getAddonName(addonId)}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {inquiry?.specialNotes && (
+                <div className="bg-blue-50 border border-blue-100 text-blue-900 text-xs font-medium p-3.5 rounded-xl">
+                  <strong className="block text-[10px] uppercase tracking-widest mb-1 text-blue-500">Initial Request Notes</strong>
+                  {inquiry.specialNotes}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Hidden Container for PDF Proposal Template capture */}
+        <div className="absolute left-[-9999px] top-0 bg-white">
+          <div ref={pdfTemplateRef} className="bg-white select-none">
+            <PdfProposalTemplate
+              name={client.packageName || 'Wedding Package Proposal'}
+              days={
+                (inquiry?.customDetails?.days || []).map((d) => ({
+                  title: d.title,
+                  image: (d as any).image || '',
+                  items: d.items,
+                })).length > 0
+                  ? (inquiry?.customDetails?.days || []).map((d) => ({
+                      title: d.title,
+                      image: (d as any).image || '',
+                      items: d.items,
+                    }))
+                  : [
+                      {
+                        title: 'Wedding Ceremony & Celebrations',
+                        image: '',
+                        items: [
+                          { resourceId: resources[0]?.id || '', qty: 1 },
+                          { resourceId: resources[1]?.id || '', qty: 1 },
+                        ],
+                      },
+                    ]
+              }
+              addons={inquiry?.customDetails?.addons || []}
+              autoPrice={client.totalAmount || inquiry?.customDetails?.totalPrice || 0}
+              finalPrice={client.totalAmount || inquiry?.customDetails?.totalPrice || 0}
+              resources={resources}
+              addonsList={addons}
+            />
+          </div>
         </div>
 
         {/* Right Column: Events / Itinerary */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 h-full">
+          <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6">
             <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
               <h3 className="font-serif text-lg font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-maroon" /> Event Itinerary
@@ -396,80 +631,6 @@ export default function ClientDetailClient({ initialClient, inquiry, resources, 
               </div>
             )}
           </div>
-
-          {/* Original Inquiry Requirements (Read-only) */}
-          {inquiry && (
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 mt-6">
-              <h3 className="font-serif text-lg font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2 mb-6">
-                <FileText className="h-5 w-5 text-gray-400" /> Original Requirements
-              </h3>
-
-              <div className="space-y-6">
-                <div className="flex items-center gap-3">
-                  <span className={`text-[10px] font-bold px-2 py-1 rounded-lg border uppercase ${
-                    inquiry.type === 'custom'
-                      ? 'bg-maroon-50 text-maroon-800 border-maroon-200'
-                      : 'bg-gray-100 text-gray-700 border-gray-200'
-                  }`}>
-                    {inquiry.type === 'custom' ? 'Custom Build' : 'Predefined Package'}
-                  </span>
-                  <span className="text-sm font-bold text-gray-900">{inquiry.packageName}</span>
-                </div>
-
-                {inquiry.type === 'custom' && inquiry.customDetails && (
-                  <div className="bg-gray-50 border border-gray-150 rounded-2xl p-5 space-y-5">
-                    <h5 className="font-serif text-sm font-bold text-gray-900 border-b border-gray-200 pb-2 flex justify-between">
-                      <span>Custom Quote Baseline</span>
-                      <span className="text-maroon">₹{formatMoney(inquiry.customDetails.totalPrice)}</span>
-                    </h5>
-
-                    <div className="space-y-4">
-                      <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <Calendar className="h-4 w-4" /> Requested Coverage
-                      </h6>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {inquiry.customDetails.days.map((day, idx) => (
-                          <div key={idx} className="bg-white border border-gray-200 p-3 rounded-xl">
-                            <span className="inline-block bg-maroon-50 border border-maroon-200 text-maroon-800 text-[10px] uppercase font-bold px-2 py-0.5 rounded-md mb-2">
-                              {day.title}
-                            </span>
-                            <ul className="space-y-1 text-xs text-gray-600 font-medium">
-                              {day.items.map((item, itemIdx) => (
-                                <li key={itemIdx} className="flex justify-between">
-                                  <span>{getResourceName(item.resourceId)}</span>
-                                  <span className="font-bold text-gray-900">Qty: {item.qty}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {inquiry.customDetails.addons.length > 0 && (
-                      <div className="pt-4 border-t border-gray-200 space-y-2">
-                        <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                          <Sparkles className="h-4 w-4" /> Requested Deliverables
-                        </h6>
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pl-5 list-disc text-xs text-gray-700 font-semibold">
-                          {inquiry.customDetails.addons.map(addonId => (
-                            <li key={addonId}>{getAddonName(addonId)}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {inquiry.specialNotes && (
-                  <div className="bg-blue-50 border border-blue-100 text-blue-900 text-xs font-medium p-4 rounded-xl">
-                    <strong className="block text-[10px] uppercase tracking-widest mb-1 text-blue-500">Initial Notes</strong>
-                    {inquiry.specialNotes}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </div>
 
       </div>

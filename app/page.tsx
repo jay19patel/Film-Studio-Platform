@@ -1,16 +1,18 @@
 import Link from 'next/link';
 import { Camera, Sparkles, Sliders, ChevronRight, Film, Heart, Star } from 'lucide-react';
 import { getPackages, getResources, getAddons } from '@/lib/db';
+import { getDictionary } from '@/lib/dictionaries';
 import PackageCard from '@/components/PackageCard';
 
 // Force dynamic page rendering to ensure fresh db reads
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const [packages, resources, addons] = await Promise.all([
+  const [packages, resources, addons, dict] = await Promise.all([
     getPackages(),
     getResources(),
     getAddons(),
+    getDictionary(),
   ]);
 
   // Filter only published packages
@@ -39,15 +41,15 @@ export default async function Home() {
           {/* Badge */}
           <div className="inline-flex items-center gap-1.5 bg-maroon/5 border border-maroon/20 px-4 py-1.5 rounded-full text-[10px] font-bold text-maroon uppercase tracking-widest mb-8 animate-slideDown">
             <Sparkles className="h-3.5 w-3.5" />
-            Luxury Wedding Photography & Films
+            {dict.home.hero.badge}
           </div>
           
           <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-900 tracking-tight leading-tight max-w-5xl mx-auto mb-6 animate-slideUp">
-            Capturing the Pure Poetry of Your <br/><span className="font-caveat text-maroon text-6xl sm:text-7xl md:text-8xl lg:text-9xl -mt-4 block font-normal tracking-normal lowercase">forever story</span>
+            {dict.home.hero.title1} <br/><span className="font-caveat text-maroon text-6xl sm:text-7xl md:text-8xl lg:text-9xl -mt-4 block font-normal tracking-normal lowercase">{dict.home.hero.title2}</span>
           </h1>
           
           <p className="text-sm sm:text-base md:text-lg text-neutral-600 max-w-2xl mx-auto mb-12 leading-relaxed font-light tracking-wide animate-slideUp stagger-2">
-            Handcrafted wedding proposal packages, combining high-end cinematic teams and premium photobooks. Customize any programs or build your own schedule.
+            {dict.home.hero.subtitle}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4.5 justify-center items-center animate-slideUp stagger-3">
@@ -55,14 +57,14 @@ export default async function Home() {
               href="#packages-list"
               className="w-full sm:w-auto btn-maroon"
             >
-              Explore Proposals
+              {dict.home.hero.cta}
             </a>
             <Link
               href="/build-your-own"
               className="w-full sm:w-auto btn-outline flex items-center justify-center gap-2"
             >
               <Sliders className="h-4 w-4" />
-              Build Your Own Package
+              {dict.home.hero.buildOwn}
             </Link>
           </div>
         </div>
@@ -74,13 +76,13 @@ export default async function Home() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-widest text-maroon block mb-2.5">
-              Ready-Made Configs
+              {dict.home.proposals.badge}
             </span>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight">
-              Our Signature Proposals
+              {dict.home.proposals.title}
             </h2>
             <p className="text-neutral-500 text-xs md:text-sm mt-2 max-w-xl font-medium leading-relaxed">
-              Exquisite multi-day packages designed to deliver full coverage for traditional ceremonies and cinematic movie features.
+              {dict.home.proposals.subtitle}
             </p>
           </div>
           
@@ -88,7 +90,7 @@ export default async function Home() {
             href="/build-your-own"
             className="hidden md:inline-flex items-center text-xs font-bold text-maroon hover:text-maroon-dark tracking-widest uppercase gap-1 group mt-4 md:mt-0"
           >
-            Design a custom proposal
+            {dict.home.proposals.customBtn}
             <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -97,22 +99,22 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {publishedPackages.map((pkg) => (
               <div key={pkg.id}>
-                <PackageCard pkg={pkg} resources={resources} addons={addons} />
+                <PackageCard pkg={pkg} resources={resources} addons={addons} dict={dict.packageCard} />
               </div>
             ))}
           </div>
         ) : (
           <div className="bg-gray-50 border border-gray-200 rounded-3xl p-12 text-center max-w-md mx-auto">
             <Camera className="h-10 w-10 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-serif font-bold text-gray-900 mb-1">No Packages Published</h3>
+            <h3 className="text-lg font-serif font-bold text-gray-900 mb-1">{dict.home.proposals.noPackagesTitle}</h3>
             <p className="text-gray-500 text-xs mb-6">
-              Our collection is being updated. Create a custom quote config!
+              {dict.home.proposals.noPackagesDesc}
             </p>
             <Link
               href="/build-your-own"
               className="btn-maroon text-xs uppercase tracking-wider inline-flex"
             >
-              Build Custom Quote
+              {dict.home.proposals.buildCustomBtn}
             </Link>
           </div>
         )}
@@ -123,10 +125,10 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <span className="text-[10px] font-bold text-maroon uppercase tracking-widest block mb-2.5">
-              The CamBuddy Craft
+              {dict.home.advantage.badge}
             </span>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900">
-              Why Couples Choose Our Lens
+              {dict.home.advantage.title}
             </h2>
           </div>
 
@@ -136,9 +138,9 @@ export default async function Home() {
               <div className="bg-maroon/10 text-maroon w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-maroon/20">
                 <Camera className="h-5.5 w-5.5" />
               </div>
-              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">State-of-the-Art Gear</h3>
+              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">{dict.home.advantage.box1Title}</h3>
               <p className="text-neutral-500 text-xs md:text-sm leading-relaxed font-light">
-                We capture in premium 4K HDR, utilizing mirrorless camera rigs, drone cinematography, and professional lighting kits.
+                {dict.home.advantage.box1Desc}
               </p>
             </div>
             
@@ -147,9 +149,9 @@ export default async function Home() {
               <div className="bg-maroon/10 text-maroon w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-maroon/20">
                 <Sparkles className="h-5.5 w-5.5" />
               </div>
-              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">Fine Art Color Grading</h3>
+              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">{dict.home.advantage.box2Title}</h3>
               <p className="text-neutral-500 text-xs md:text-sm leading-relaxed font-light">
-                Every photo and film frame undergoes extensive editorial color grading to manifest a classic, cinematic film texture.
+                {dict.home.advantage.box2Desc}
               </p>
             </div>
 
@@ -158,9 +160,9 @@ export default async function Home() {
               <div className="bg-maroon/10 text-maroon w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-maroon/20">
                 <Sliders className="h-5.5 w-5.5" />
               </div>
-              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">Custom Timelines</h3>
+              <h3 className="text-lg font-serif font-bold text-neutral-900 mb-3">{dict.home.advantage.box3Title}</h3>
               <p className="text-neutral-500 text-xs md:text-sm leading-relaxed font-light">
-                We appreciate individuality. Our interactive quote tools grant you absolute flexibility to coordinate crew sizes day-by-day.
+                {dict.home.advantage.box3Desc}
               </p>
             </div>
           </div>
@@ -179,17 +181,17 @@ export default async function Home() {
             <Star className="h-4 w-4 text-maroon fill-maroon" />
           </div>
           <h2 className="font-serif text-2xl md:text-4xl font-bold text-neutral-900 mb-4 tracking-tight">
-            Ready to Create Your <span className="text-maroon-gradient italic">Dream Wedding</span> Film?
+            {dict.home.ctaBanner.title} <span className="text-maroon-gradient italic">{dict.home.ctaBanner.titleAccent}</span> {dict.home.ctaBanner.titleEnd}
           </h2>
           <p className="text-neutral-600 text-sm max-w-lg mx-auto mb-8 font-light leading-relaxed">
-            Build a custom package in minutes with our interactive quote tool. Get instant pricing, download a PDF proposal, and connect with our team.
+            {dict.home.ctaBanner.subtitle}
           </p>
           <Link
             href="/build-your-own"
             className="btn-maroon text-base py-4 px-10"
           >
             <Sliders className="h-5 w-5" />
-            Start Building Your Package
+            {dict.home.ctaBanner.btn}
           </Link>
         </div>
       </section>

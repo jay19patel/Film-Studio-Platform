@@ -4,14 +4,16 @@ import Link from 'next/link';
 import { Sparkles, FileText, CheckCircle2, Sliders } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Package, Resource, Addon } from '@/lib/db';
+import { en } from '@/dictionaries/en';
 
 interface PackageCardProps {
   pkg: Package;
   resources: Resource[];
   addons: Addon[];
+  dict?: typeof en.packageCard;
 }
 
-export default function PackageCard({ pkg, resources, addons }: PackageCardProps) {
+export default function PackageCard({ pkg, resources, addons, dict = en.packageCard }: PackageCardProps) {
   // Resolve addon names included in this package
   const includedAddons = addons.filter((addon) => pkg.addons.includes(addon.id));
 
@@ -60,7 +62,7 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
         
         <div className="relative z-10 space-y-1">
           <span className="bg-white/90 text-neutral-900 text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-0.5 rounded-md inline-block shadow-sm">
-            {daysCount} {daysCount === 1 ? 'Event Day' : 'Event Days'}
+            {daysCount} {daysCount === 1 ? dict.eventDay : dict.eventDays}
           </span>
           <h3 className="font-serif text-2xl font-bold tracking-tight text-white drop-shadow-md">
             {pkg.name}
@@ -74,7 +76,7 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
         {/* Days Highlights Timeline */}
         <div className="space-y-3.5 mb-6 flex-grow relative pl-4 border-l border-gray-200">
           <span className="text-[10px] font-bold uppercase tracking-widest text-maroon block mb-1">
-            Program Timeline
+            {dict.programTimeline}
           </span>
           {pkg.days.map((day, i) => (
             <div key={i} className="relative group/item">
@@ -84,7 +86,7 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
                 <div>
                   <span className="font-bold text-neutral-900">{day.title}</span>
                   <span className="text-neutral-500 text-[10px] ml-1.5">
-                    ({day.items.reduce((sum, item) => sum + item.qty, 0)} crew)
+                    ({day.items.reduce((sum, item) => sum + item.qty, 0)} {dict.crew})
                   </span>
                 </div>
               </div>
@@ -97,7 +99,7 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
           <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4.5 mb-6">
             <span className="text-[10px] font-bold uppercase tracking-widest text-maroon flex items-center gap-1.5 mb-2.5">
               <Sparkles className="h-3.5 w-3.5" />
-              Physical Deliverables
+              {dict.physicalDeliverables}
             </span>
             <ul className="space-y-2">
               {includedAddons.slice(0, 3).map((addon) => (
@@ -108,7 +110,7 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
               ))}
               {includedAddons.length > 3 && (
                 <li className="text-[11px] text-maroon font-bold pl-5.5">
-                  + {includedAddons.length - 3} more items included
+                  + {includedAddons.length - 3} {dict.moreItems}
                 </li>
               )}
             </ul>
@@ -122,14 +124,14 @@ export default function PackageCard({ pkg, resources, addons }: PackageCardProps
             className="w-full btn-maroon flex items-center justify-center gap-1.5 shadow-md group"
           >
             <FileText className="h-4 w-4" />
-            View Full Proposal
+            {dict.viewProposal}
           </Link>
           <Link
             href="/build-your-own"
             className="w-full btn-outline flex items-center justify-center gap-1.5"
           >
             <Sliders className="h-3.5 w-3.5" />
-            Customize This Package
+            {dict.customizePackage}
           </Link>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { X, Send, CheckCircle2, Phone, Mail, User, MapPin, Calendar, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { en } from '@/dictionaries/en';
 
 interface InquiryModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface InquiryModalProps {
   type?: 'predefined' | 'custom' | 'general';
   customDetails?: any;
   onSuccess?: () => void;
+  dict?: typeof en.inquiryModal;
 }
 
 export default function InquiryModal({
@@ -23,13 +25,16 @@ export default function InquiryModal({
   type = 'general',
   customDetails,
   onSuccess,
+  dict = en.inquiryModal,
 }: InquiryModalProps) {
+  const getTodayDate = () => new Date().toISOString().split('T')[0];
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     address: '',
-    eventDate: '',
+    eventDate: getTodayDate(),
     specialNotes: '',
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +91,7 @@ export default function InquiryModal({
       }
 
       // Clear form
-      setFormData({ name: '', email: '', phone: '', address: '', eventDate: '', specialNotes: '' });
+      setFormData({ name: '', email: '', phone: '', address: '', eventDate: getTodayDate(), specialNotes: '' });
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -118,11 +123,11 @@ export default function InquiryModal({
           <div className="bg-maroon-gradient px-6 py-4 flex justify-between items-center text-white">
             <div>
               <h3 className="font-serif text-lg font-bold tracking-tight text-white">
-                {type === 'general' ? 'Contact CamBuddy' : 'Request Investment Details'}
+                {type === 'general' ? dict.generalTitle : `${dict.title} ${packageName || ''}`}
               </h3>
               {packageName && (
                 <p className="text-xs text-white/80 truncate max-w-[320px] font-medium">
-                  For: {packageName}
+                  {packageName}
                 </p>
               )}
             </div>
@@ -147,9 +152,9 @@ export default function InquiryModal({
                 >
                   <CheckCircle2 className="h-10 w-10" />
                 </motion.div>
-                <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">Inquiry Submitted!</h4>
+                <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">{dict.successTitle}</h4>
                 <p className="text-sm text-gray-500 max-w-sm mx-auto mb-6 leading-relaxed">
-                  Thank you for contacting CamBuddy! Our photography coordinator will reach out to you via phone/email shortly with the proposal details.
+                  {dict.successDesc}
                 </p>
                 <button
                   onClick={() => {
@@ -158,13 +163,13 @@ export default function InquiryModal({
                   }}
                   className="bg-maroon hover:bg-maroon-dark text-white font-bold text-sm py-2.5 px-6 rounded-xl transition-all cursor-pointer"
                 >
-                  Close Window
+                  {dict.closeBtn}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <p className="text-xs text-gray-500 mb-2 font-medium">
-                  Please enter your contact details to register this quote or book the dates. No payment is required.
+                  {dict.subtitle}
                 </p>
 
                 {error && (
@@ -176,7 +181,7 @@ export default function InquiryModal({
                 {/* Name Input */}
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                    Full Name <span className="text-red-500">*</span>
+                    {dict.fullName} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
@@ -189,7 +194,7 @@ export default function InquiryModal({
                       onChange={handleChange}
                       required
                       disabled={isLoading}
-                      placeholder="Enter your name"
+                      placeholder={dict.placeholders.name}
                       className="input-light"
                     />
                   </div>
@@ -198,7 +203,7 @@ export default function InquiryModal({
                 {/* Email Input */}
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                    Email Address <span className="text-red-500">*</span>
+                    {dict.email} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
@@ -211,7 +216,7 @@ export default function InquiryModal({
                       onChange={handleChange}
                       required
                       disabled={isLoading}
-                      placeholder="name@example.com"
+                      placeholder={dict.placeholders.email}
                       className="input-light"
                     />
                   </div>
@@ -222,7 +227,7 @@ export default function InquiryModal({
                   {/* Phone Input */}
                   <div>
                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                      Phone Number <span className="text-red-500">*</span>
+                      {dict.phone} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
@@ -235,7 +240,7 @@ export default function InquiryModal({
                         onChange={handleChange}
                         required
                         disabled={isLoading}
-                        placeholder="+91 XXXXX XXXXX"
+                        placeholder={dict.placeholders.phone}
                         className="input-light"
                       />
                     </div>
@@ -244,7 +249,7 @@ export default function InquiryModal({
                   {/* Event Date Input */}
                   <div>
                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                      Event Date
+                      {dict.eventDate}
                     </label>
                     <div className="relative">
                       <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
@@ -265,7 +270,7 @@ export default function InquiryModal({
                 {/* Address Input */}
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                    Event Venue / City
+                    {dict.address}
                   </label>
                   <div className="relative">
                     <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-gray-400">
@@ -277,7 +282,7 @@ export default function InquiryModal({
                       onChange={handleChange}
                       disabled={isLoading}
                       rows={2}
-                      placeholder="Enter wedding location details"
+                      placeholder={dict.placeholders.address}
                       className="input-light resize-none"
                     />
                   </div>
@@ -286,7 +291,7 @@ export default function InquiryModal({
                 {/* Special Notes */}
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
-                    Special Notes / Requests
+                    {dict.notes}
                   </label>
                   <div className="relative">
                     <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-gray-400">
@@ -298,7 +303,7 @@ export default function InquiryModal({
                       onChange={handleChange}
                       disabled={isLoading}
                       rows={2}
-                      placeholder="Any specific preferences or requests..."
+                      placeholder={dict.placeholders.notes}
                       className="input-light resize-none"
                     />
                   </div>
@@ -315,7 +320,7 @@ export default function InquiryModal({
                   ) : (
                     <>
                       <Send className="h-4.5 w-4.5" />
-                      Submit Lead Inquiry
+                      {dict.submitBtn}
                     </>
                   )}
                 </button>

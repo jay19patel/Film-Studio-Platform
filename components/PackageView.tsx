@@ -4,6 +4,7 @@ import * as Icons from 'lucide-react';
 import { Sparkles, Calendar, Users, Check, Send, Award, Film, Camera } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Resource, Addon, PackageDay } from '@/lib/db';
+import { en } from '@/dictionaries/en';
 
 interface PackageViewProps {
   name: string;
@@ -17,6 +18,7 @@ interface PackageViewProps {
   onAction?: () => void;
   actionBtnText?: string;
   isPdfView?: boolean;
+  dict?: typeof en.packageView;
 }
 
 export default function PackageView({
@@ -29,8 +31,9 @@ export default function PackageView({
   addonsList,
   showActionBtn = false,
   onAction,
-  actionBtnText = 'Enquire & Book Package',
+  actionBtnText,
   isPdfView = false,
+  dict = en.packageView,
 }: PackageViewProps) {
   
   // Format price
@@ -47,7 +50,7 @@ export default function PackageView({
   // Resolve resource details
   const getResourceName = (resId: string) => {
     const res = resources.find((r) => r.id === resId);
-    return res ? res.name : 'Crew Member';
+    return res ? res.name : dict.crewMember;
   };
 
   const getResourceIcon = (resId: string) => {
@@ -65,6 +68,8 @@ export default function PackageView({
   const bgTimelineDot = 'bg-white border-maroon';
   const timelineLine = 'bg-gray-200';
   const accentBox = 'bg-gray-50 border border-gray-200 text-neutral-800';
+
+  const defaultBtnText = actionBtnText || dict.enquireBook;
 
   return (
     <div className={`w-full max-w-5xl mx-auto relative ${isPdfView ? 'p-10 bg-white' : 'p-4 md:p-8'}`}>
@@ -97,7 +102,7 @@ export default function PackageView({
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-xs font-extrabold tracking-widest text-maroon uppercase mt-3"
         >
-          Premium Wedding Photography & Films Proposal
+          {dict.subtitle}
         </motion.p>
       </div>
 
@@ -179,7 +184,7 @@ export default function PackageView({
                               {getResourceName(item.resourceId)}
                             </p>
                             <p className={`text-[10px] ${textSecondary} font-semibold mt-0.5`}>
-                              Quantity: {item.qty}
+                              {dict.resourceQty}: {item.qty}
                             </p>
                           </div>
                         </div>
@@ -200,7 +205,7 @@ export default function PackageView({
         <div className={`md:col-span-7 ${accentBox} rounded-3xl p-6 md:p-8 shadow-md flex flex-col justify-center`}>
           <h3 className="font-serif text-lg md:text-xl font-bold mb-4 flex items-center gap-2 text-neutral-900">
             <Sparkles className="h-5 w-5 text-maroon" />
-            Deliverables Included (Album & Films)
+            {dict.deliverablesTitle}
           </h3>
           {resolvedAddons.length > 0 ? (
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -250,7 +255,7 @@ export default function PackageView({
               className="w-full btn-maroon"
             >
               <Send className="h-4.5 w-4.5" />
-              {actionBtnText}
+              {defaultBtnText}
             </motion.button>
           )}
         </div>

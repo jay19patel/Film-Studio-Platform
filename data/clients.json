@@ -1,64 +1,6 @@
 [
   {
-    "id": "1787249615357",
-    "name": "Jay Patel",
-    "email": "JUSTJAYY19@GMAIL.COM",
-    "phone": "+917069668308",
-    "address": "740 PARSI FALIYA",
-    "packageName": "My Custom Wedding Package",
-    "status": "delivered",
-    "events": [
-      {
-        "id": "1787249631469",
-        "title": "Lagan",
-        "date": "2026-08-21",
-        "notes": "Sukhesh"
-      },
-      {
-        "id": "1787249639135",
-        "title": "Jan",
-        "date": "2026-08-28",
-        "notes": "ABC"
-      },
-      {
-        "id": "1787249647235",
-        "title": "Kan jane",
-        "date": "2026-08-20",
-        "notes": "1212"
-      },
-      {
-        "id": "1787249663801",
-        "title": "2323",
-        "date": "2026-08-21",
-        "notes": "2323"
-      }
-    ],
-    "notes": "",
-    "totalAmount": 8000,
-    "amountPaid": 9800,
-    "paymentHistory": [
-      {
-        "id": "1787250736946",
-        "amount": 700,
-        "date": "2026-08-20T18:32",
-        "notes": "10011"
-      },
-      {
-        "id": "1787250727747",
-        "amount": 100,
-        "date": "2026-08-20T18:31",
-        "notes": "done payment"
-      },
-      {
-        "id": "1787250746212",
-        "amount": 9000,
-        "date": "2026-08-20T18:32",
-        "notes": ""
-      }
-    ]
-  },
-  {
-    "id": "1787250261154",
+    "id": "1787333954523",
     "name": "Jay Patel",
     "email": "JUSTJAYY19@GMAIL.COM",
     "phone": "+917069668308",
@@ -66,6 +8,12 @@
     "packageName": "My Custom Wedding Package",
     "status": "onboarding",
     "events": [],
-    "notes": ""
+    "notes": "Test By Jay",
+    "totalAmount": 60000,
+    "amountPaid": 0,
+    "paymentHistory": [],
+    "proposalToken": "1e267088fb3cd5189d5172bc762d6f52fb4c47215d87d2fc93ca1e5f833d445c",
+    "proposalTokenExpiresAt": 1787421237603,
+    "proposalStatus": "pending"
   }
 ]

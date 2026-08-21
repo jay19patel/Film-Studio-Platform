@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Camera, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { getPackages, getResources, getAddons } from '@/lib/db';
+import { getDictionary } from '@/lib/dictionaries';
 import PackageDetailClient from './PackageDetailClient';
 
 // Force dynamic page rendering to ensure fresh database reads
@@ -14,10 +15,11 @@ interface PageProps {
 export default async function PackageDetailPage({ params }: PageProps) {
   const { id } = await params;
 
-  const [packages, resources, addons] = await Promise.all([
+  const [packages, resources, addons, dict] = await Promise.all([
     getPackages(),
     getResources(),
     getAddons(),
+    getDictionary(),
   ]);
 
   const pkg = packages.find((p) => p.id === id);
@@ -56,7 +58,7 @@ export default async function PackageDetailPage({ params }: PageProps) {
         </Link>
       </div>
 
-      <PackageDetailClient pkg={pkg} resources={resources} addons={addons} />
+      <PackageDetailClient pkg={pkg} resources={resources} addons={addons} dict={dict} />
     </div>
   );
 }

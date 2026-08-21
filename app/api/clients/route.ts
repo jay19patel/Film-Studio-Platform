@@ -26,6 +26,9 @@ export async function POST(request: Request) {
       status: data.status || 'onboarding',
       events: data.events || [],
       notes: data.notes || '',
+      totalAmount: data.totalAmount ? Number(data.totalAmount) : 0,
+      amountPaid: data.amountPaid ? Number(data.amountPaid) : 0,
+      paymentHistory: data.paymentHistory || [],
     };
 
     const clients = await getClients();

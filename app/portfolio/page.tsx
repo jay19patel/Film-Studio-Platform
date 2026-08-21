@@ -1,11 +1,15 @@
 import { getPortfolio } from '@/lib/db';
+import { getDictionary } from '@/lib/dictionaries';
 import { Play, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
 export default async function PortfolioPage() {
-  const portfolio = await getPortfolio();
+  const [portfolio, dict] = await Promise.all([
+    getPortfolio(),
+    getDictionary(),
+  ]);
   
   const videos = portfolio.filter(p => p.type === 'video' || p.type === 'youtube');
   const photos = portfolio.filter(p => p.type === 'photo');
@@ -15,9 +19,9 @@ export default async function PortfolioPage() {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         
         <div className="text-center mb-16 animate-slideUp">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">Our Cinematic <span className="font-caveat text-maroon font-normal lowercase tracking-normal">Portfolio</span></h1>
+          <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">{dict.portfolioPage.title} <span className="font-caveat text-maroon font-normal lowercase tracking-normal">{dict.portfolioPage.titleAccent}</span></h1>
           <p className="text-neutral-600 max-w-2xl mx-auto text-lg">
-            A curated collection of our favorite wedding films and photography moments.
+            {dict.portfolioPage.subtitle}
           </p>
         </div>
 
@@ -26,7 +30,7 @@ export default async function PortfolioPage() {
           <div className="mb-20 animate-slideUp stagger-1">
             <div className="flex items-center gap-3 mb-8 border-b border-gray-100 pb-4">
               <Play className="h-6 w-6 text-maroon" />
-              <h2 className="font-serif text-3xl font-bold text-neutral-900">Cinematic Films</h2>
+              <h2 className="font-serif text-3xl font-bold text-neutral-900">{dict.portfolioPage.cinematicFilms}</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {videos.map(video => (
@@ -64,7 +68,7 @@ export default async function PortfolioPage() {
           <div className="animate-slideUp stagger-2">
             <div className="flex items-center gap-3 mb-8 border-b border-gray-100 pb-4">
               <ImageIcon className="h-6 w-6 text-maroon" />
-              <h2 className="font-serif text-3xl font-bold text-neutral-900">Photography Editorials</h2>
+              <h2 className="font-serif text-3xl font-bold text-neutral-900">{dict.portfolioPage.photographyEditorials}</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {photos.map(photo => (

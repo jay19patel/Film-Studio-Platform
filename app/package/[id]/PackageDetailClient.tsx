@@ -1,24 +1,28 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { FileDown, Send } from 'lucide-react';
-import html2canvas from 'html2canvas';
+import { FileDown } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { motion } from 'framer-motion';
 import PackageView from '@/components/PackageView';
+import PdfProposalTemplate from '@/components/PdfProposalTemplate';
 import InquiryModal from '@/components/InquiryModal';
 import { Package, Resource, Addon } from '@/lib/db';
+import { en } from '@/dictionaries/en';
+import { captureHtml2Canvas } from '@/lib/pdfHelper';
 
 interface PackageDetailClientProps {
   pkg: Package;
   resources: Resource[];
   addons: Addon[];
+  dict?: typeof en;
 }
 
 export default function PackageDetailClient({
   pkg,
   resources,
   addons,
+  dict = en,
 }: PackageDetailClientProps) {
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [isPdfGenerating, setIsPdfGenerating] = useState(false);
@@ -32,12 +36,7 @@ export default function PackageDetailClient({
       const element = pdfTemplateRef.current;
       if (!element) return;
 
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      });
+      const canvas = await captureHtml2Canvas(element);
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
@@ -77,32 +76,21 @@ export default function PackageDetailClient({
           resources={resources}
           addonsList={addons}
           showActionBtn={false}
+          dict={dict.packageView}
         />
 
-        {/* Action Buttons */}
-        <div className="max-w-5xl mx-auto px-4 md:px-8 mt-10">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleDownloadPdf}
-              disabled={isPdfGenerating}
-              className="btn-maroon py-4 px-8 text-base disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <FileDown className="h-5 w-5" />
-              {isPdfGenerating ? 'Generating...' : 'Download PDF Quote'}
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setIsInquiryOpen(true)}
-              className="btn-outline py-4 px-8 text-base"
-            >
-              <Send className="h-4.5 w-4.5" />
-              Enquire & Book Package
-            </motion.button>
-          </div>
+        {/* Action Button */}
+        <div className="max-w-5xl mx-auto px-4 md:px-8 mt-10 text-center">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleDownloadPdf}
+            disabled={isPdfGenerating}
+            className="btn-maroon py-4 px-10 text-base font-bold tracking-wide shadow-lg disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
+          >
+            <FileDown className="h-5 w-5" />
+            {isPdfGenerating ? dict.buildYourOwnPage.downloadingPdf : dict.buildYourOwnPage.downloadPdf}
+          </motion.button>
         </div>
       </div>
 
@@ -112,12 +100,13 @@ export default function PackageDetailClient({
         packageName={pkg.name}
         packageId={pkg.id}
         type="predefined"
+        dict={dict.inquiryModal}
       />
 
-      {/* Hidden PDF Template */}
-      <div className="absolute left-[-9999px] top-0 w-[800px] bg-white">
-        <div ref={pdfTemplateRef} className="bg-white p-10 select-none">
-          <PackageView
+      {/* Hidden Invoice-Style PDF Template (No Images) */}
+      <div className="absolute left-[-9999px] top-0 bg-white">
+        <div ref={pdfTemplateRef} className="bg-white select-none">
+          <PdfProposalTemplate
             name={pkg.name}
             days={pkg.days}
             addons={pkg.addons}
@@ -125,7 +114,6 @@ export default function PackageDetailClient({
             finalPrice={pkg.finalPrice}
             resources={resources}
             addonsList={addons}
-            isPdfView={true}
           />
         </div>
       </div>
@@ -135,10 +123,7 @@ export default function PackageDetailClient({
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white border border-gray-200 p-8 rounded-3xl shadow-2xl flex flex-col items-center justify-center text-center max-w-xs">
             <div className="w-10 h-10 border-4 border-maroon border-t-transparent rounded-full animate-spin mb-4" />
-            <h3 className="font-serif font-bold text-neutral-900 mb-1">Generating PDF Quote...</h3>
-            <p className="text-xs text-neutral-500 font-medium">
-              Please wait while we render the proposal.
-            </p>
+            <h3 className="font-serif font-bold text-neutral-900 mb-1">{dict.buildYourOwnPage.downloadingPdf}</h3>
           </div>
         </div>
       )}

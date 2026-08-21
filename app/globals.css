@@ -38,6 +38,38 @@ body {
 }
 
 /* ───────────────────────────────────────────────
+   Locale Overrides (Gujarati Typography)
+   ─────────────────────────────────────────────── */
+html[data-locale="gu"] body {
+  font-family: var(--font-rasa), serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+html[data-locale="gu"] p,
+html[data-locale="gu"] span,
+html[data-locale="gu"] a,
+html[data-locale="gu"] button,
+html[data-locale="gu"] label,
+html[data-locale="gu"] input,
+html[data-locale="gu"] textarea {
+  font-weight: 500;
+}
+
+html[data-locale="gu"] .font-serif,
+html[data-locale="gu"] .font-anton {
+  font-family: var(--font-rasa), serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+html[data-locale="gu"] header nav a {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ───────────────────────────────────────────────
    Maroon Accent Gradients
    ─────────────────────────────────────────────── */
 .bg-maroon-gradient {

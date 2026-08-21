@@ -1,20 +1,24 @@
 import { getEquipment } from '@/lib/db';
+import { getDictionary } from '@/lib/dictionaries';
 import { Camera } from 'lucide-react';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
 export default async function EquipmentPage() {
-  const equipment = await getEquipment();
+  const [equipment, dict] = await Promise.all([
+    getEquipment(),
+    getDictionary(),
+  ]);
 
   return (
     <div className="bg-gray-50 min-h-screen pt-24 pb-20">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         
         <div className="text-center mb-16 animate-slideUp">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">Our Studio <span className="font-caveat text-maroon font-normal lowercase tracking-normal">gear</span></h1>
+          <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">{dict.equipmentPage.title} <span className="font-caveat text-maroon font-normal lowercase tracking-normal">{dict.equipmentPage.titleAccent}</span></h1>
           <p className="text-neutral-600 max-w-2xl mx-auto text-lg">
-            We use industry-leading cinema cameras, lenses, and drones to ensure your memories are captured in breathtaking detail.
+            {dict.equipmentPage.subtitle}
           </p>
         </div>
 
@@ -34,7 +38,7 @@ export default async function EquipmentPage() {
                 </span>
                 <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">{eq.name}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  {eq.description || 'Professional grade studio equipment used by our creative team.'}
+                  {eq.description || dict.equipmentPage.defaultDesc}
                 </p>
               </div>
             </div>
@@ -42,7 +46,7 @@ export default async function EquipmentPage() {
 
           {equipment.length === 0 && (
             <div className="col-span-full py-20 text-center">
-              <p className="text-gray-500">Equipment inventory is currently being updated.</p>
+              <p className="text-gray-500">{dict.equipmentPage.emptyText}</p>
             </div>
           )}
         </div>
