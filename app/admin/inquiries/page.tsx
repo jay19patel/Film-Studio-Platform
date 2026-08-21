@@ -17,8 +17,8 @@ export default async function AdminInquiriesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-serif text-2xl font-black text-gray-900">Client Inquiries & Leads</h2>
-        <p className="text-gray-500 text-xs mt-1 max-w-xl">
+        <h2 className="font-serif text-2xl font-black text-admin-text">Client Inquiries & Leads</h2>
+        <p className="text-admin-muted text-xs mt-1 max-w-xl">
           Track captured customer leads, view their chosen predefined configurations, expand client custom builds, and update lead follow-up status.
         </p>
       </div>

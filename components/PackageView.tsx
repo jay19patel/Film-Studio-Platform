@@ -44,7 +44,7 @@ export default function PackageView({
   // Helper to render dynamic icon
   const renderResourceIcon = (iconName: string) => {
     const IconComp = (Icons as any)[iconName] || Icons.Camera;
-    return <IconComp className="h-5 w-5 text-maroon flex-shrink-0" />;
+    return <IconComp className="h-5 w-5 flex-shrink-0 text-maroon" />;
   };
 
   // Resolve resource details
@@ -62,12 +62,14 @@ export default function PackageView({
   const resolvedAddons = addonsList.filter((addon) => addons.includes(addon.id));
 
   // Visual Theme mapping based on PDF mode vs Light mode
-  const textPrimary = 'text-neutral-900';
-  const textSecondary = 'text-neutral-600';
-  const bgCard = 'bg-white border border-gray-200';
-  const bgTimelineDot = 'bg-white border-maroon';
-  const timelineLine = 'bg-gray-200';
-  const accentBox = 'bg-gray-50 border border-gray-200 text-neutral-800';
+  const textPrimary = isPdfView ? 'text-neutral-900' : 'text-ink';
+  const textSecondary = isPdfView ? 'text-neutral-600' : 'text-ink/60';
+  const bgCard = isPdfView ? 'bg-white border border-gray-200' : 'bg-charcoal border border-black/10';
+  const bgTimelineDot = isPdfView ? 'bg-white border-maroon' : 'bg-charcoal border-maroon';
+  const timelineLine = isPdfView ? 'bg-gray-200' : 'bg-black/10';
+  const accentBox = isPdfView
+    ? 'bg-gray-50 border border-gray-200 text-neutral-800'
+    : 'bg-black/[0.02] border border-black/10 text-ink/80';
 
   const defaultBtnText = actionBtnText || dict.enquireBook;
 
@@ -131,7 +133,7 @@ export default function PackageView({
                 {/* Timeline center node indicator */}
                 {!isPdfView && (
                   <div className="absolute left-1/2 transform -translate-x-1/2 top-[50%] -translate-y-1/2 hidden md:flex items-center justify-center z-10">
-                    <div className="w-8 h-8 rounded-full border border-maroon/20 flex items-center justify-center bg-white shadow-sm">
+                    <div className="w-8 h-8 rounded-full border border-maroon/30 flex items-center justify-center bg-charcoal shadow-sm">
                       <div className="w-2.5 h-2.5 rounded-full bg-maroon" />
                     </div>
                   </div>
@@ -139,7 +141,7 @@ export default function PackageView({
 
                 {/* Event Image */}
                 <div className="w-full md:w-1/2 flex-shrink-0">
-                  <div className={`relative aspect-video rounded-3xl overflow-hidden shadow-lg border-2 border-gray-100 bg-gray-50 group`}>
+                  <div className={`relative aspect-video rounded-3xl overflow-hidden shadow-lg border-2 ${isPdfView ? 'border-gray-100 bg-gray-50' : 'border-black/10 bg-black/[0.02]'} group`}>
                     {day.image ? (
                       <img
                         src={day.image}
@@ -147,7 +149,7 @@ export default function PackageView({
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-300">
+                      <div className={`w-full h-full flex items-center justify-center ${isPdfView ? 'text-gray-300' : 'text-ink/20'}`}>
                         <Icons.Image className="h-12 w-12 opacity-50" />
                       </div>
                     )}
@@ -159,12 +161,12 @@ export default function PackageView({
                   <div className={`${bgCard} rounded-3xl p-6 md:p-8 shadow-md relative overflow-hidden group`}>
 
                     {/* Day Title badge */}
-                    <div className={`inline-flex items-center gap-1.5 border border-maroon/20 bg-maroon/5 text-maroon font-extrabold uppercase tracking-widest text-xs px-4 py-2 rounded-xl mb-6 shadow-sm`}>
+                    <div className={`inline-flex items-center gap-1.5 border border-maroon/20 ${isPdfView ? 'bg-maroon/5' : 'bg-maroon/10'} text-maroon font-extrabold uppercase tracking-widest text-xs px-4 py-2 rounded-xl mb-6 shadow-sm`}>
                       <Award className="h-3.5 w-3.5" />
                       {day.title}
                     </div>
 
-                    <h3 className={`text-base md:text-lg font-serif font-bold ${textPrimary} mb-5 flex items-center gap-2 border-b border-gray-100 pb-3`}>
+                    <h3 className={`text-base md:text-lg font-serif font-bold ${textPrimary} mb-5 flex items-center gap-2 border-b ${isPdfView ? 'border-gray-100' : 'border-black/10'} pb-3`}>
                       <Users className="h-4.5 w-4.5 text-maroon" />
                       Assigned Creative Crew
                     </h3>
@@ -174,9 +176,9 @@ export default function PackageView({
                       {day.items.map((item, itemIdx) => (
                         <div
                           key={itemIdx}
-                          className="flex items-center gap-3 p-3.5 rounded-2xl border border-gray-100 bg-gray-50 transition-all hover:bg-white"
+                          className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${isPdfView ? 'border-gray-100 bg-gray-50 hover:bg-white' : 'border-black/10 bg-black/[0.02] hover:bg-black/[0.04]'}`}
                         >
-                          <div className="p-2 rounded-xl bg-white border border-gray-100 flex-shrink-0">
+                          <div className={`p-2 rounded-xl flex-shrink-0 ${isPdfView ? 'bg-white border border-gray-100' : 'bg-black/[0.03] border border-black/10'}`}>
                             {renderResourceIcon(getResourceIcon(item.resourceId))}
                           </div>
                           <div>
@@ -203,7 +205,7 @@ export default function PackageView({
         
         {/* Deliverables Box */}
         <div className={`md:col-span-7 ${accentBox} rounded-3xl p-6 md:p-8 shadow-md flex flex-col justify-center`}>
-          <h3 className="font-serif text-lg md:text-xl font-bold mb-4 flex items-center gap-2 text-neutral-900">
+          <h3 className={`font-serif text-lg md:text-xl font-bold mb-4 flex items-center gap-2 ${textPrimary}`}>
             <Sparkles className="h-5 w-5 text-maroon" />
             {dict.deliverablesTitle}
           </h3>
@@ -212,9 +214,9 @@ export default function PackageView({
               {resolvedAddons.map((addon) => (
                 <li
                   key={addon.id}
-                  className="flex items-start gap-2.5 text-xs md:text-sm font-bold text-neutral-700"
+                  className={`flex items-start gap-2.5 text-xs md:text-sm font-bold ${isPdfView ? 'text-neutral-700' : 'text-ink/80'}`}
                 >
-                  <div className="bg-maroon/10 text-maroon rounded-full p-0.5 mt-0.5 flex-shrink-0">
+                  <div className={`rounded-full p-0.5 mt-0.5 flex-shrink-0 ${isPdfView ? 'bg-maroon/10 text-maroon' : 'bg-maroon/15 text-maroon'}`}>
                     <Check className="h-3 w-3" />
                   </div>
                   <span>{addon.name}</span>
@@ -222,27 +224,27 @@ export default function PackageView({
               ))}
             </ul>
           ) : (
-            <p className="text-xs text-neutral-500 italic">No additional physical deliverables configured.</p>
+            <p className={`text-xs italic ${isPdfView ? 'text-neutral-500' : 'text-ink/40'}`}>No additional physical deliverables configured.</p>
           )}
         </div>
 
         {/* Total Investment Card */}
-        <div className="md:col-span-5 bg-white border border-gray-200 rounded-3xl p-6 md:p-8 shadow-md flex flex-col justify-center relative overflow-hidden">
-          
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-500 block mb-2">
+        <div className={`md:col-span-5 rounded-3xl p-6 md:p-8 shadow-md flex flex-col justify-center relative overflow-hidden ${isPdfView ? 'bg-white border border-gray-200' : 'card-elevated'}`}>
+
+          <span className={`text-[10px] font-extrabold uppercase tracking-widest block mb-2 ${isPdfView ? 'text-neutral-500' : 'text-ink/50'}`}>
             Investment Quote
           </span>
-          
+
           <div className="flex flex-col gap-1.5 mb-6">
-            <div className="inline-flex bg-maroon-gradient text-white font-serif text-2xl md:text-3xl font-black py-3 px-6 rounded-2xl shadow-md items-center gap-2 self-start border-l border-t border-maroon-light">
+            <div className="inline-flex bg-maroon-gradient text-ink font-serif text-2xl md:text-3xl font-black py-3 px-6 rounded-2xl shadow-md items-center gap-2 self-start border-l border-t border-maroon-light">
               <span>₹{formatPrice(finalPrice)}/-</span>
               {finalPrice < autoPrice && (
-                <span className="text-xs line-through text-red-200 font-sans font-medium">
+                <span className="text-xs line-through text-ink/50 font-sans font-medium">
                   ₹{formatPrice(autoPrice)}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-neutral-500 mt-2 block font-medium">
+            <span className={`text-[10px] mt-2 block font-medium ${isPdfView ? 'text-neutral-500' : 'text-ink/40'}`}>
               Comprehensive quote: includes cinematography, editing, raw pendrive deliverables, and taxes.
             </span>
           </div>

@@ -9,8 +9,8 @@ export default async function AdminClientsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-serif text-2xl font-black text-gray-900">Client Management</h2>
-        <p className="text-gray-500 text-xs mt-1 max-w-xl">
+        <h2 className="font-serif text-2xl font-black text-admin-text">Client Management</h2>
+        <p className="text-admin-muted text-xs mt-1 max-w-xl">
           Manage active clients, track project status, and schedule event dates.
         </p>
       </div>

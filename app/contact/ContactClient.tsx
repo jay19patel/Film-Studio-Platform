@@ -78,40 +78,27 @@ export default function ContactClient({ dict }: ContactClientProps) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      
-      {/* Hero Header matching Portfolio / Equipment pages */}
-      <div className="text-center mb-16 animate-slideUp">
-        <h1 className="font-serif text-5xl md:text-6xl font-bold text-neutral-900 mb-4">
-          {d.title}{' '}
-          <span className="font-caveat text-maroon font-normal lowercase tracking-normal">
-            {d.titleAccent}
-          </span>
-        </h1>
-        <p className="text-neutral-600 max-w-2xl mx-auto text-lg">
-          {d.subtitle}
-        </p>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20">
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        
+
         {/* Contact Info Sidebar */}
         <div className="lg:col-span-5 space-y-6">
           <div className="card-elevated rounded-3xl p-8 space-y-8">
-            <h3 className="font-serif text-xl font-bold text-neutral-900 border-b border-gray-100 pb-4">
+            <h3 className="font-serif text-xl font-medium text-ink border-b border-black/10 pb-4">
               {d.infoTitle}
             </h3>
 
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-maroon/5 rounded-2xl border border-maroon/10 text-maroon flex-shrink-0">
+                <div className="p-3 bg-maroon/10 rounded-2xl border border-maroon/20 text-maroon flex-shrink-0">
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
-                  <h5 className="font-bold text-xs uppercase tracking-widest text-neutral-400 mb-1">
+                  <h5 className="font-bold text-xs uppercase tracking-widest text-ink/40 mb-1">
                     {about.locationTitle}
                   </h5>
-                  <p className="text-sm font-semibold text-neutral-800 leading-relaxed">
+                  <p className="text-sm font-semibold text-ink leading-relaxed">
                     123 Photography Lane, Creative District<br />
                     Ahmedabad, Gujarat 380001
                   </p>
@@ -119,58 +106,58 @@ export default function ContactClient({ dict }: ContactClientProps) {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-maroon/5 rounded-2xl border border-maroon/10 text-maroon flex-shrink-0">
+                <div className="p-3 bg-maroon/10 rounded-2xl border border-maroon/20 text-maroon flex-shrink-0">
                   <Phone className="h-6 w-6" />
                 </div>
                 <div>
-                  <h5 className="font-bold text-xs uppercase tracking-widest text-neutral-400 mb-1">
+                  <h5 className="font-bold text-xs uppercase tracking-widest text-ink/40 mb-1">
                     {about.phoneTitle}
                   </h5>
-                  <a href="tel:+919876543210" className="text-sm font-semibold text-neutral-800 hover:text-maroon transition-colors block">
+                  <a href="tel:+919876543210" className="text-sm font-semibold text-ink hover:text-maroon transition-colors block">
                     +91 98765 43210
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-maroon/5 rounded-2xl border border-maroon/10 text-maroon flex-shrink-0">
+                <div className="p-3 bg-maroon/10 rounded-2xl border border-maroon/20 text-maroon flex-shrink-0">
                   <Mail className="h-6 w-6" />
                 </div>
                 <div>
-                  <h5 className="font-bold text-xs uppercase tracking-widest text-neutral-400 mb-1">
+                  <h5 className="font-bold text-xs uppercase tracking-widest text-ink/40 mb-1">
                     {about.emailTitle}
                   </h5>
-                  <a href="mailto:hello@cambuddy.com" className="text-sm font-semibold text-neutral-800 hover:text-maroon transition-colors block">
+                  <a href="mailto:hello@cambuddy.com" className="text-sm font-semibold text-ink hover:text-maroon transition-colors block">
                     hello@cambuddy.com
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-maroon/5 rounded-2xl border border-maroon/10 text-maroon flex-shrink-0">
+                <div className="p-3 bg-maroon/10 rounded-2xl border border-maroon/20 text-maroon flex-shrink-0">
                   <Clock className="h-6 w-6" />
                 </div>
                 <div>
-                  <h5 className="font-bold text-xs uppercase tracking-widest text-neutral-400 mb-1">
+                  <h5 className="font-bold text-xs uppercase tracking-widest text-ink/40 mb-1">
                     Working Hours
                   </h5>
-                  <p className="text-sm font-semibold text-neutral-800">
+                  <p className="text-sm font-semibold text-ink">
                     Monday – Saturday: 10:00 AM – 8:00 PM
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-gray-100">
-              <h5 className="font-bold text-xs uppercase tracking-widest text-neutral-400 mb-4">
+            <div className="pt-6 border-t border-black/10">
+              <h5 className="font-bold text-xs uppercase tracking-widest text-ink/40 mb-4">
                 {about.followTitle}
               </h5>
               <div className="flex items-center gap-4">
-                <a href="#" className="p-3 bg-pink-50 rounded-2xl border border-pink-100 text-pink-600 hover:scale-105 transition-transform flex items-center gap-2 text-xs font-bold">
+                <a href="#" className="p-3 bg-pink-500/10 rounded-2xl border border-pink-500/20 text-pink-400 hover:scale-105 transition-transform flex items-center gap-2 text-xs font-bold">
                   <Heart className="h-4 w-4" />
                   @cambuddystudios
                 </a>
-                <a href="#" className="p-3 bg-red-50 rounded-2xl border border-red-100 text-red-600 hover:scale-105 transition-transform flex items-center gap-2 text-xs font-bold">
+                <a href="#" className="p-3 bg-red-500/10 rounded-2xl border border-red-500/20 text-red-400 hover:scale-105 transition-transform flex items-center gap-2 text-xs font-bold">
                   <Film className="h-4 w-4" />
                   CamBuddy Films
                 </a>
@@ -182,10 +169,10 @@ export default function ContactClient({ dict }: ContactClientProps) {
         {/* Contact Form Area */}
         <div className="lg:col-span-7">
           <div className="card-elevated rounded-3xl p-8 md:p-10">
-            <h3 className="font-serif text-2xl font-bold text-neutral-900 mb-2">
+            <h3 className="font-serif text-2xl font-medium text-ink mb-2">
               {d.formTitle}
             </h3>
-            <p className="text-xs text-neutral-500 mb-8 font-medium">
+            <p className="text-xs text-ink/50 mb-8 font-medium">
               {inq.subtitle}
             </p>
 
@@ -199,10 +186,10 @@ export default function ContactClient({ dict }: ContactClientProps) {
                 >
                   <CheckCircle2 className="h-12 w-12" />
                 </motion.div>
-                <h4 className="font-serif text-2xl font-bold text-neutral-900 mb-3">
+                <h4 className="font-serif text-2xl font-medium text-ink mb-3">
                   {inq.successTitle}
                 </h4>
-                <p className="text-neutral-500 text-sm max-w-md mx-auto mb-8 font-medium leading-relaxed">
+                <p className="text-ink/50 text-sm max-w-md mx-auto mb-8 font-medium leading-relaxed">
                   {inq.successDesc}
                 </p>
                 <button
@@ -222,11 +209,11 @@ export default function ContactClient({ dict }: ContactClientProps) {
 
                 {/* Name */}
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                     {inq.fullName} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-neutral-400">
+                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-ink/40">
                       <User className="h-4.5 w-4.5" />
                     </span>
                     <input
@@ -245,11 +232,11 @@ export default function ContactClient({ dict }: ContactClientProps) {
                 {/* Email + Phone */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                       {inq.email} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-neutral-400">
+                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-ink/40">
                         <Mail className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -266,11 +253,11 @@ export default function ContactClient({ dict }: ContactClientProps) {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                       {inq.phone} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-neutral-400">
+                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-ink/40">
                         <Phone className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -290,11 +277,11 @@ export default function ContactClient({ dict }: ContactClientProps) {
                 {/* Event Date + Address */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                       {inq.eventDate}
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-neutral-400">
+                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-ink/40">
                         <Calendar className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -309,11 +296,11 @@ export default function ContactClient({ dict }: ContactClientProps) {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                    <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                       {inq.address}
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-neutral-400">
+                      <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-ink/40">
                         <MapPin className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -331,11 +318,11 @@ export default function ContactClient({ dict }: ContactClientProps) {
 
                 {/* Special Notes */}
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                     {inq.notes}
                   </label>
                   <div className="relative">
-                    <span className="absolute top-4 left-0 pl-4 flex items-start text-neutral-400">
+                    <span className="absolute top-4 left-0 pl-4 flex items-start text-ink/40">
                       <FileText className="h-4.5 w-4.5" />
                     </span>
                     <textarea

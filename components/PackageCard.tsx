@@ -48,7 +48,7 @@ export default function PackageCard({ pkg, resources, addons, dict = en.packageC
       </div>
 
       {/* Package Header Image with zoom */}
-      <div className="h-52 relative overflow-hidden flex items-end p-6 border-b border-gray-100">
+      <div className="h-52 relative overflow-hidden flex items-end p-6 border-b border-black/5">
         {pkg.days[0]?.image ? (
           <img
             src={pkg.days[0].image}
@@ -56,7 +56,7 @@ export default function PackageCard({ pkg, resources, addons, dict = en.packageC
             className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition-all duration-700 ease-out"
           />
         ) : (
-          <div className="absolute inset-0 bg-gray-100" />
+          <div className="absolute inset-0 bg-black/[0.03]" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         
@@ -74,18 +74,18 @@ export default function PackageCard({ pkg, resources, addons, dict = en.packageC
       <div className="p-6 md:p-7 flex flex-col flex-grow">
         
         {/* Days Highlights Timeline */}
-        <div className="space-y-3.5 mb-6 flex-grow relative pl-4 border-l border-gray-200">
+        <div className="space-y-3.5 mb-6 flex-grow relative pl-4 border-l border-black/10">
           <span className="text-[10px] font-bold uppercase tracking-widest text-maroon block mb-1">
             {dict.programTimeline}
           </span>
           {pkg.days.map((day, i) => (
             <div key={i} className="relative group/item">
               {/* Timeline Node Dot */}
-              <div className="absolute left-[-21px] top-1.5 w-2 h-2 rounded-full bg-white border-2 border-gray-300 group-hover:border-maroon transition-colors" />
-              <div className="flex items-start gap-1 text-xs md:text-sm text-neutral-600">
+              <div className="absolute left-[-21px] top-1.5 w-2 h-2 rounded-full bg-charcoal border-2 border-black/15 group-hover:border-maroon transition-colors" />
+              <div className="flex items-start gap-1 text-xs md:text-sm text-ink/60">
                 <div>
-                  <span className="font-bold text-neutral-900">{day.title}</span>
-                  <span className="text-neutral-500 text-[10px] ml-1.5">
+                  <span className="font-bold text-ink">{day.title}</span>
+                  <span className="text-ink/40 text-[10px] ml-1.5">
                     ({day.items.reduce((sum, item) => sum + item.qty, 0)} {dict.crew})
                   </span>
                 </div>
@@ -96,14 +96,14 @@ export default function PackageCard({ pkg, resources, addons, dict = en.packageC
 
         {/* Deliverables Included */}
         {includedAddons.length > 0 && (
-          <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4.5 mb-6">
+          <div className="bg-black/[0.02] border border-black/10 rounded-2xl p-4.5 mb-6">
             <span className="text-[10px] font-bold uppercase tracking-widest text-maroon flex items-center gap-1.5 mb-2.5">
               <Sparkles className="h-3.5 w-3.5" />
               {dict.physicalDeliverables}
             </span>
             <ul className="space-y-2">
               {includedAddons.slice(0, 3).map((addon) => (
-                <li key={addon.id} className="text-xs text-neutral-700 flex items-start gap-2">
+                <li key={addon.id} className="text-xs text-ink/70 flex items-start gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-maroon mt-0.5 flex-shrink-0" />
                   <span className="truncate">{addon.name}</span>
                 </li>

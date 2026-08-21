@@ -245,14 +245,14 @@ export default function BuildYourOwnClient({
         
         {/* Name Title card */}
         <div className="card-elevated rounded-3xl p-6 md:p-8">
-          <label className="block text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-2.5">
+          <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2.5">
             {d.packageNameLabel}
           </label>
           <input
             type="text"
             value={packageName}
             onChange={(e) => setPackageName(e.target.value)}
-            className="w-full text-lg md:text-xl font-serif font-bold text-neutral-900 border-b-2 border-gray-200 focus:border-maroon pb-2 outline-none transition-all"
+            className="w-full text-lg md:text-xl font-serif font-bold text-ink bg-transparent border-b-2 border-black/12 focus:border-maroon pb-2 outline-none transition-all"
             placeholder="e.g. My Dream Wedding Proposal"
           />
         </div>
@@ -260,7 +260,7 @@ export default function BuildYourOwnClient({
         {/* Days timeline list */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-serif font-bold text-neutral-900 flex items-center gap-2">
+            <h2 className="text-lg font-serif font-bold text-ink flex items-center gap-2">
               <Calendar className="h-5 w-5 text-maroon" />
               {d.eventDaysSection} ({days.length})
             </h2>
@@ -268,7 +268,7 @@ export default function BuildYourOwnClient({
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleAddDay}
-              className="bg-maroon/5 text-maroon hover:bg-maroon/10 font-bold text-xs md:text-sm px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 border border-maroon/20 cursor-pointer"
+              className="bg-maroon/10 text-maroon hover:bg-maroon/20 font-bold text-xs md:text-sm px-4 py-2.5 rounded-xl transition-all flex items-center gap-1 border border-maroon/20 cursor-pointer"
             >
               <Plus className="h-4 w-4" /> {d.addDayBtn}
             </motion.button>
@@ -288,7 +288,7 @@ export default function BuildYourOwnClient({
                 {days.length > 1 && (
                   <button
                     onClick={() => handleRemoveDay(dayIdx)}
-                    className="absolute top-6 right-6 text-neutral-400 hover:text-red-500 p-2 hover:bg-gray-100 rounded-lg transition-all"
+                    className="absolute top-6 right-6 text-ink/40 hover:text-red-400 p-2 hover:bg-black/[0.02] rounded-lg transition-all"
                     title="Delete event day"
                   >
                     <Trash className="h-4.5 w-4.5" />
@@ -304,28 +304,28 @@ export default function BuildYourOwnClient({
                     type="text"
                     value={day.title}
                     onChange={(e) => handleDayTitleChange(dayIdx, e.target.value)}
-                    className="w-full text-base md:text-lg font-serif font-bold text-neutral-900 bg-transparent border-b border-gray-200 focus:border-maroon pb-1.5 outline-none transition-all"
+                    className="w-full text-base md:text-lg font-serif font-bold text-ink bg-transparent border-b border-black/12 focus:border-maroon pb-1.5 outline-none transition-all"
                     placeholder="e.g. Day 1 - Haldi Ceremony"
                   />
                 </div>
 
                 {/* Team resources lists */}
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                    <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest flex items-center gap-1.5">
-                      <Users className="h-4 w-4 text-neutral-400" />
+                  <div className="flex items-center justify-between pb-2 border-b border-black/10">
+                    <span className="text-[10px] font-bold text-ink/50 uppercase tracking-widest flex items-center gap-1.5">
+                      <Users className="h-4 w-4 text-ink/40" />
                       Assigned Creative Crew
                     </span>
                     <button
                       onClick={() => handleAddResourceToDay(dayIdx)}
-                      className="text-maroon hover:text-maroon-dark font-bold text-xs flex items-center gap-0.5"
+                      className="text-maroon hover:text-maroon/80 font-bold text-xs flex items-center gap-0.5"
                     >
                       <Plus className="h-3.5 w-3.5" /> Add Crew Role
                     </button>
                   </div>
 
                   {day.items.length === 0 ? (
-                    <p className="text-xs text-neutral-500 italic py-2">
+                    <p className="text-xs text-ink/50 italic py-2">
                       No crew roles assigned. Click &quot;Add Crew Role&quot; to select.
                     </p>
                   ) : (
@@ -333,7 +333,7 @@ export default function BuildYourOwnClient({
                       {day.items.map((item, itemIdx) => (
                         <div
                           key={itemIdx}
-                          className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-gray-50 p-3 rounded-2xl border border-gray-200"
+                          className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-black/[0.02] p-3 rounded-2xl border border-black/10"
                         >
                           {/* Resource Dropdown Selector */}
                           <div className="flex-grow">
@@ -342,7 +342,7 @@ export default function BuildYourOwnClient({
                               onChange={(e) =>
                                 handleResourceChange(dayIdx, itemIdx, e.target.value)
                               }
-                              className="w-full bg-white border border-gray-300 text-xs md:text-sm font-semibold text-neutral-800 rounded-xl px-3 py-2.5 outline-none focus:border-maroon"
+                              className="w-full bg-charcoal border border-black/12 text-xs md:text-sm font-semibold text-ink rounded-xl px-3 py-2.5 outline-none focus:border-maroon"
                             >
                               <option value="" disabled>Select Role...</option>
                               {resources.map((r) => (
@@ -355,19 +355,19 @@ export default function BuildYourOwnClient({
 
                           {/* Quantities steppers */}
                           <div className="flex items-center justify-end gap-3">
-                            <div className="flex items-center border border-gray-300 bg-white rounded-xl overflow-hidden">
+                            <div className="flex items-center border border-black/12 bg-charcoal rounded-xl overflow-hidden">
                               <button
                                 onClick={() => handleQtyChange(dayIdx, itemIdx, -1)}
-                                className="px-3 py-1.5 text-neutral-500 hover:bg-gray-100 font-bold text-xs"
+                                className="px-3 py-1.5 text-ink/50 hover:bg-black/[0.04] font-bold text-xs"
                               >
                                 -
                               </button>
-                              <span className="px-3 text-xs font-bold text-neutral-900 min-w-[28px] text-center border-x border-gray-200">
+                              <span className="px-3 text-xs font-bold text-ink min-w-[28px] text-center border-x border-black/10">
                                 {item.qty}
                               </span>
                               <button
                                 onClick={() => handleQtyChange(dayIdx, itemIdx, 1)}
-                                className="px-3 py-1.5 text-neutral-500 hover:bg-gray-100 font-bold text-xs"
+                                className="px-3 py-1.5 text-ink/50 hover:bg-black/[0.04] font-bold text-xs"
                               >
                                 +
                               </button>
@@ -375,7 +375,7 @@ export default function BuildYourOwnClient({
 
                             <button
                               onClick={() => handleRemoveResourceFromDay(dayIdx, itemIdx)}
-                              className="text-neutral-400 hover:text-red-500 p-2 hover:bg-gray-100 rounded-lg transition-all"
+                              className="text-ink/40 hover:text-red-400 p-2 hover:bg-black/[0.02] rounded-lg transition-all"
                             >
                               <Trash className="h-4 w-4" />
                             </button>
@@ -396,11 +396,11 @@ export default function BuildYourOwnClient({
         
         {/* Deliverables Checklist Addons */}
         <div className="card-elevated rounded-3xl p-6 md:p-8">
-          <h2 className="text-base font-serif font-bold text-neutral-900 flex items-center gap-2 mb-4">
+          <h2 className="text-base font-serif font-bold text-ink flex items-center gap-2 mb-4">
             <Sparkles className="h-5 w-5 text-maroon" />
             {d.deliverablesSection}
           </h2>
-          
+
           <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
             {addonsList.map((addon) => {
               const isChecked = selectedAddons.includes(addon.id);
@@ -410,8 +410,8 @@ export default function BuildYourOwnClient({
                   onClick={() => handleToggleAddon(addon.id)}
                   className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all cursor-pointer select-none ${
                     isChecked
-                      ? 'border-maroon bg-maroon/5 text-maroon'
-                      : 'border-gray-200 bg-white hover:border-maroon/30'
+                      ? 'border-maroon bg-maroon/10 text-maroon'
+                      : 'border-black/10 bg-black/[0.02] hover:border-maroon/30'
                   }`}
                 >
                   <input
@@ -422,11 +422,11 @@ export default function BuildYourOwnClient({
                   />
                   <div className="flex-grow">
                     <p className={`text-xs md:text-sm font-bold transition-colors ${
-                      isChecked ? 'text-maroon-dark' : 'text-neutral-700'
+                      isChecked ? 'text-maroon' : 'text-ink/80'
                     }`}>
                       {addon.name}
                     </p>
-                    <p className="text-[10px] text-neutral-500 font-semibold mt-0.5">
+                    <p className="text-[10px] text-ink/50 font-semibold mt-0.5">
                       + ₹{formatPrice(addon.price)} (One-time)
                     </p>
                   </div>
@@ -438,20 +438,20 @@ export default function BuildYourOwnClient({
 
         {/* Investment totals and action buttons */}
         <div className="card-elevated rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden">
-          
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-500 block mb-2">
+
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-ink/50 block mb-2">
             {d.totalEstimate}
           </span>
 
           {/* Pricing ribbon */}
-          <div className="inline-flex bg-maroon-gradient text-white font-serif text-2xl md:text-3xl font-black py-3 px-6 rounded-2xl shadow-md items-center gap-1.5 self-start mb-6">
+          <div className="inline-flex bg-maroon-gradient text-ink font-serif text-2xl md:text-3xl font-black py-3 px-6 rounded-2xl shadow-md items-center gap-1.5 self-start mb-6">
             <span>₹{formatPrice(totalPrice)}/-</span>
           </div>
 
           <div className="space-y-3">
             {/* Checkbox for PDF Proposal Estimate Download */}
-            <div className="bg-gray-50 border border-gray-200 p-3.5 rounded-2xl flex items-center justify-between gap-3">
-              <label className="flex items-center gap-2.5 text-xs font-bold text-gray-700 cursor-pointer select-none">
+            <div className="bg-black/[0.02] border border-black/10 p-3.5 rounded-2xl flex items-center justify-between gap-3">
+              <label className="flex items-center gap-2.5 text-xs font-bold text-ink/80 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={shouldDownloadPdf}
@@ -474,7 +474,7 @@ export default function BuildYourOwnClient({
               Submit Custom Proposal Inquiry
             </motion.button>
 
-            <p className="text-[10px] text-neutral-500 text-center font-medium leading-relaxed">
+            <p className="text-[10px] text-ink/50 text-center font-medium leading-relaxed">
               * Send your custom event coverage inquiry directly to CamBuddy Studios.
             </p>
           </div>
@@ -513,10 +513,10 @@ export default function BuildYourOwnClient({
 
       {/* Loader Modal when PDF is rendering */}
       {isPdfGenerating && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-gray-200 p-8 rounded-3xl shadow-2xl flex flex-col items-center justify-center text-center max-w-xs">
+        <div className="fixed inset-0 z-50 bg-ink/80 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="card-elevated p-8 rounded-3xl flex flex-col items-center justify-center text-center max-w-xs">
             <div className="w-10 h-10 border-4 border-maroon border-t-transparent rounded-full animate-spin mb-4" />
-            <h3 className="font-serif font-bold text-neutral-900 mb-1">{d.downloadingPdf}</h3>
+            <h3 className="font-serif font-medium text-ink mb-1">{d.downloadingPdf}</h3>
           </div>
         </div>
       )}

@@ -7,20 +7,20 @@ export const metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-20">
+    <div className="min-h-screen bg-paper pt-24 pb-20">
       <div className="max-w-4xl mx-auto px-4 md:px-8">
-        
-        <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-neutral-500 hover:text-maroon mb-12 transition-colors">
+
+        <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-ink/50 hover:text-maroon mb-12 transition-colors">
           <ArrowLeft className="h-4 w-4" />
           Back to Home
         </Link>
 
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100">
-          <h1 className="font-serif text-4xl font-bold text-neutral-900 mb-2 uppercase tracking-widest">Terms & Conditions</h1>
-          <p className="text-sm font-bold text-neutral-400 tracking-wider uppercase mb-8">Last Updated: August 2026</p>
+        <div className="card-elevated rounded-3xl p-8 md:p-12">
+          <h1 className="font-serif text-4xl font-medium text-ink mb-2 uppercase tracking-widest">Terms & Conditions</h1>
+          <p className="text-sm font-bold text-ink/40 tracking-wider uppercase mb-8">Last Updated: August 2026</p>
 
-          <div className="prose prose-sm md:prose-base prose-neutral max-w-none prose-headings:font-serif prose-headings:font-bold prose-headings:text-neutral-900 prose-headings:tracking-widest prose-headings:uppercase prose-p:text-neutral-600 prose-a:text-maroon prose-a:no-underline hover:prose-a:underline">
-            
+          <div className="prose prose-sm md:prose-base max-w-none prose-headings:font-serif prose-headings:font-medium prose-headings:text-ink prose-headings:tracking-widest prose-headings:uppercase prose-p:text-ink/60 prose-a:text-maroon prose-a:no-underline hover:prose-a:underline">
+
             <h3>1. Booking and Payments</h3>
             <p>
               To secure your booking date, a non-refundable deposit (retainer) of 30% of the total package price is required. The remaining balance must be paid in full at least 7 days prior to the event date. In the event of a cancellation, the retainer fee will not be refunded as it covers the administrative costs and securing the date.

@@ -304,13 +304,13 @@ export default function PackagesClient({
     <div className="space-y-6">
       
       {successMsg && (
-        <div className="bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs p-4 rounded-2xl font-semibold">
+        <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs p-4 rounded-2xl font-semibold">
           {successMsg}
         </div>
       )}
 
       {error && (
-        <div className="bg-red-50 border border-red-100 text-red-800 text-xs p-4 rounded-2xl font-semibold">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs p-4 rounded-2xl font-semibold">
           {error}
         </div>
       )}
@@ -319,10 +319,10 @@ export default function PackagesClient({
         /* List Predefined Packages Grid */
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="font-serif text-lg font-bold text-gray-900">Current Predefined Packages</h3>
+            <h3 className="font-serif text-lg font-bold text-admin-text">Current Predefined Packages</h3>
             <button
               onClick={handleOpenCreate}
-              className="bg-maroon-500 hover:bg-maroon-600 text-white font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-1 cursor-pointer"
+              className="bg-maroon hover:bg-maroon-dark text-ink font-bold text-xs md:text-sm py-2.5 px-4 rounded-xl shadow-black/20 shadow-md transition-all flex items-center gap-1 cursor-pointer"
             >
               <Plus className="h-4.5 w-4.5" />
               Build Predefined Package
@@ -330,13 +330,13 @@ export default function PackagesClient({
           </div>
 
           {packages.length === 0 ? (
-            <div className="text-center py-20 bg-white border border-gray-100 rounded-3xl">
-              <Package className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-gray-800 mb-1">No Packages Created Yet</h3>
-              <p className="text-gray-500 text-sm mb-6">Create predefined packages so clients can view them on the website.</p>
+            <div className="text-center py-20 bg-admin-surface border border-admin-border rounded-3xl">
+              <Package className="h-12 w-12 text-admin-muted/40 mx-auto mb-4" />
+              <h3 className="text-lg font-bold text-admin-text mb-1">No Packages Created Yet</h3>
+              <p className="text-admin-muted text-sm mb-6">Create predefined packages so clients can view them on the website.</p>
               <button
                 onClick={handleOpenCreate}
-                className="bg-maroon-500 text-white font-semibold py-2 px-6 rounded-xl text-sm"
+                className="bg-maroon text-ink font-semibold py-2 px-6 rounded-xl text-sm"
               >
                 Create First Package
               </button>
@@ -346,27 +346,27 @@ export default function PackagesClient({
               {packages.map((pkg) => (
                 <div
                   key={pkg.id}
-                  className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden relative"
+                  className="bg-admin-surface rounded-3xl border border-admin-border shadow-black/20 shadow-sm hover:border-maroon/30 transition-all flex flex-col overflow-hidden relative"
                 >
                   {/* Status Badge */}
                   <div className="absolute top-4 left-4 z-10">
                     {pkg.status === 'published' ? (
-                      <span className="bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 px-2 py-0.5 rounded-md text-[10px] uppercase flex items-center gap-1">
+                      <span className="bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20 px-2 py-0.5 rounded-md text-[10px] uppercase flex items-center gap-1">
                         <Globe className="h-3 w-3" /> Published
                       </span>
                     ) : (
-                      <span className="bg-gray-100 text-gray-600 font-bold border border-gray-200 px-2 py-0.5 rounded-md text-[10px] uppercase flex items-center gap-1">
+                      <span className="bg-white/5 text-admin-muted font-bold border border-admin-border px-2 py-0.5 rounded-md text-[10px] uppercase flex items-center gap-1">
                         <Lock className="h-3 w-3" /> Draft
                       </span>
                     )}
                   </div>
 
                   {/* Thumbnail Image */}
-                  <div className="h-44 bg-gray-100 relative">
+                  <div className="h-44 bg-white/5 relative">
                     {pkg.days[0]?.image ? (
                       <img src={pkg.days[0].image} alt={pkg.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-tr from-maroon-100 to-maroon-50" />
+                      <div className="w-full h-full bg-gradient-to-tr from-maroon/20 to-maroon/5" />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <h4 className="absolute bottom-4 left-4 font-serif text-lg font-bold text-white drop-shadow-sm">
@@ -376,23 +376,23 @@ export default function PackagesClient({
 
                   {/* Details summary */}
                   <div className="p-5 flex-grow space-y-4">
-                    <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
+                    <div className="flex items-center justify-between text-xs text-admin-muted font-medium">
                       <span>{pkg.days.length} Days / Events</span>
-                      <span className="font-bold text-gray-800 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">
+                      <span className="font-bold text-admin-text bg-white/5 px-2 py-0.5 rounded-lg border border-admin-border">
                         {pkg.addons.length} Add-ons
                       </span>
                     </div>
 
-                    <div className="flex items-baseline justify-between border-t border-gray-50 pt-3">
-                      <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Final Price:</span>
-                      <span className="text-lg font-black text-gray-900">₹{formatPrice(pkg.finalPrice)}/-</span>
+                    <div className="flex items-baseline justify-between border-t border-admin-border pt-3">
+                      <span className="text-xs text-admin-muted font-bold uppercase tracking-wider">Final Price:</span>
+                      <span className="text-lg font-black text-admin-text">₹{formatPrice(pkg.finalPrice)}/-</span>
                     </div>
 
                     {/* Action buttons */}
-                    <div className="grid grid-cols-3 gap-2 border-t border-gray-50 pt-4 mt-2">
+                    <div className="grid grid-cols-3 gap-2 border-t border-admin-border pt-4 mt-2">
                       <button
                         onClick={() => setPreviewPkg(pkg)}
-                        className="bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-gray-200 cursor-pointer"
+                        className="bg-white/5 hover:bg-white/10 text-admin-muted font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-admin-border cursor-pointer"
                         title="Preview details layout"
                       >
                         <Eye className="h-3.5 w-3.5" />
@@ -400,14 +400,14 @@ export default function PackagesClient({
                       </button>
                       <button
                         onClick={() => handleOpenEdit(pkg)}
-                        className="bg-maroon-50 hover:bg-maroon-100 text-maroon-600 font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-maroon-200 cursor-pointer"
+                        className="bg-maroon/10 hover:bg-maroon/20 text-maroon font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-maroon/20 cursor-pointer"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(pkg.id)}
-                        className="bg-red-50 hover:bg-red-100/50 text-red-500 font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-red-200 cursor-pointer"
+                        className="bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1 border border-red-500/20 cursor-pointer"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                         Delete
@@ -421,28 +421,28 @@ export default function PackagesClient({
         </div>
       ) : (
         /* Form view: Create or Edit Predefined Package */
-        <div className="bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-sm">
-          <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-6">
-            <h3 className="font-serif text-lg md:text-xl font-bold text-gray-900 flex items-center gap-2">
-              <Package className="h-5 w-5 text-maroon-500" />
+        <div className="bg-admin-surface border border-admin-border rounded-3xl p-6 md:p-8 shadow-black/20 shadow-sm">
+          <div className="flex items-center justify-between pb-4 border-b border-admin-border mb-6">
+            <h3 className="font-serif text-lg md:text-xl font-bold text-admin-text flex items-center gap-2">
+              <Package className="h-5 w-5 text-maroon" />
               {isEditingId ? 'Edit Wedding Package' : 'Create Custom Wedding Package'}
             </h3>
             <button
               onClick={() => setIsFormOpen(false)}
-              className="text-gray-400 hover:text-gray-600 p-1.5 hover:bg-gray-100 rounded-xl transition-all"
+              className="text-admin-muted hover:text-admin-text p-1.5 hover:bg-white/10 rounded-xl transition-all"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
 
           <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
+
             {/* Left columns - Package Details & Days */}
             <div className="lg:col-span-8 space-y-6">
-              
+
               {/* Package name input */}
               <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
+                <label className="block text-[10px] font-bold text-admin-muted uppercase tracking-widest mb-1.5">
                   Package Name
                 </label>
                 <input
@@ -451,21 +451,21 @@ export default function PackagesClient({
                   onChange={(e) => setName(e.target.value)}
                   required
                   placeholder="e.g. Wedding Package (Basic)"
-                  className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-4 py-3 text-sm md:text-base font-bold outline-none transition-all text-gray-800"
+                  className="w-full bg-white/5 border border-admin-border focus:bg-white/[0.02] focus:border-maroon rounded-xl px-4 py-3 text-sm md:text-base font-bold outline-none transition-all text-admin-text placeholder-admin-muted/50"
                 />
               </div>
 
               {/* Day Events schedule list */}
               <div className="space-y-6">
-                <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                  <h4 className="font-serif text-base font-bold text-gray-800 flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-maroon-500" />
+                <div className="flex items-center justify-between border-b border-admin-border pb-2">
+                  <h4 className="font-serif text-base font-bold text-admin-text flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-maroon" />
                     Day Schedule Builder ({days.length})
                   </h4>
                   <button
                     type="button"
                     onClick={handleAddDay}
-                    className="text-xs font-bold text-maroon-600 hover:text-maroon-700 flex items-center gap-0.5"
+                    className="text-xs font-bold text-maroon hover:text-maroon-dark flex items-center gap-0.5"
                   >
                     <Plus className="h-4 w-4" /> Add Event Day
                   </button>
@@ -474,14 +474,14 @@ export default function PackagesClient({
                 {days.map((day, dayIdx) => (
                   <div
                     key={dayIdx}
-                    className="border border-gray-150 rounded-2xl p-5 md:p-6 bg-gray-50/20 relative"
+                    className="border border-admin-border rounded-2xl p-5 md:p-6 bg-white/[0.02] relative"
                   >
                     {/* Remove day */}
                     {days.length > 1 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveDay(dayIdx)}
-                        className="absolute top-4 right-4 text-gray-400 hover:text-red-500 p-1 hover:bg-red-50 rounded-lg transition-all"
+                        className="absolute top-4 right-4 text-admin-muted hover:text-red-400 p-1 hover:bg-red-500/10 rounded-lg transition-all"
                       >
                         <Trash className="h-4 w-4" />
                       </button>
@@ -490,7 +490,7 @@ export default function PackagesClient({
                     {/* Day Title and Image Upload row */}
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 mb-5 items-end">
                       <div className="md:col-span-8">
-                        <label className="block text-[9px] font-bold text-maroon-600 uppercase tracking-widest mb-1">
+                        <label className="block text-[9px] font-bold text-maroon uppercase tracking-widest mb-1">
                           Day {dayIdx + 1} Event Title
                         </label>
                         <input
@@ -498,13 +498,13 @@ export default function PackagesClient({
                           value={day.title}
                           onChange={(e) => handleDayTitleChange(dayIdx, e.target.value)}
                           placeholder="e.g. Day 1 - Haldi Ceremony"
-                          className="w-full bg-white border border-gray-200 focus:border-maroon-500 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-gray-800"
+                          className="w-full bg-white/5 border border-admin-border focus:border-maroon rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-admin-text placeholder-admin-muted/50"
                         />
                       </div>
 
                       <div className="md:col-span-4 flex items-center gap-3">
                         <div className="flex-grow">
-                          <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-0.5">
+                          <label className="block text-[9px] font-bold text-admin-muted uppercase tracking-widest mb-1 flex items-center gap-0.5">
                             <ImageIcon className="h-3 w-3" /> Event Image
                           </label>
                           <div className="relative">
@@ -520,10 +520,10 @@ export default function PackagesClient({
                             />
                             <label
                               htmlFor={`file-day-${dayIdx}`}
-                              className="w-full bg-white border border-gray-200 hover:border-maroon-500 rounded-xl px-3 py-2 text-xs font-semibold text-gray-500 flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                              className="w-full bg-white/5 border border-admin-border hover:border-maroon rounded-xl px-3 py-2 text-xs font-semibold text-admin-muted flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
                             >
                               {uploadingIdx === dayIdx ? (
-                                <div className="w-3.5 h-3.5 border-2 border-maroon-500 border-t-transparent rounded-full animate-spin" />
+                                <div className="w-3.5 h-3.5 border-2 border-maroon border-t-transparent rounded-full animate-spin" />
                               ) : (
                                 <Upload className="h-3.5 w-3.5" />
                               )}
@@ -534,7 +534,7 @@ export default function PackagesClient({
 
                         {/* Image Thumbnail Preview */}
                         {day.image && (
-                          <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-200 bg-gray-150 flex-shrink-0">
+                          <div className="w-10 h-10 rounded-lg overflow-hidden border border-admin-border bg-white/5 flex-shrink-0">
                             <img src={day.image} alt="day preview" className="w-full h-full object-cover" />
                           </div>
                         )}
@@ -543,14 +543,14 @@ export default function PackagesClient({
 
                     {/* Resources list */}
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between text-xs font-bold text-gray-400 uppercase tracking-wider pb-1 border-b border-gray-100">
+                      <div className="flex items-center justify-between text-xs font-bold text-admin-muted uppercase tracking-wider pb-1 border-b border-admin-border">
                         <span className="flex items-center gap-1">
                           <Users className="h-3.5 w-3.5" /> Crew Assignment
                         </span>
                         <button
                           type="button"
                           onClick={() => handleAddResourceToDay(dayIdx)}
-                          className="text-[10px] text-maroon-600 hover:text-maroon-700 flex items-center gap-0.5"
+                          className="text-[10px] text-maroon hover:text-maroon-dark flex items-center gap-0.5"
                         >
                           <Plus className="h-3 w-3" /> Add Crew
                         </button>
@@ -562,7 +562,7 @@ export default function PackagesClient({
                             <select
                               value={item.resourceId}
                               onChange={(e) => handleResourceChange(dayIdx, itemIdx, e.target.value)}
-                              className="w-full bg-white border border-gray-200 text-xs font-semibold text-gray-700 rounded-xl px-3 py-1.5 outline-none"
+                              className="w-full bg-white/5 border border-admin-border text-xs font-semibold text-admin-text rounded-xl px-3 py-1.5 outline-none"
                             >
                               {resources.map((r) => (
                                 <option key={r.id} value={r.id}>
@@ -571,23 +571,23 @@ export default function PackagesClient({
                               ))}
                             </select>
                           </div>
-                          
+
                           {/* Stepper */}
-                          <div className="flex items-center border border-gray-200 bg-white rounded-xl overflow-hidden">
+                          <div className="flex items-center border border-admin-border bg-white/5 rounded-xl overflow-hidden">
                             <button
                               type="button"
                               onClick={() => handleQtyChange(dayIdx, itemIdx, -1)}
-                              className="px-2.5 py-1 text-gray-500 hover:bg-gray-50 font-bold text-xs"
+                              className="px-2.5 py-1 text-admin-muted hover:bg-white/10 font-bold text-xs"
                             >
                               -
                             </button>
-                            <span className="px-2 text-xs font-bold text-gray-800 min-w-[24px] text-center">
+                            <span className="px-2 text-xs font-bold text-admin-text min-w-[24px] text-center">
                               {item.qty}
                             </span>
                             <button
                               type="button"
                               onClick={() => handleQtyChange(dayIdx, itemIdx, 1)}
-                              className="px-2.5 py-1 text-gray-500 hover:bg-gray-50 font-bold text-xs"
+                              className="px-2.5 py-1 text-admin-muted hover:bg-white/10 font-bold text-xs"
                             >
                               +
                             </button>
@@ -596,7 +596,7 @@ export default function PackagesClient({
                           <button
                             type="button"
                             onClick={() => handleRemoveResourceFromDay(dayIdx, itemIdx)}
-                            className="text-gray-400 hover:text-red-500 p-1"
+                            className="text-admin-muted hover:text-red-400 p-1"
                           >
                             <Trash className="h-4 w-4" />
                           </button>
@@ -614,8 +614,8 @@ export default function PackagesClient({
             <div className="lg:col-span-4 space-y-6">
               
               {/* Addons Checklist */}
-              <div className="border border-gray-150 rounded-2xl p-5 md:p-6 bg-white">
-                <h4 className="font-serif text-sm font-bold text-gray-800 mb-3 flex items-center gap-1">
+              <div className="border border-admin-border rounded-2xl p-5 md:p-6 bg-admin-surface">
+                <h4 className="font-serif text-sm font-bold text-admin-text mb-3 flex items-center gap-1">
                   Deliverables Included
                 </h4>
                 <div className="space-y-2">
@@ -626,13 +626,13 @@ export default function PackagesClient({
                         key={addon.id}
                         onClick={() => handleToggleAddon(addon.id)}
                         className={`flex items-start gap-2 p-2.5 rounded-xl border text-xs cursor-pointer select-none ${
-                          isChecked ? 'border-maroon-300 bg-maroon-50/10 text-maroon-950' : 'border-gray-100 hover:border-gray-200'
+                          isChecked ? 'border-maroon/30 bg-maroon/10 text-admin-text' : 'border-admin-border hover:border-admin-border text-admin-muted'
                         }`}
                       >
-                        <input type="checkbox" checked={isChecked} readOnly className="mt-0.5 accent-maroon-500" />
+                        <input type="checkbox" checked={isChecked} readOnly className="mt-0.5 accent-maroon" />
                         <div className="flex-grow">
                           <p className="font-bold">{addon.name}</p>
-                          <p className="text-[10px] text-gray-400 mt-0.5">+ ₹{formatPrice(addon.price)}</p>
+                          <p className="text-[10px] text-admin-muted mt-0.5">+ ₹{formatPrice(addon.price)}</p>
                         </div>
                       </div>
                     );
@@ -641,16 +641,16 @@ export default function PackagesClient({
               </div>
 
               {/* Pricing override panel */}
-              <div className="border border-gray-150 rounded-2xl p-5 md:p-6 bg-white space-y-4">
-                <h4 className="font-serif text-sm font-bold text-gray-800">Quote Investment</h4>
-                
+              <div className="border border-admin-border rounded-2xl p-5 md:p-6 bg-admin-surface space-y-4">
+                <h4 className="font-serif text-sm font-bold text-admin-text">Quote Investment</h4>
+
                 <div>
-                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest block">Auto Calculated Sum:</span>
-                  <span className="text-lg font-serif font-black text-gray-800">₹{formatPrice(autoPrice)}/-</span>
+                  <span className="text-[9px] font-bold text-admin-muted uppercase tracking-widest block">Auto Calculated Sum:</span>
+                  <span className="text-lg font-serif font-black text-admin-text">₹{formatPrice(autoPrice)}/-</span>
                 </div>
 
                 <div>
-                  <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                  <label className="block text-[9px] font-bold text-admin-muted uppercase tracking-widest mb-1">
                     Final Price Override (₹)
                   </label>
                   <input
@@ -658,22 +658,22 @@ export default function PackagesClient({
                     value={finalPrice}
                     onChange={(e) => setFinalPrice(e.target.value)}
                     placeholder={`e.g. ${autoPrice - 5000}`}
-                    className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-maroon-500 rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-gray-700"
+                    className="w-full bg-white/5 border border-admin-border focus:bg-white/[0.02] focus:border-maroon rounded-xl px-3 py-2 text-xs md:text-sm font-semibold outline-none transition-all text-admin-text placeholder-admin-muted/50"
                   />
-                  <span className="text-[9px] text-gray-400 font-medium mt-1 block leading-relaxed">
+                  <span className="text-[9px] text-admin-muted font-medium mt-1 block leading-relaxed">
                     Leave blank to use the auto-calculated sum.
                   </span>
                 </div>
 
                 {/* Status Selection */}
                 <div>
-                  <label className="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                  <label className="block text-[9px] font-bold text-admin-muted uppercase tracking-widest mb-1">
                     Visibility Status
                   </label>
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value as any)}
-                    className="w-full bg-gray-50 border border-gray-200 text-xs font-semibold text-gray-700 rounded-xl px-3 py-2 outline-none focus:border-maroon-500"
+                    className="w-full bg-white/5 border border-admin-border text-xs font-semibold text-admin-text rounded-xl px-3 py-2 outline-none focus:border-maroon"
                   >
                     <option value="draft">Draft (Hidden from public)</option>
                     <option value="published">Published (Visible on site)</option>
@@ -681,10 +681,10 @@ export default function PackagesClient({
                 </div>
 
                 {/* Action buttons */}
-                <div className="pt-2 border-t border-gray-100 flex gap-2">
+                <div className="pt-2 border-t border-admin-border flex gap-2">
                   <button
                     type="submit"
-                    className="flex-grow bg-maroon-500 hover:bg-maroon-600 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="flex-grow bg-maroon hover:bg-maroon-dark text-ink font-bold text-xs py-3 px-4 rounded-xl shadow-black/20 shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Save className="h-4 w-4" />
                     Save Package
@@ -692,7 +692,7 @@ export default function PackagesClient({
                   <button
                     type="button"
                     onClick={() => setIsFormOpen(false)}
-                    className="bg-gray-150 hover:bg-gray-200 text-gray-600 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
+                    className="bg-white/5 hover:bg-white/10 border border-admin-border text-admin-text font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -710,17 +710,17 @@ export default function PackagesClient({
       {previewPkg && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-xs" onClick={() => setPreviewPkg(null)} />
-          <div className="bg-white rounded-3xl w-full max-w-4xl h-[85vh] relative z-10 overflow-hidden flex flex-col border border-gray-100 shadow-2xl">
-            <div className="bg-gray-950 text-white px-6 py-4 flex items-center justify-between border-b border-gray-900 flex-shrink-0">
+          <div className="bg-admin-surface rounded-3xl w-full max-w-4xl h-[85vh] relative z-10 overflow-hidden flex flex-col border border-admin-border shadow-2xl shadow-black/40">
+            <div className="bg-admin-surface-soft text-admin-text px-6 py-4 flex items-center justify-between border-b border-admin-border flex-shrink-0">
               <span className="font-serif font-bold text-sm">Predefined Package Layout Preview</span>
               <button
                 onClick={() => setPreviewPkg(null)}
-                className="text-gray-400 hover:text-white p-1 hover:bg-white/10 rounded-lg transition-all"
+                className="text-admin-muted hover:text-admin-text p-1 hover:bg-white/10 rounded-lg transition-all"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="flex-grow overflow-y-auto bg-gray-50/50">
+            <div className="flex-grow overflow-y-auto bg-admin-bg">
               <PackageView
                 name={previewPkg.name}
                 days={previewPkg.days}

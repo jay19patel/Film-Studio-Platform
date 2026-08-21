@@ -1,36 +1,57 @@
 @import "tailwindcss";
 
+/* ───────────────────────────────────────────────
+   Design Tokens
+   Public site: warm ivory/paper + darkened champagne gold,
+   ink-on-paper text. Hero video section is a deliberate dark
+   island (still uses --ink/--cream as a dark overlay + light
+   text pairing). Admin: dark graphite instance of the same system.
+   ─────────────────────────────────────────────── */
 @theme {
-  --color-maroon: #8B1A2B;
-  --color-maroon-dark: #6B1420;
-  --color-maroon-light: #B22042;
+  --color-maroon: #B4863A;
+  --color-maroon-dark: #8F6B2E;
+  --color-maroon-light: #E4C77E;
+  --color-ink: #2A2420;
+  --color-charcoal: #FFFFFF;
+  --color-charcoal-soft: #F1ECE0;
+  --color-sepia: #8A7B63;
+  --color-cream: #FDFBF6;
+  --color-paper: #F7F3EA;
+  --color-admin-bg: #0B0E14;
+  --color-admin-surface: #131722;
+  --color-admin-surface-soft: #171C29;
+  --color-admin-border: #232838;
+  --color-admin-text: #E7E9EE;
+  --color-admin-muted: #8B93A7;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
-  --maroon: #8B1A2B;
-  --maroon-dark: #6B1420;
-  --maroon-light: #B22042;
+  --background: #F7F3EA;
+  --foreground: #2A2420;
+  --maroon: #B4863A;
+  --maroon-dark: #8F6B2E;
+  --maroon-light: #E4C77E;
   --red: #DC2626;
+  --ink: #2A2420;
+  --charcoal: #FFFFFF;
+  --charcoal-soft: #F1ECE0;
+  --sepia: #8A7B63;
+  --cream: #FDFBF6;
+  --paper: #F7F3EA;
 }
 
 body {
-  background-color: #ffffff;
-  color: #111111;
+  background-color: var(--paper);
+  color: var(--ink);
   font-family: var(--font-outfit), sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
 .font-serif {
-  font-family: var(--font-bebas), sans-serif;
-  letter-spacing: 0.02em;
-}
-
-.font-anton {
-  font-family: var(--font-anton), sans-serif;
-  letter-spacing: 0.02em;
+  font-family: var(--font-fraunces), serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
 }
 
 .font-caveat {
@@ -60,8 +81,7 @@ html[data-locale="gu"] textarea {
   font-weight: 500;
 }
 
-html[data-locale="gu"] .font-serif,
-html[data-locale="gu"] .font-anton {
+html[data-locale="gu"] .font-serif {
   font-family: var(--font-rasa), serif;
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -74,31 +94,31 @@ html[data-locale="gu"] header nav a {
 }
 
 /* ───────────────────────────────────────────────
-   Maroon Accent Gradients
+   Gold Accent Gradients
    ─────────────────────────────────────────────── */
 .bg-maroon-gradient {
-  background: linear-gradient(135deg, #8B1A2B 0%, #B22042 50%, #8B1A2B 100%);
+  background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon) 100%);
 }
 
 .text-maroon-gradient {
-  background: linear-gradient(135deg, #6B1420 0%, #B22042 50%, #8B1A2B 100%);
+  background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ───────────────────────────────────────────────
-   Card Styles (Light Theme)
+   Card Styles (Editorial Paper + Gold)
    ─────────────────────────────────────────────── */
 .card-elevated {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  background: var(--charcoal);
+  border: 1px solid rgba(180, 134, 58, 0.16);
+  box-shadow: 0 4px 24px rgba(42, 36, 32, 0.06);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-elevated:hover {
-  border-color: rgba(139, 26, 43, 0.25);
-  box-shadow: 0 8px 30px rgba(139, 26, 43, 0.06);
+  border-color: rgba(180, 134, 58, 0.4);
+  box-shadow: 0 10px 32px rgba(42, 36, 32, 0.1);
 }
 
 /* ───────────────────────────────────────────────
@@ -109,22 +129,22 @@ html[data-locale="gu"] header nav a {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: #8B1A2B;
-  color: #ffffff;
+  background-color: var(--maroon);
+  color: var(--ink);
   font-weight: 800;
   font-size: 0.875rem;
   padding: 0.875rem 1.5rem;
   border-radius: 0.75rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(139, 26, 43, 0.2);
+  box-shadow: 0 4px 18px rgba(201, 162, 90, 0.25);
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .btn-maroon:hover {
-  background-color: #6B1420;
-  box-shadow: 0 8px 25px rgba(139, 26, 43, 0.3);
+  background-color: var(--maroon-dark);
+  box-shadow: 0 10px 26px rgba(180, 134, 58, 0.3);
   transform: translateY(-1px);
 }
 
@@ -138,8 +158,8 @@ html[data-locale="gu"] header nav a {
   justify-content: center;
   gap: 0.5rem;
   background: transparent;
-  border: 2px solid #1a1a1a;
-  color: #1a1a1a;
+  border: 2px solid rgba(42, 36, 32, 0.35);
+  color: var(--ink);
   font-weight: 700;
   font-size: 0.875rem;
   padding: 0.75rem 1.5rem;
@@ -151,34 +171,35 @@ html[data-locale="gu"] header nav a {
 }
 
 .btn-outline:hover {
-  background: #1a1a1a;
-  color: #ffffff;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
 }
 
 /* ───────────────────────────────────────────────
-   Form Inputs (Light Theme)
+   Form Inputs (Paper Theme)
    ─────────────────────────────────────────────── */
 .input-light {
   width: 100%;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background: rgba(42, 36, 32, 0.03);
+  border: 1px solid rgba(42, 36, 32, 0.12);
   border-radius: 0.75rem;
   padding: 0.75rem 1rem 0.75rem 2.75rem;
   font-size: 0.875rem;
-  color: #111111;
+  color: var(--ink);
   outline: none;
   transition: all 0.25s ease;
   font-weight: 500;
 }
 
 .input-light::placeholder {
-  color: #9ca3af;
+  color: rgba(42, 36, 32, 0.35);
 }
 
 .input-light:focus {
-  background: #ffffff;
-  border-color: #8B1A2B;
-  box-shadow: 0 0 0 3px rgba(139, 26, 43, 0.08);
+  background: var(--charcoal);
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 3px rgba(180, 134, 58, 0.14);
 }
 
 .input-light:disabled {
@@ -191,6 +212,104 @@ html[data-locale="gu"] header nav a {
    ─────────────────────────────────────────────── */
 .clip-triangle {
   clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* ───────────────────────────────────────────────
+   Cinematic Texture (film grain + vignette)
+   Usage: add to a `relative overflow-hidden` container.
+   ─────────────────────────────────────────────── */
+.cinematic-overlay {
+  position: relative;
+}
+
+.cinematic-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+.cinematic-vignette {
+  position: relative;
+}
+
+.cinematic-vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(120% 100% at 50% 15%, transparent 35%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* ───────────────────────────────────────────────
+   Masonry Gallery
+   ─────────────────────────────────────────────── */
+.masonry-columns {
+  column-count: 1;
+  column-gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .masonry-columns {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry-columns {
+    column-count: 3;
+  }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+}
+
+/* ───────────────────────────────────────────────
+   Admin Status Badges
+   ─────────────────────────────────────────────── */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.badge-new {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.badge-contacted {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.badge-completed {
+  background: rgba(16, 185, 129, 0.12);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.badge-neutral {
+  background: rgba(139, 147, 167, 0.12);
+  color: var(--color-admin-muted);
+  border-color: rgba(139, 147, 167, 0.3);
 }
 
 /* ───────────────────────────────────────────────
@@ -226,6 +345,11 @@ html[data-locale="gu"] header nav a {
   50% { transform: translateY(-8px); }
 }
 
+@keyframes kenburns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out both;
 }
@@ -250,6 +374,10 @@ html[data-locale="gu"] header nav a {
   animation: float 3s ease-in-out infinite;
 }
 
+.animate-kenburns {
+  animation: kenburns 24s ease-out infinite alternate;
+}
+
 /* Staggered animation delays */
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
@@ -262,14 +390,14 @@ html[data-locale="gu"] header nav a {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: var(--paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: var(--sepia);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8B1A2B;
+  background: var(--maroon);
 }
 
 .scrollbar-thin::-webkit-scrollbar {
@@ -279,9 +407,9 @@ html[data-locale="gu"] header nav a {
   background: transparent;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
+  background: rgba(42, 36, 32, 0.15);
   border-radius: 2px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #8B1A2B;
+  background: var(--maroon);
 }

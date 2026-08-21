@@ -192,23 +192,23 @@ export default function QuotationEditorClient({
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 font-sans pb-16">
+    <div className="min-h-screen bg-admin-bg text-admin-text font-sans pb-16">
       {/* Top Sticky Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-xs">
+      <header className="bg-admin-surface border-b border-admin-border sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Link
               href={`/admin/clients/${client.id}`}
-              className="p-2 bg-gray-50 hover:bg-gray-200 rounded-xl text-gray-600 transition-colors cursor-pointer"
+              className="p-2 bg-white/5 hover:bg-white/10 rounded-xl text-admin-muted transition-colors cursor-pointer"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
             <div>
-              <h1 className="font-serif text-lg md:text-xl font-bold tracking-tight text-gray-900">
+              <h1 className="font-serif text-lg md:text-xl font-bold tracking-tight text-admin-text">
                 Customize Proposal Quotation
               </h1>
-              <p className="text-xs font-semibold text-gray-500">
-                Client: <strong className="text-gray-900">{client.name}</strong> ({client.email})
+              <p className="text-xs font-semibold text-admin-muted">
+                Client: <strong className="text-admin-text">{client.name}</strong> ({client.email})
               </p>
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function QuotationEditorClient({
             <button
               onClick={() => handleSave(false)}
               disabled={isSaving || isConfirmed}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="bg-white/5 hover:bg-white/10 border border-admin-border text-admin-text font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <Save className="h-4 w-4" />
               <span>Save Draft</span>
@@ -225,7 +225,7 @@ export default function QuotationEditorClient({
             <button
               onClick={() => handleSave(true)}
               disabled={isSaving || isConfirmed}
-              className="bg-maroon hover:bg-maroon-dark text-white font-bold text-xs uppercase tracking-wider py-2.5 px-5 rounded-xl transition-all shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="bg-maroon hover:bg-maroon-dark text-ink font-bold text-xs uppercase tracking-wider py-2.5 px-5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
               <span>Save & Send Proposal</span>
@@ -237,29 +237,29 @@ export default function QuotationEditorClient({
       <main className="max-w-6xl mx-auto px-4 sm:px-6 mt-8 space-y-6">
         {/* Status Alert Banner */}
         {isConfirmed ? (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 p-4 rounded-2xl text-xs font-bold flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+          <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-4 rounded-2xl text-xs font-bold flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-emerald-400 flex-shrink-0" />
             <span>This quotation has been confirmed & locked by the client and cannot be edited.</span>
           </div>
         ) : (
-          <div className="bg-blue-50 border border-blue-200 text-blue-900 p-4 rounded-2xl text-xs font-medium flex items-center justify-between">
+          <div className="bg-blue-500/10 border border-blue-500/20 text-blue-300 p-4 rounded-2xl text-xs font-medium flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-maroon flex-shrink-0" />
               <span>Configure coverage days, crew quantities, deliverables, and final quotation price.</span>
             </div>
-            <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-2.5 py-1 rounded-md uppercase tracking-wider">
+            <span className="text-[10px] font-bold bg-blue-500/20 text-blue-300 px-2.5 py-1 rounded-md uppercase tracking-wider">
               {client.proposalStatus || 'draft'}
             </span>
           </div>
         )}
 
         {/* Section 1: Package Title */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-serif text-base font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+        <div className="bg-admin-surface rounded-3xl p-6 border border-admin-border space-y-4">
+          <h3 className="font-serif text-base font-bold text-admin-text uppercase tracking-widest flex items-center gap-2">
             <FileText className="h-5 w-5 text-maroon" /> Proposal Package Title
           </h3>
           <div>
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+            <label className="block text-[10px] font-bold text-admin-muted uppercase tracking-widest mb-1.5">
               Package Display Name
             </label>
             <input
@@ -267,27 +267,27 @@ export default function QuotationEditorClient({
               disabled={isConfirmed}
               value={packageName}
               onChange={(e) => setPackageName(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl py-3 px-4 font-bold text-sm outline-none focus:border-maroon transition-colors"
+              className="w-full bg-white/5 border border-admin-border text-admin-text rounded-xl py-3 px-4 font-bold text-sm outline-none placeholder-admin-muted/50 focus:border-maroon transition-colors"
               placeholder="e.g. Royal Wedding Package / Premium Custom Package"
             />
           </div>
         </div>
 
         {/* Section 2: Coverage Days & Creative Crew Allocation */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-6">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div className="bg-admin-surface rounded-3xl p-6 border border-admin-border space-y-6">
+          <div className="flex items-center justify-between border-b border-admin-border pb-4">
             <div>
-              <h3 className="font-serif text-base font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+              <h3 className="font-serif text-base font-bold text-admin-text uppercase tracking-widest flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-maroon" /> Event Days & Creative Crew Config ({days.length})
               </h3>
-              <p className="text-xs text-gray-500 font-medium mt-0.5">
+              <p className="text-xs text-admin-muted font-medium mt-0.5">
                 Add coverage ceremonies and allocate crew roles per day.
               </p>
             </div>
             {!isConfirmed && (
               <button
                 onClick={handleAddDay}
-                className="bg-maroon/5 hover:bg-maroon hover:text-white text-maroon font-bold text-xs uppercase tracking-widest py-2.5 px-4 rounded-xl transition-all border border-maroon/20 flex items-center gap-1.5 cursor-pointer"
+                className="bg-maroon/10 hover:bg-maroon hover:text-ink text-maroon font-bold text-xs uppercase tracking-widest py-2.5 px-4 rounded-xl transition-all border border-maroon/20 flex items-center gap-1.5 cursor-pointer"
               >
                 <Plus className="h-4 w-4" /> Add Event Day
               </button>
@@ -296,10 +296,10 @@ export default function QuotationEditorClient({
 
           <div className="space-y-6">
             {days.map((day, dayIdx) => (
-              <div key={dayIdx} className="bg-gray-50 border border-gray-200 p-5 rounded-2xl space-y-4">
+              <div key={dayIdx} className="bg-white/[0.02] border border-admin-border p-5 rounded-2xl space-y-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1">
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                    <label className="block text-[10px] font-bold text-admin-muted uppercase tracking-widest mb-1">
                       Ceremony Title (Day {dayIdx + 1})
                     </label>
                     <input
@@ -307,13 +307,13 @@ export default function QuotationEditorClient({
                       disabled={isConfirmed}
                       value={day.title}
                       onChange={(e) => handleDayTitleChange(dayIdx, e.target.value)}
-                      className="w-full bg-white border border-gray-200 text-gray-900 rounded-xl py-2.5 px-3.5 font-bold text-sm outline-none focus:border-maroon transition-colors"
+                      className="w-full bg-white/5 border border-admin-border text-admin-text rounded-xl py-2.5 px-3.5 font-bold text-sm outline-none placeholder-admin-muted/50 focus:border-maroon transition-colors"
                     />
                   </div>
                   {days.length > 1 && !isConfirmed && (
                     <button
                       onClick={() => handleRemoveDay(dayIdx)}
-                      className="p-2 text-rose-500 hover:bg-rose-50 rounded-xl transition-colors mt-4 cursor-pointer"
+                      className="p-2 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors mt-4 cursor-pointer"
                       title="Remove Day"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -323,7 +323,7 @@ export default function QuotationEditorClient({
 
                 <div className="space-y-3 pt-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-1">
+                    <span className="text-[10px] font-bold text-admin-muted uppercase tracking-widest flex items-center gap-1">
                       <Users className="h-3.5 w-3.5 text-maroon" /> Assigned Creative Crew
                     </span>
                     {!isConfirmed && (
@@ -345,14 +345,14 @@ export default function QuotationEditorClient({
                       return (
                         <div
                           key={itemIdx}
-                          className="bg-white border border-gray-200 p-3 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-2xs"
+                          className="bg-admin-surface border border-admin-border p-3 rounded-xl flex flex-wrap items-center justify-between gap-3"
                         >
                           <div className="flex-1 min-w-[200px]">
                             <select
                               disabled={isConfirmed}
                               value={item.resourceId}
                               onChange={(e) => handleCrewItemChange(dayIdx, itemIdx, 'resourceId', e.target.value)}
-                              className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg py-2 px-3 text-xs font-bold outline-none focus:border-maroon"
+                              className="w-full bg-white/5 border border-admin-border text-admin-text rounded-lg py-2 px-3 text-xs font-bold outline-none focus:border-maroon"
                             >
                               {resources.map((res) => (
                                 <option key={res.id} value={res.id}>
@@ -363,21 +363,21 @@ export default function QuotationEditorClient({
                           </div>
 
                           <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg p-1">
+                            <div className="flex items-center gap-2 bg-white/5 border border-admin-border rounded-lg p-1">
                               <button
                                 type="button"
                                 disabled={isConfirmed || item.qty <= 1}
                                 onClick={() => handleCrewItemChange(dayIdx, itemIdx, 'qty', Math.max(1, item.qty - 1))}
-                                className="w-6 h-6 bg-white hover:bg-gray-200 rounded text-gray-700 font-bold text-xs flex items-center justify-center cursor-pointer disabled:opacity-30"
+                                className="w-6 h-6 bg-admin-surface hover:bg-white/10 rounded text-admin-text font-bold text-xs flex items-center justify-center cursor-pointer disabled:opacity-30"
                               >
                                 -
                               </button>
-                              <span className="text-xs font-black text-gray-900 px-1">{item.qty}</span>
+                              <span className="text-xs font-black text-admin-text px-1">{item.qty}</span>
                               <button
                                 type="button"
                                 disabled={isConfirmed}
                                 onClick={() => handleCrewItemChange(dayIdx, itemIdx, 'qty', item.qty + 1)}
-                                className="w-6 h-6 bg-white hover:bg-gray-200 rounded text-gray-700 font-bold text-xs flex items-center justify-center cursor-pointer disabled:opacity-30"
+                                className="w-6 h-6 bg-admin-surface hover:bg-white/10 rounded text-admin-text font-bold text-xs flex items-center justify-center cursor-pointer disabled:opacity-30"
                               >
                                 +
                               </button>
@@ -391,7 +391,7 @@ export default function QuotationEditorClient({
                               <button
                                 type="button"
                                 onClick={() => handleRemoveCrewItem(dayIdx, itemIdx)}
-                                className="text-gray-400 hover:text-rose-500 p-1 rounded-lg transition-colors cursor-pointer"
+                                className="text-admin-muted hover:text-red-400 p-1 rounded-lg transition-colors cursor-pointer"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
@@ -408,8 +408,8 @@ export default function QuotationEditorClient({
         </div>
 
         {/* Section 3: Physical Deliverables Add-ons */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-serif text-base font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+        <div className="bg-admin-surface rounded-3xl p-6 border border-admin-border space-y-4">
+          <h3 className="font-serif text-base font-bold text-admin-text uppercase tracking-widest flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-maroon" /> Physical Deliverables & Fine Art Albums
           </h3>
 
@@ -422,8 +422,8 @@ export default function QuotationEditorClient({
                   onClick={() => !isConfirmed && handleToggleAddon(addon.id)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer select-none flex items-start gap-3 ${
                     isSelected
-                      ? 'bg-maroon/5 border-maroon text-maroon shadow-xs'
-                      : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                      ? 'bg-maroon/10 border-maroon text-maroon'
+                      : 'bg-white/5 border-admin-border text-admin-muted hover:border-admin-border/80 hover:bg-white/[0.07]'
                   }`}
                 >
                   <input
@@ -434,9 +434,9 @@ export default function QuotationEditorClient({
                     className="w-4 h-4 rounded text-maroon focus:ring-maroon accent-maroon mt-0.5 cursor-pointer"
                   />
                   <div>
-                    <h5 className="font-bold text-xs text-gray-900">{addon.name}</h5>
+                    <h5 className="font-bold text-xs text-admin-text">{addon.name}</h5>
                     <p className="text-[11px] font-extrabold text-maroon mt-0.5">
-                      +₹{formatMoney(addon.price)} <span className="text-[9px] font-normal text-gray-400">({addon.type})</span>
+                      +₹{formatMoney(addon.price)} <span className="text-[9px] font-normal text-admin-muted">({addon.type})</span>
                     </p>
                   </div>
                 </div>
@@ -446,23 +446,23 @@ export default function QuotationEditorClient({
         </div>
 
         {/* Section 4: Final Pricing Summary */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-serif text-base font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
-            <IndianRupee className="h-5 w-5 text-emerald-600" /> Quotation Price Summary
+        <div className="bg-admin-surface rounded-3xl p-6 border border-admin-border space-y-4">
+          <h3 className="font-serif text-base font-bold text-admin-text uppercase tracking-widest flex items-center gap-2">
+            <IndianRupee className="h-5 w-5 text-emerald-400" /> Quotation Price Summary
           </h3>
 
-          <div className="bg-gray-50 border border-gray-200 p-5 rounded-2xl space-y-4">
-            <div className="flex justify-between items-center text-xs font-bold text-gray-600 border-b border-gray-200 pb-3">
+          <div className="bg-white/[0.02] border border-admin-border p-5 rounded-2xl space-y-4">
+            <div className="flex justify-between items-center text-xs font-bold text-admin-muted border-b border-admin-border pb-3">
               <span>Calculated Rate (Crew + Deliverables)</span>
-              <span className="text-gray-900 font-extrabold text-sm">₹{formatMoney(calcAutoPrice(days, selectedAddons))}/-</span>
+              <span className="text-admin-text font-extrabold text-sm">₹{formatMoney(calcAutoPrice(days, selectedAddons))}/-</span>
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+              <label className="block text-[10px] font-bold text-admin-muted uppercase tracking-widest mb-1.5">
                 Final Quotation Amount (₹)
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400 font-bold text-sm">
+                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-admin-muted font-bold text-sm">
                   ₹
                 </span>
                 <input
@@ -470,10 +470,10 @@ export default function QuotationEditorClient({
                   disabled={isConfirmed}
                   value={totalAmount}
                   onChange={(e) => setTotalAmount(Number(e.target.value))}
-                  className="w-full bg-white border border-gray-300 text-gray-900 font-black text-lg rounded-xl py-3 pl-8 pr-4 outline-none focus:border-maroon transition-colors"
+                  className="w-full bg-white/5 border border-admin-border text-admin-text font-black text-lg rounded-xl py-3 pl-8 pr-4 outline-none focus:border-maroon transition-colors"
                 />
               </div>
-              <p className="text-[11px] text-gray-400 font-medium mt-1">
+              <p className="text-[11px] text-admin-muted font-medium mt-1">
                 You can adjust this amount to apply custom discounts or special packages.
               </p>
             </div>

@@ -66,7 +66,7 @@ export default function PackageDetailClient({
   };
 
   return (
-    <div className="bg-white min-h-screen relative overflow-hidden">
+    <div className="bg-paper min-h-screen relative overflow-hidden">
       <div className="py-10 relative z-10">
         <PackageView
           name={pkg.name}
@@ -82,8 +82,8 @@ export default function PackageDetailClient({
 
         {/* Action Button & Checkbox */}
         <div className="max-w-md mx-auto px-4 mt-10 space-y-3 text-center">
-          <div className="bg-white border border-gray-200 p-3.5 rounded-2xl flex items-center justify-between gap-3 shadow-xs">
-            <label className="flex items-center gap-2.5 text-xs font-bold text-gray-700 cursor-pointer select-none">
+          <div className="card-elevated p-3.5 rounded-2xl flex items-center justify-between gap-3">
+            <label className="flex items-center gap-2.5 text-xs font-bold text-ink/80 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={shouldDownloadPdf}
@@ -134,10 +134,10 @@ export default function PackageDetailClient({
 
       {/* PDF Generating Overlay */}
       {isPdfGenerating && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-gray-200 p-8 rounded-3xl shadow-2xl flex flex-col items-center justify-center text-center max-w-xs">
+        <div className="fixed inset-0 z-50 bg-ink/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="card-elevated p-8 rounded-3xl flex flex-col items-center justify-center text-center max-w-xs">
             <div className="w-10 h-10 border-4 border-maroon border-t-transparent rounded-full animate-spin mb-4" />
-            <h3 className="font-serif font-bold text-neutral-900 mb-1">{dict.buildYourOwnPage.downloadingPdf}</h3>
+            <h3 className="font-serif font-medium text-ink mb-1">{dict.buildYourOwnPage.downloadingPdf}</h3>
           </div>
         </div>
       )}

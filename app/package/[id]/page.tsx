@@ -26,12 +26,12 @@ export default async function PackageDetailPage({ params }: PageProps) {
 
   if (!pkg) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
-        <div className="bg-maroon/5 p-4 rounded-full text-maroon mb-6 border border-maroon/10">
+      <div className="min-h-screen bg-paper flex flex-col items-center justify-center p-6 text-center">
+        <div className="bg-maroon/10 p-4 rounded-full text-maroon mb-6 border border-maroon/20">
           <Camera className="h-12 w-12" />
         </div>
-        <h1 className="font-serif text-3xl font-bold text-neutral-900 mb-2">Package Not Found</h1>
-        <p className="text-neutral-500 max-w-md mb-8 text-sm">
+        <h1 className="font-serif text-3xl font-medium text-ink mb-2">Package Not Found</h1>
+        <p className="text-ink/50 max-w-md mb-8 text-sm">
           The wedding package you are looking for does not exist or has been archived by the studio administrator.
         </p>
         <Link
@@ -46,7 +46,7 @@ export default async function PackageDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-paper min-h-screen">
       {/* Back button container */}
       <div className="max-w-5xl mx-auto px-4 md:px-8 pt-8 -mb-4 relative z-20">
         <Link

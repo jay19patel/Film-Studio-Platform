@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Anton, Bebas_Neue, Caveat, Outfit, Shrikhand, Rasa } from "next/font/google";
+import { Fraunces, Caveat, Outfit, Shrikhand, Rasa } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const anton = Anton({
-  variable: "--font-anton",
-  weight: "400",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
-});
-
-const bebas = Bebas_Neue({
-  variable: "--font-bebas",
-  weight: "400",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+  style: ["normal", "italic"],
 });
 
 const caveat = Caveat({
@@ -58,10 +53,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang={locale}
-      className={`${anton.variable} ${bebas.variable} ${caveat.variable} ${outfit.variable} ${shrikhand.variable} ${rasa.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${caveat.variable} ${outfit.variable} ${shrikhand.variable} ${rasa.variable} h-full antialiased`}
       data-locale={locale}
     >
-      <body className="min-h-full flex flex-col bg-white text-neutral-900">
+      <body className="min-h-full flex flex-col bg-paper text-ink">
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Camera, Menu, X, Send, Globe, Check, ChevronDown } from 'lucide-react';
+import { Menu, X, Send, Globe, Check, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InquiryModal from '@/components/InquiryModal';
 import { en } from '@/dictionaries/en';
@@ -42,11 +42,11 @@ export default function Header() {
       if (parts.length === 2) return parts.pop()?.split(';').shift();
       return null;
     };
-    
-    const savedLocale = (getCookie('NEXT_LOCALE') as 'en' | 'gu') || 
-      (document.documentElement.getAttribute('data-locale') as 'en' | 'gu') || 
+
+    const savedLocale = (getCookie('NEXT_LOCALE') as 'en' | 'gu') ||
+      (document.documentElement.getAttribute('data-locale') as 'en' | 'gu') ||
       'en';
-      
+
     setLocale(savedLocale);
   }, []);
 
@@ -83,24 +83,26 @@ export default function Header() {
     { name: dict.header.aboutUs, href: '/about' },
   ];
 
-  // Dynamic header styles based on homepage & scroll
-  const getHeaderClass = () => {
-    if (isHome) {
-      if (isScrolled) {
-        return 'fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 text-neutral-900 shadow-sm transition-all duration-300';
-      }
-      return 'absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/70 via-black/20 to-transparent text-white transition-all duration-300';
-    }
-    return 'sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xs text-neutral-900 transition-all duration-300';
-  };
+  // The homepage hero is a deliberate dark video island — header floats
+  // transparent with light text over it until the user scrolls past it.
+  // Everywhere else (and once scrolled) the header sits on the paper theme.
+  const isOverHero = isHome && !isScrolled;
 
-  const isDarkHeader = isHome && !isScrolled;
+  const getHeaderClass = () => {
+    if (isOverHero) {
+      return 'absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-ink/85 via-ink/30 to-transparent text-cream transition-all duration-500';
+    }
+    if (isHome) {
+      return 'fixed top-0 left-0 right-0 z-50 bg-paper/90 backdrop-blur-md border-b border-maroon/12 text-ink shadow-sm transition-all duration-500';
+    }
+    return 'sticky top-0 z-50 bg-paper/90 backdrop-blur-md border-b border-maroon/12 text-ink transition-all duration-500';
+  };
 
   return (
     <header className={getHeaderClass()}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          
+
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-3.5 group">
@@ -111,9 +113,9 @@ export default function Header() {
                   className="w-full h-full object-cover object-center"
                 />
               </div>
-              <span className="font-serif text-2xl sm:text-3xl tracking-wide font-extrabold flex items-center">
+              <span className="font-serif text-2xl sm:text-3xl tracking-wide font-semibold flex items-center">
                 <span className="text-maroon font-black">M</span>
-                <span className={isDarkHeader ? 'text-white' : 'text-neutral-900'}>inesh_</span>
+                <span className={isOverHero ? 'text-cream' : 'text-ink'}>inesh_</span>
                 <span className="text-maroon font-black">P</span>
               </span>
             </Link>
@@ -133,15 +135,17 @@ export default function Header() {
                       : 'text-xs lg:text-sm font-bold uppercase tracking-[0.08em]'
                   } ${
                     isActive
-                      ? isDarkHeader ? 'text-rose-300 font-extrabold' : 'text-maroon font-extrabold'
-                      : isDarkHeader ? 'text-white/80 hover:text-white' : 'text-neutral-600 hover:text-neutral-900'
+                      ? 'text-maroon font-extrabold'
+                      : isOverHero
+                        ? 'text-cream/70 hover:text-cream'
+                        : 'text-ink/60 hover:text-ink'
                   }`}
                 >
                   {link.name}
                   {isActive && (
                     <motion.div
                       layoutId="activeNavLine"
-                      className={`absolute -bottom-2 left-0 right-0 h-[2px] ${isDarkHeader ? 'bg-rose-400' : 'bg-maroon'}`}
+                      className="absolute -bottom-2 left-0 right-0 h-[2px] bg-maroon"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -156,16 +160,16 @@ export default function Header() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all shadow-xs ${
-                  isDarkHeader
-                    ? 'bg-white/10 hover:bg-white/20 border border-white/20 text-white'
-                    : 'bg-gray-50 hover:bg-white border border-gray-200 text-neutral-700'
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  isOverHero
+                    ? 'bg-white/10 hover:bg-white/20 border border-cream/20 text-cream'
+                    : 'bg-black/[0.03] hover:bg-black/[0.06] border border-ink/10 text-ink'
                 }`}
                 aria-label="Select Language"
               >
-                <Globe className={`h-4 w-4 ${isDarkHeader ? 'text-rose-300' : 'text-maroon'}`} />
+                <Globe className="h-4 w-4 text-maroon" />
                 <span>{locale === 'gu' ? 'ગુજરાતી' : 'English'}</span>
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${isDarkHeader ? 'text-white/60' : 'text-neutral-400'} ${langDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${isOverHero ? 'text-cream/50' : 'text-ink/40'} ${langDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               <AnimatePresence>
@@ -175,12 +179,12 @@ export default function Header() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-40 bg-white text-neutral-900 rounded-2xl shadow-2xl border border-gray-100 py-1.5 z-50 overflow-hidden"
+                    className="absolute right-0 mt-2 w-40 bg-charcoal text-ink rounded-2xl shadow-2xl shadow-black/10 border border-maroon/15 py-1.5 z-50 overflow-hidden"
                   >
                     <button
                       onClick={() => handleLanguageChange('en')}
                       className={`w-full px-4 py-2.5 text-xs font-semibold flex items-center justify-between transition-colors ${
-                        locale === 'en' ? 'bg-maroon/5 text-maroon font-bold' : 'text-neutral-700 hover:bg-gray-50'
+                        locale === 'en' ? 'bg-maroon/10 text-maroon font-bold' : 'text-ink/70 hover:bg-black/[0.03]'
                       }`}
                     >
                       <span>English</span>
@@ -189,7 +193,7 @@ export default function Header() {
                     <button
                       onClick={() => handleLanguageChange('gu')}
                       className={`w-full px-4 py-2.5 text-xs font-semibold flex items-center justify-between transition-colors ${
-                        locale === 'gu' ? 'bg-maroon/5 text-maroon font-bold' : 'text-neutral-700 hover:bg-gray-50'
+                        locale === 'gu' ? 'bg-maroon/10 text-maroon font-bold' : 'text-ink/70 hover:bg-black/[0.03]'
                       }`}
                     >
                       <span>ગુજરાતી</span>
@@ -200,15 +204,15 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            <Link 
+            <Link
               href="/contact"
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all shadow-xs ${
-                isDarkHeader
-                  ? 'bg-white/10 hover:bg-white/20 border border-white/20 text-white'
-                  : 'bg-gray-50 hover:bg-white border border-gray-200 text-neutral-700'
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
+                isOverHero
+                  ? 'bg-white/10 hover:bg-white/20 border border-cream/20 text-cream'
+                  : 'bg-black/[0.03] hover:bg-black/[0.06] border border-ink/10 text-ink'
               }`}
             >
-              <Send className={`h-3.5 w-3.5 ${isDarkHeader ? 'text-rose-300' : 'text-maroon'}`} />
+              <Send className="h-3.5 w-3.5 text-maroon" />
               <span>{dict.header.contactUs}</span>
             </Link>
           </div>
@@ -217,7 +221,7 @@ export default function Header() {
           <div className="flex items-center md:hidden gap-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`p-2 transition-all ${isDarkHeader ? 'text-white hover:text-rose-300' : 'text-neutral-900 hover:text-maroon'}`}
+              className={`p-2 transition-all hover:text-maroon ${isOverHero ? 'text-cream' : 'text-ink'}`}
               aria-label="Toggle menu"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -234,7 +238,7 @@ export default function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className={`md:hidden overflow-hidden ${isDarkHeader ? 'bg-neutral-900/95 backdrop-blur-xl border-b border-neutral-800 text-white' : 'bg-white border-b border-gray-100 text-neutral-900'}`}
+            className="md:hidden overflow-hidden bg-charcoal/98 backdrop-blur-xl border-b border-maroon/12 text-ink"
           >
             <div className="px-4 pt-2 pb-5 space-y-1">
               {navLinks.map((link) => {
@@ -248,8 +252,8 @@ export default function Header() {
                       locale === 'gu' ? 'text-base font-bold tracking-normal' : 'text-sm font-bold tracking-widest uppercase'
                     } ${
                       isActive
-                        ? isDarkHeader ? 'bg-white/10 text-rose-300 border-l-2 border-rose-400' : 'bg-maroon/5 text-maroon border-l-2 border-maroon'
-                        : isDarkHeader ? 'text-white/80 hover:bg-white/5 hover:text-white' : 'text-neutral-600 hover:bg-gray-50 hover:text-neutral-900'
+                        ? 'bg-maroon/10 text-maroon border-l-2 border-maroon'
+                        : 'text-ink/60 hover:bg-black/[0.03] hover:text-ink'
                     }`}
                   >
                     {link.name}
@@ -258,9 +262,9 @@ export default function Header() {
               })}
 
               {/* Mobile Language Switcher */}
-              <div className={`pt-3 pb-1 border-t mt-2 ${isDarkHeader ? 'border-neutral-800' : 'border-gray-100'}`}>
-                <div className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${isDarkHeader ? 'text-neutral-400' : 'text-neutral-400'}`}>
-                  <Globe className={`h-3.5 w-3.5 ${isDarkHeader ? 'text-rose-400' : 'text-maroon'}`} />
+              <div className="pt-3 pb-1 border-t mt-2 border-ink/10">
+                <div className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 text-ink/40">
+                  <Globe className="h-3.5 w-3.5 text-maroon" />
                   Select Language / ભાષા પસંદ કરો
                 </div>
                 <div className="grid grid-cols-2 gap-2 px-4 mt-2 mb-3">
@@ -268,8 +272,8 @@ export default function Header() {
                     onClick={() => handleLanguageChange('en')}
                     className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                       locale === 'en'
-                        ? 'bg-maroon text-white shadow-xs'
-                        : isDarkHeader ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-gray-100 text-neutral-700 hover:bg-gray-200'
+                        ? 'bg-maroon text-cream shadow-xs'
+                        : 'bg-black/[0.04] text-ink hover:bg-black/[0.07]'
                     }`}
                   >
                     English {locale === 'en' && <Check className="h-3.5 w-3.5" />}
@@ -278,8 +282,8 @@ export default function Header() {
                     onClick={() => handleLanguageChange('gu')}
                     className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                       locale === 'gu'
-                        ? 'bg-maroon text-white shadow-xs'
-                        : isDarkHeader ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-gray-100 text-neutral-700 hover:bg-gray-200'
+                        ? 'bg-maroon text-cream shadow-xs'
+                        : 'bg-black/[0.04] text-ink hover:bg-black/[0.07]'
                     }`}
                   >
                     ગુજરાતી {locale === 'gu' && <Check className="h-3.5 w-3.5" />}
@@ -287,16 +291,12 @@ export default function Header() {
                 </div>
               </div>
 
-              <Link 
+              <Link
                 href="/contact"
                 onClick={() => setIsOpen(false)}
-                className={`w-full text-left px-4 py-3 rounded-xl text-xs font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-2 mt-2 border ${
-                  isDarkHeader
-                    ? 'bg-white/10 hover:bg-white/20 border-white/20 text-white'
-                    : 'bg-gray-50 hover:bg-white border-gray-200 text-neutral-700'
-                }`}
+                className="w-full text-left px-4 py-3 rounded-xl text-xs font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-2 mt-2 border bg-black/[0.03] hover:bg-black/[0.06] border-ink/10 text-ink"
               >
-                <Send className={`h-4 w-4 ${isDarkHeader ? 'text-rose-300' : 'text-maroon'}`} />
+                <Send className="h-4 w-4 text-maroon" />
                 <span>{dict.header.contactUs}</span>
               </Link>
             </div>

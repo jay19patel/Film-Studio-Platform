@@ -118,29 +118,29 @@ export default function InquiryModal({
           onClick={onClose}
         />
 
-        {/* Modal Container — Light Theme */}
+        {/* Modal Container — Cinematic Dark Theme */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.92, y: 20 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden border border-gray-200"
+          className="bg-charcoal rounded-3xl shadow-2xl shadow-black/15 w-full max-w-lg relative z-10 overflow-hidden border border-black/10"
         >
           {/* Header */}
-          <div className="bg-maroon-gradient px-6 py-4 flex justify-between items-center text-white">
+          <div className="bg-maroon-gradient px-6 py-4 flex justify-between items-center text-ink">
             <div>
-              <h3 className="font-serif text-lg font-bold tracking-tight text-white">
+              <h3 className="font-serif text-lg font-bold tracking-tight text-ink">
                 {type === 'general' ? dict.generalTitle : `${dict.title} ${packageName || ''}`}
               </h3>
               {packageName && (
-                <p className="text-xs text-white/80 truncate max-w-[320px] font-medium">
+                <p className="text-xs text-ink/70 truncate max-w-[320px] font-medium">
                   {packageName}
                 </p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="text-white/80 hover:text-white hover:bg-white/10 p-1.5 rounded-full transition-all"
+              className="text-ink/70 hover:text-ink hover:bg-black/10 p-1.5 rounded-full transition-all"
               aria-label="Close modal"
             >
               <X className="h-5 w-5" />
@@ -159,8 +159,8 @@ export default function InquiryModal({
                 >
                   <CheckCircle2 className="h-10 w-10" />
                 </motion.div>
-                <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">{dict.successTitle}</h4>
-                <p className="text-sm text-gray-500 max-w-sm mx-auto mb-6 leading-relaxed">
+                <h4 className="font-serif text-xl font-medium text-ink mb-2">{dict.successTitle}</h4>
+                <p className="text-sm text-ink/50 max-w-sm mx-auto mb-6 leading-relaxed">
                   {dict.successDesc}
                 </p>
                 <button
@@ -168,14 +168,14 @@ export default function InquiryModal({
                     setIsSuccess(false);
                     onClose();
                   }}
-                  className="bg-maroon hover:bg-maroon-dark text-white font-bold text-sm py-2.5 px-6 rounded-xl transition-all cursor-pointer"
+                  className="bg-maroon hover:bg-maroon-dark text-cream font-bold text-sm py-2.5 px-6 rounded-xl transition-all cursor-pointer"
                 >
                   {dict.closeBtn}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <p className="text-xs text-gray-500 mb-2 font-medium">
+                <p className="text-xs text-ink/50 mb-2 font-medium">
                   {dict.subtitle}
                 </p>
 
@@ -187,11 +187,11 @@ export default function InquiryModal({
 
                 {/* Name Input */}
                 <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                     {dict.fullName} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink/40">
                       <User className="h-4.5 w-4.5" />
                     </span>
                     <input
@@ -209,11 +209,11 @@ export default function InquiryModal({
 
                 {/* Email Input */}
                 <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                     {dict.email} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink/40">
                       <Mail className="h-4.5 w-4.5" />
                     </span>
                     <input
@@ -233,11 +233,11 @@ export default function InquiryModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Phone Input */}
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                    <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                       {dict.phone} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink/40">
                         <Phone className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -255,11 +255,11 @@ export default function InquiryModal({
 
                   {/* Event Date Input */}
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                    <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                       {dict.eventDate}
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink/40">
                         <Calendar className="h-4.5 w-4.5" />
                       </span>
                       <input
@@ -276,11 +276,11 @@ export default function InquiryModal({
 
                 {/* Address Input */}
                 <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                     {dict.address}
                   </label>
                   <div className="relative">
-                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-gray-400">
+                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-ink/40">
                       <MapPin className="h-4.5 w-4.5" />
                     </span>
                     <textarea
@@ -297,11 +297,11 @@ export default function InquiryModal({
 
                 {/* Special Notes */}
                 <div>
-                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1.5">
                     {dict.notes}
                   </label>
                   <div className="relative">
-                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-gray-400">
+                    <span className="absolute top-3.5 left-0 pl-3.5 flex items-start text-ink/40">
                       <FileText className="h-4.5 w-4.5" />
                     </span>
                     <textarea
